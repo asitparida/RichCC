@@ -31,7 +31,7 @@
     </style>
 </head>
 <body ng-controller="richCCController as sample">
-    <pre>Selected date is: <em>{{sample.dt | date:'fullDate' }}</em></pre>
+    <pre>Current date is: <em>{{sample.dt | date:'fullDate' }}</em></pre>
     <h4>Inline</h4>
     <div style="display:inline-block; min-height:290px;">
         <uib-datepicker-temp ng-model="sample.dt" min-date="sample.minDate" show-weeks="true" class="well well-sm" custom-class="sample.getDayClass(date, mode)"></uib-datepicker-temp>
