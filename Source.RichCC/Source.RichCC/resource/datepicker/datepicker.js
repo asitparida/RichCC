@@ -126,7 +126,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                       }
               }
           });
-      } else {
+      }
+      else {
           // Interpolated configuration attributes
           angular.forEach(['formatDay', 'formatMonth', 'formatYear', 'formatDayHeader', 'formatDayTitle', 'formatMonthTitle'], function (key) {
               self[key] = angular.isDefined($attrs[key]) ? $interpolate($attrs[key])($scope.$parent) : datepickerConfig[key];
@@ -180,6 +181,13 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                   self[key] = $scope[key] = datepickerConfig[key] || null;
               }
           });
+
+          //Events Variable Watch Added
+          if ($attrs['events']) {
+              watchListeners.push($scope.$parent.$watch($attrs['events'], function (value) {
+                  self['_events'] = $scope['events'] = angular.isDefined(value) ? value : $attrs['events'];
+              }));
+          }
 
           if (angular.isDefined($attrs.initDate)) {
               this.activeDate = dateParser.fromTimezone($scope.$parent.$eval($attrs.initDate), ngModelOptions.timezone) || new Date();
@@ -384,7 +392,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
 
     this.init = function (ctrl) {
         angular.extend(ctrl, this);
-        scope.showWeeks = ctrl.showWeeks;
+        scope.showWeeks = ctrl.showWeeks || true;
         ctrl.refreshView();
     };
 
@@ -443,6 +451,9 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                   getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
             }
         }
+
+        this._events = this.processEvents(this._events, scope.rows);
+        console.log(this._events);
     };
 
     this.compare = function (date1, date2) {
@@ -484,6 +495,124 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         }
         this.activeDate.setDate(date);
     };
+
+    /* EVENTS LOGIC */
+    function dtCompare(dta, dtb) {
+        if (dta < dtb)
+            return -1;
+        else if (dta == dtb)
+            return 0;
+        else if (dta > dtb)
+            return 1;
+    }
+
+    function getDaysBetweenDates(dt1, dt2) {
+        var _days = [];
+        var _timeDiff = Math.abs((new Date(dt1)).getTime() - (new Date(dt2)).getTime());
+        var _diffDays = Math.ceil(_timeDiff / (1000 * 3600 * 24)) + 1;
+        _.each(_.range(_diffDays), function (i) {
+            var _day = new Date(dt1);
+            _day = _day.setDate(_day.getDate() + i);
+            _days.push(new Date(_day));
+        });
+        return _days;
+    }
+
+    function getOrder(days) {
+        var _proceed = true;
+        var i = 1;
+        while (_proceed) {
+            var _found = _.find(days, function (day) { return day.order == i; });
+            if (typeof _found === 'undefined') {
+                _proceed = false;
+            }
+            else
+                i = i + 1;
+        }
+        return i;
+    }
+
+    function dayIsWeekFirst(_day, _weekFirsts) {
+        var _found = _.find(_weekFirsts, function (d) {
+            //if (d.date.getDate() == _day.getDate() && d.date.getMonth() == _day.getMonth() && d.date.getFullYear() == _day.getFullYear()) {
+            //    console.log('*********dayIsWeekFirst*************');
+            //    console.log(d.date);
+            //    console.log(_day);
+            //    console.log('*********dayIsWeekFirst*************');
+            //}
+            return d.date.getDate() == _day.getDate() && d.date.getMonth() == _day.getMonth() && d.date.getFullYear() == _day.getFullYear();
+        });
+        if (typeof _found === 'undefined')
+            return false;
+        else
+            return true;
+    }
+
+    function _dayInCurrentMonth(_day, rows) {
+        var result = false;
+        if (rows.length > 0) {
+            var _totalNumberOfRows = rows.length
+            if (rows[0].length > 0) {
+                var _totalNumberOfColumns = rows[_totalNumberOfRows - 1].length;
+                console.log(_day >= rows[0][0].date);
+                console.log(_day <= rows[_totalNumberOfRows - 1][_totalNumberOfColumns - 1].date);
+                if (_day >= rows[0][0].date && _day <= rows[_totalNumberOfRows - 1][_totalNumberOfColumns - 1].date)
+                    result = true;
+            }
+        }
+        return result;
+    }
+
+    this.processEvents = function (events, rows) {
+        var _weekFirsts = _.map(rows, function (row) { var _first = row[0]; _first._date = _first.date.setHours(0, 0, 0, 0); return _first });
+        //console.log(_weekFirsts);
+        var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
+        var _sortedEvents = _events.sort(function (a, b) {
+            if (a._startDt == b._startDt) {
+                return dtCompare(a._endDt, b._endDt);
+            }
+            else
+                return dtCompare(a._startDt, b._startDt);
+        });
+        var _dayEventDetails = {};
+        _.each(_sortedEvents, function (_event) {
+            var _days = getDaysBetweenDates(_event._startDt, _event._endDt);
+            var _eventDetail = {};
+            angular.extend(_eventDetail, _event);
+            _eventDetail.order = null;
+            _eventDetail.first = null;
+            _.each(_days, function (_day, _iter) {
+                var _proceedFurther = _dayInCurrentMonth(_day, rows);
+                if (_proceedFurther == true) {
+                    var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
+                    if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
+                        _dayEventDetails[key] = [];
+                    var _oldOrder = _eventDetail.order;
+                    if (_iter == 0) {
+                        _eventDetail.order = getOrder(_dayEventDetails[key]);
+                    }
+                    if (dayIsWeekFirst(_day, _weekFirsts) == true) {
+                        _eventDetail.order = getOrder(_dayEventDetails[key]);
+                    }
+                    var _newOrder = _eventDetail.order;
+                    if (_oldOrder != _newOrder && _newOrder <= 2)
+                        _eventDetail.startPaint = true;
+                    else
+                        _eventDetail.startPaint = false;
+                    if (dayIsWeekFirst(_day, _weekFirsts) == true && _newOrder <= 2)
+                        _eventDetail.startPaint = true;
+                    else
+                        _eventDetail.startPaint = false;
+                    _eventDetail.paintBoxLength = Math.min(7 - _day.getDay(), _days.length - _iter);
+                    var _newEventDetail = _.clone(_eventDetail);
+                    _dayEventDetails[key].push(_newEventDetail);
+                }
+            });
+        });
+        console.log(_dayEventDetails);
+        return _sortedEvents;
+    }
+
 }])
 
 .controller('UibMonthpickerControllerTemp', ['$scope', '$element', 'dateFilter', function (scope, $element, dateFilter) {
@@ -610,14 +739,14 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             datepickerOptions: '=?',
             dateDisabled: '&',
             customClass: '&',
-            shortcutPropagation: '&?'
+            shortcutPropagation: '&?',
+            events: '='
         },
         require: ['uibDatepickerTemp', '^ngModel'],
         controller: 'UibDatepickerControllerTemp',
         controllerAs: 'datepicker',
         link: function (scope, element, attrs, ctrls) {
             var datepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
-
             datepickerCtrl.init(ngModelCtrl);
         }
     };
