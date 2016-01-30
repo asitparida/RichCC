@@ -32,9 +32,12 @@
     </style>
 </head>
 <body ng-controller="richCCController as sample" style="background:#f0f0f0;">
-    <pre style="height:48px;line-height:48px;padding:0 15px;">Current date is: <em>{{sample.dt | date:'fullDate' }}</em></pre>
-    <div style="display:block; height:80vh;width:600px;margin:calc(0.5 * (20vh - 48px)) auto;background:#fff;">
-        <uib-datepicker-temp ng-model="sample.dt" min-date="sample.minDate" show-weeks="false" class="well well-sm" custom-class="sample.getDayClass(date, mode)"></uib-datepicker-temp>
+    <pre class="col-xs-12" style="line-height:46px;padding:0 15px;margin:0;">Current date is: <em>{{sample.dt | date:'fullDate' }}</em></pre>
+    <div style="width:100%;height:calc(100vh - 48px);padding:0 30px;overflow:auto;margin:0;" class="col-xs-12">
+        <div style="display:block; height:600px;width:600px;margin:30px auto;background:#fff;">
+            <uib-datepicker-temp ng-model="sample.dt" min-date="sample.minDate" show-weeks="false" class="well well-sm" custom-class="sample.getDayClass(date, mode)"></uib-datepicker-temp>
+        </div>
     </div>
+    <div class="clearfix"></div>
 </body>
 </html>
