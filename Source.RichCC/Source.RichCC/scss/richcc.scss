@@ -75,7 +75,7 @@
 .richcc-datepicker {
     width: 100%;
     height: 100%;
-    padding: 10px 30px;
+    padding: 0 15px;
     background: #fff;
 
     table {
@@ -84,7 +84,6 @@
     }
 
     .richcc-daypicker {
-        padding: 15px;
 
         thead {
             tr {
@@ -167,7 +166,37 @@
                         transition: all 0.2s linear;
 
                         &:hover, &:active, &:focus {
-                            background: rgba(0,115,198, 0.10);
+                            background: rgba(0,115,198, 0.05);
+                        }
+
+                        .markHolder {
+                            position: relative;
+
+                            .mark {
+                                position: absolute;
+                                width: 100%;
+                                height: 15px;
+                                text-align:left;
+
+                                .text {
+                                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                    font-weight: 400;
+                                    text-transform: uppercase;
+                                    padding: 0 5px;
+                                    margin: 0;
+                                    font-size: 12px;
+                                    position:relative;
+                                    top:-6px;
+                                }
+
+                                &.top {
+                                    top: 10px;
+                                }
+
+                                &.bottom {
+                                    top: 35px;
+                                }
+                            }
                         }
                     }
 

@@ -42,6 +42,10 @@
                         <span>{{::dt.label}}</span>
                     </div>
                 </div>
+                <div class="markHolder" style="position:relative;">
+                    <div class="mark top" ng-if="$index == 0 || $index == 3 || $index == 4" style="background:#25b768;color:#fff;"><span class="text">ABCD</span></div>
+                    <div class="mark bottom" ng-if="$index == 1 || $index == 2 || $index == 5 || $index == 6" style="background:#e74c3c;color:#fff;"><span class="text">WXYZ</span></div>
+                </div>
             </td>
         </tr>
     </tbody>
