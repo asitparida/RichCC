@@ -1,5 +1,8 @@
 <div class="uib-datepicker richcc-datepicker" ng-switch="datepickerMode" role="application" ng-keydown="keydown($event)">
-  <uib-daypicker-temp ng-switch-when="day" tabindex="0"></uib-daypicker-temp>
-  <uib-monthpicker-temp ng-switch-when="month" tabindex="0"></uib-monthpicker-temp>
-  <uib-yearpicker-temp ng-switch-when="year" tabindex="0"></uib-yearpicker-temp>
+    <div class="richcc-comp-title">Calendar</div>
+    <div class="richcc-cal-holder">
+        <uib-daypicker-temp ng-switch-when="day" tabindex="0"></uib-daypicker-temp>
+        <uib-monthpicker-temp ng-switch-when="month" tabindex="0"></uib-monthpicker-temp>
+        <uib-yearpicker-temp ng-switch-when="year" tabindex="0"></uib-yearpicker-temp>
+    </div>
 </div>
