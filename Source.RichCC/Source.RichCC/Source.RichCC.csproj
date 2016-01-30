@@ -70,6 +70,7 @@
     <Content Include="lib\ui-bootstrap-tpls-1.1.1.min.js" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
+    <Content Include="resource\arrowImgSprite.png" />
     <Content Include="scss\richcc.scss" />
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.ttf" />

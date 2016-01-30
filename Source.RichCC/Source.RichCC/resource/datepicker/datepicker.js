@@ -1115,4 +1115,20 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             return attrs.templateUrl || 'resource/datepicker/popup.html';
         }
     };
+})
+
+.directive("ccKey", function () {
+    return {
+        restrict: 'AEC',
+        link: function ($scope, elem, attr) {
+            elem.on('click', function (e) {
+                if (attr.ngDisabled != true)
+                    $scope.$apply(attr.ccKey);
+            });
+            elem.on('keyup', function (e) {
+                if ((e.keyCode == 13 || e.keyCode == 32) && attr.ngDisabled != true)
+                    $scope.$apply(attr.ccKey);
+            });
+        }
+    };
 });
