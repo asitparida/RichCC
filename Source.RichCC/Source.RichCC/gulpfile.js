@@ -66,23 +66,23 @@ var resolveMinifiedPath = function (path) {
 //});
 
 // Clean the distributable css directory
-//gulp.task('minify:clean:css', function () {
-//    return del('css/');
-//});
+gulp.task('minify:clean:css', function () {
+    return del('css/');
+});
 
 // Compile out sass files and minify it
-//gulp.task('minify:css', ['minify:clean:css'], function () {
-//    var min = resolveMinifiedPath("./dist/min/css/vx-grid.min.css");
-//    return gulp.src('scss/*.scss')
-//        .pipe(plumber(errorHandler))
-//        .pipe(sass())
-//        .pipe(gulp.dest('css/'))
-//        .pipe(cssmin())
-//        .pipe(concat(min.file))
-//        .pipe(gulp.dest(min.path));
-//});
+gulp.task('minify:css', ['minify:clean:css'], function () {
+    var min = resolveMinifiedPath("./dist/min/css/richcc.min.css");
+    return gulp.src('scss/*.scss')
+        .pipe(plumber(errorHandler))
+        .pipe(sass())
+        .pipe(gulp.dest('css/'))
+        .pipe(cssmin())
+        .pipe(concat(min.file))
+        .pipe(gulp.dest(min.path));
+});
 
 //Watch CSS task
-//gulp.task('default:vxgrid:css', function () {
-//    gulp.watch('scss/*.scss', ['minify:css']);
-//});
+gulp.task('default:richcc:css', function () {
+    gulp.watch('scss/*.scss', ['minify:css']);
+});

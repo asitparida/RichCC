@@ -15,7 +15,7 @@
     <script src="lib/ui-bootstrap-tpls-1.1.1.js"></script>
     <script type="text/javascript" src="lib/bootstrap.min.js"></script>
     <script src="resource/datepicker/datepicker.js"></script>
-    <script src="dist/js/app.js"></script>    
+    <script src="dist/js/app.js"></script>
     <style>
         .full button span {
             background-color: limegreen;
@@ -30,11 +30,10 @@
         }
     </style>
 </head>
-<body ng-controller="richCCController as sample">
-    <pre>Current date is: <em>{{sample.dt | date:'fullDate' }}</em></pre>
-    <h4>Inline</h4>
-    <div style="display:inline-block; min-height:290px;">
-        <uib-datepicker-temp ng-model="sample.dt" min-date="sample.minDate" show-weeks="true" class="well well-sm" custom-class="sample.getDayClass(date, mode)"></uib-datepicker-temp>
+<body ng-controller="richCCController as sample" style="background:#f0f0f0;">
+    <pre style="height:48px;line-height:48px;padding:0 15px;">Current date is: <em>{{sample.dt | date:'fullDate' }}</em></pre>
+    <div style="display:block; height:80vh;width:50vw;margin:calc(0.5 * (20vh - 48px)) auto;background:#fff;">
+        <uib-datepicker-temp ng-model="sample.dt" min-date="sample.minDate" show-weeks="false" class="well well-sm" custom-class="sample.getDayClass(date, mode)"></uib-datepicker-temp>
     </div>
 </body>
 </html>
