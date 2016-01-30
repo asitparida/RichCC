@@ -2,7 +2,7 @@
 <html ng-app="richCCSample">
 <head>
     <title>Rich CC Sample</title>
-    <meta charset="utf-8"  />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="dist/min/css/bootstrap.min.css" rel="stylesheet" />
     <link href="resource/jsoneditor/jsoneditor.min.css" rel="stylesheet" />
@@ -35,7 +35,7 @@
     <pre class="col-xs-12" style="line-height:46px;padding:0 15px;margin:0;">Current date is: <em>{{sample.dt | date:'fullDate' }}</em></pre>
     <div style="width:100%;height:calc(100vh - 48px);padding:0 30px;overflow:auto;margin:0;" class="col-xs-12">
         <div style="display:block; height:600px;width:600px;margin:30px auto;background:#fff;">
-            <uib-datepicker-temp ng-model="sample.dt" min-date="sample.minDate" show-weeks="false" class="well well-sm" custom-class="sample.getDayClass(date, mode)"></uib-datepicker-temp>
+            <uib-datepicker-temp ng-model="sample.dt" events="sample.sampleEvents" min-date="sample.minDate" show-weeks="false" class="well well-sm"></uib-datepicker-temp>
         </div>
     </div>
     <div class="clearfix"></div>
