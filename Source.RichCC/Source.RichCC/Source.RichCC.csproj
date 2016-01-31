@@ -66,6 +66,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lib\angular-animate.min.js" />
     <Content Include="lib\ui-bootstrap-tpls-1.1.1.js" />
     <Content Include="lib\ui-bootstrap-tpls-1.1.1.min.js" />
     <Content Include="packages.config" />

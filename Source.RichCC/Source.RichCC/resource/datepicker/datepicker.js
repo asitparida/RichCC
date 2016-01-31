@@ -456,8 +456,6 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         scope.eventDetails = this.processEvents(this._events, scope.rows);
         console.log(scope.eventDetails);
         console.log(scope);
-        //console.log(this._events);
-        //console.log(scope.rows);
     };
 
     this.compare = function (date1, date2) {
@@ -577,6 +575,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                 return dtCompare(a._startDt, b._startDt);
         });
         var _dayEventDetails = {};
+        var _step = 1;
         _.each(_sortedEvents, function (_event) {
             var _days = getDaysBetweenDates(_event._startDt, _event._endDt);
             var _eventDetail = {};
@@ -604,8 +603,11 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                     if (dayIsWeekFirst(_day, _weekFirsts) == true && _newOrder <= 2)
                         _eventDetail.startPaint = true;
                     _eventDetail.paintBoxLength = Math.min(7 - _day.getDay(), _days.length - _iter);
+                    if (_eventDetail.startPaint == true) {
+                        _eventDetail.step = _step;
+                        _step = _step + 1;
+                    }
                     var _newEventDetail = _.clone(_eventDetail);
-                    console.log(_eventDetail.name + ' : ' + _eventDetail.startDt + ' : ' + _eventDetail.order + ' : ' + _eventDetail.startPaint);
                     _dayEventDetails[key].push(_newEventDetail);
                 }
             });
