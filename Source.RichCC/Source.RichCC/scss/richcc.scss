@@ -200,6 +200,7 @@
                                 height: 15px;
                                 text-align: left;
                                 padding: 0;
+                                line-height:14px;
 
                                 .text {
                                     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -208,8 +209,6 @@
                                     padding: 0 5px;
                                     margin: 0;
                                     font-size: 12px;
-                                    position: relative;
-                                    top: -3px;
                                 }
 
                                 &.top {

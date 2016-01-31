@@ -54,7 +54,7 @@
                 <div class="markHolder" style="position:relative;" ng-show="eventDetails[dt.key].length > 0">
                     <div class="mark top"
                          ng-class="{'top': event.order == 1, 'bottom': event.order == 2}"
-                         ng-style="{'background-color': event.bgcolor, 'width': 100 * event.paintBoxLength + '%'}"
+                         ng-style="{'background-color': event.bgcolor,'color': event.color, 'width': 100 * event.paintBoxLength + '%'}"
                          ng-repeat="event in eventDetails[dt.key]"
                          ng-show="event.startPaint == true"
                          style="color:#fff;">
