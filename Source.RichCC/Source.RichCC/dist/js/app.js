@@ -2,11 +2,11 @@
 .controller('richCCController', ["$scope", "$timeout", function ($scope, $timeout) {
     var self = this;
     self.sampleEvents = [
-        { 'id': '1', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016' },
-        { 'id': '2', 'name': 'Event B', 'startDt': '01-02-2016', 'endDt': '01-02-2016' },
-        { 'id': '5', 'name': 'Event E', 'startDt': '01-08-2016', 'endDt': '02-08-2016' },
-        { 'id': '3', 'name': 'Event C', 'startDt': '01-07-2016', 'endDt': '01-08-2016' },
-        { 'id': '4', 'name': 'Event D', 'startDt': '01-06-2016', 'endDt': '01-09-2016' }
+        { 'id': '1', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff' },
+        { 'id': '2', 'name': 'Event B', 'startDt': '01-02-2016', 'endDt': '01-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff' },
+        { 'id': '5', 'name': 'Event E', 'startDt': '01-08-2016', 'endDt': '02-10-2016', 'bgcolor': '#ffc310', 'color': '#000000' },
+        { 'id': '3', 'name': 'Event C', 'startDt': '01-07-2016', 'endDt': '01-08-2016', 'bgcolor': '#e67e22', 'color': '#ffffff' },
+        { 'id': '4', 'name': 'Event D', 'startDt': '01-06-2016', 'endDt': '01-09-2016', 'bgcolor': '#e74c3c', 'color': '#ffffff' }
     ];
     self.today = function () {
         self.dt = new Date();
