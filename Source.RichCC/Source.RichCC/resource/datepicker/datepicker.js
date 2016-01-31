@@ -427,7 +427,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         for (var i = 0; i < 42; i++) {
             days[i] = angular.extend(this.createDateObject(days[i], this.formatDay), {
                 secondary: days[i].getMonth() !== month,
-                uid: scope.uniqueId + '-' + i
+                uid: scope.uniqueId + '-' + i,
+                key: days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate()
             });
         }
 
@@ -452,8 +453,11 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             }
         }
 
-        this._events = this.processEvents(this._events, scope.rows);
-        console.log(this._events);
+        scope.eventDetails = this.processEvents(this._events, scope.rows);
+        console.log(scope.eventDetails);
+        console.log(scope);
+        //console.log(this._events);
+        //console.log(scope.rows);
     };
 
     this.compare = function (date1, date2) {
@@ -554,8 +558,6 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             var _totalNumberOfRows = rows.length
             if (rows[0].length > 0) {
                 var _totalNumberOfColumns = rows[_totalNumberOfRows - 1].length;
-                console.log(_day >= rows[0][0].date);
-                console.log(_day <= rows[_totalNumberOfRows - 1][_totalNumberOfColumns - 1].date);
                 if (_day >= rows[0][0].date && _day <= rows[_totalNumberOfRows - 1][_totalNumberOfColumns - 1].date)
                     result = true;
             }
@@ -601,16 +603,14 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                         _eventDetail.startPaint = false;
                     if (dayIsWeekFirst(_day, _weekFirsts) == true && _newOrder <= 2)
                         _eventDetail.startPaint = true;
-                    else
-                        _eventDetail.startPaint = false;
                     _eventDetail.paintBoxLength = Math.min(7 - _day.getDay(), _days.length - _iter);
                     var _newEventDetail = _.clone(_eventDetail);
+                    console.log(_eventDetail.name + ' : ' + _eventDetail.startDt + ' : ' + _eventDetail.order + ' : ' + _eventDetail.startPaint);
                     _dayEventDetails[key].push(_newEventDetail);
                 }
             });
         });
-        console.log(_dayEventDetails);
-        return _sortedEvents;
+        return _dayEventDetails;
     }
 
 }])

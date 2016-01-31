@@ -42,10 +42,25 @@
                         <span>{{::dt.label}}</span>
                     </div>
                 </div>
-                <div class="markHolder" style="position:relative;">
+                <!--<div class="markHolder" style="position:relative;">
                     <div class="mark top" ng-if="$index == 0 || $index == 3 || $index == 4" style="background:#25b768;color:#fff;"><span class="text">ABCD</span></div>
                     <div class="mark bottom" ng-if="$index == 1 || $index == 2 || $index == 5 || $index == 6" style="background:#e74c3c;color:#fff;"><span class="text">WXYZ</span></div>
                     <div class="mark morePresent">
+                        <div class="icon-container">
+                            <i class="icon icon-more"></i>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="markHolder" style="position:relative;" ng-show="eventDetails[dt.key].length > 0">
+                    <div class="mark top"
+                         ng-class="{'top': event.order == 1, 'bottom': event.order == 2}"
+                         ng-style="{'background-color': event.bgcolor, 'width': 100 * event.paintBoxLength + '%'}"
+                         ng-repeat="event in eventDetails[dt.key]"
+                         ng-show="event.startPaint == true"
+                         style="color:#fff;">
+                        <span class="text">{{event.name}}</span>
+                    </div>
+                    <div class="mark morePresent" ng-show="eventDetails[dt.key].length > 2">
                         <div class="icon-container">
                             <i class="icon icon-more"></i>
                         </div>
