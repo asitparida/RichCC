@@ -617,6 +617,13 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         return _dayEventDetails;
     }
 
+    scope.viewAllEvents = function (events, e) {
+        console.log(events);
+        e.stopPropagation();
+        e.preventDefault();
+        return false;
+    }
+
 }])
 
 .controller('UibMonthpickerControllerTemp', ['$scope', '$element', 'dateFilter', function (scope, $element, dateFilter) {

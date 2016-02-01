@@ -29,7 +29,8 @@
                 id="{{::dt.uid}}"
                 ng-class="::dt.customClass"
                 colspan="1"
-                ng-disabled="::dt.disabled">
+                ng-disabled="::dt.disabled"
+                uib-popover-template="'resource/datepicker/richcc-day-popup.html'" popover-trigger="{{eventDetails[dt.key].length > 0 ? 'outsideClick' : 'none'}}" popover-append-to-body="true">
                 <div class="icon-container dayHolder"
                      uib-is-class="
                      'cc-info' for selectedDt,
@@ -53,7 +54,7 @@
                             <span class="text">{{event.name}}</span>
                         </div>
                     </div>
-                    <div class="mark morePresent" ng-show="eventDetails[dt.key].length > 2">
+                    <div class="mark morePresent" ng-show="eventDetails[dt.key].length > 2" ng-click="viewAllEvents(eventDetails[dt.key], $event)">
                         <div class="icon-container">
                             <i class="icon icon-more"></i>
                         </div>
