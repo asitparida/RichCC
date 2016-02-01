@@ -484,16 +484,24 @@
                                 @for $i from 1 through 120 {
                                     &.step-#{$i} {
                                         opacity: 1;
-                                        -moz-transition-delay: (#{$i * 200}ms);
+                                        /*-moz-transition-delay: (#{$i * 200}ms);
                                         -o-transition-delay: (#{$i * 200}ms);
                                         -webkit-transition-delay: (#{$i * 200}ms);
-                                        transition-delay: (#{$i * 200}ms);
+                                        transition-delay: (#{$i * 200}ms);*/
+                                        -moz-transition-delay: 200ms;
+                                        -o-transition-delay: 200ms;
+                                        -webkit-transition-delay: 200ms;
+                                        transition-delay: 200ms;
 
                                         .mark-stripe {
-                                            -moz-animation-delay: (#{$i * 200}ms);
+                                            /*-moz-animation-delay: (#{$i * 200}ms);
                                             -o-animation-delay: (#{$i * 200}ms);
                                             -webkit-animation-delay: (#{$i * 200}ms);
-                                            animation-delay: (#{$i * 200}ms);
+                                            animation-delay: (#{$i * 200}ms);*/
+                                            -moz-animation-delay: 200ms;
+                                            -o-animation-delay: 200ms;
+                                            -webkit-animation-delay: 200ms;
+                                            animation-delay: 200ms;
                                         }
                                     }
                                 }
