@@ -23,14 +23,19 @@
         </tr>
     </thead>
     <tbody>
-        <tr class="uib-weeks richcc-row" ng-repeat="row in rows track by $index">
+        <tr class="uib-weeks richcc-row" ng-repeat="row in rows track by $index" ng-init="rowindex = $index">
             <td ng-if="showWeeks && false" class="text-center h6"><em>{{ weekNumbers[$index] }}</em></td>
             <td ng-repeat="dt in row" class="uib-day text-center richcc-td" role="gridcell"
                 id="{{::dt.uid}}"
                 ng-class="::dt.customClass"
                 colspan="1"
                 ng-disabled="::dt.disabled"
-                uib-popover-template="'resource/datepicker/richcc-day-popup.html'" popover-trigger="{{eventDetails[dt.key].length > 0 ? 'outsideClick' : 'none'}}" popover-append-to-body="true">
+                ng-init="columnindex = $index"
+                uib-popover-template="'resource/datepicker/richcc-day-popup.html'" 
+                popover-trigger="{{eventDetails[dt.key].length > 0 ? 'outsideClick' : 'none'}}" 
+                popover-append-to-body="true" 
+                popover-placement="{{getPopUpPosition(rowindex, columnindex)}}"
+                popover-class="richcc-popup-container">
                 <div class="icon-container dayHolder"
                      uib-is-class="
                      'cc-info' for selectedDt,

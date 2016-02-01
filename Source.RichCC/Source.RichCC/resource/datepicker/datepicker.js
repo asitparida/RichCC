@@ -567,7 +567,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
 
     this.processEvents = function (events, rows) {
         var _weekFirsts = _.map(rows, function (row) { var _first = row[0]; _first._date = _first.date.setHours(0, 0, 0, 0); return _first });
-        //console.log(_weekFirsts);
+        console.log(rows);
         var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
         var _sortedEvents = _events.sort(function (a, b) {
             if (a._startDt == b._startDt) {
@@ -622,6 +622,18 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         e.stopPropagation();
         e.preventDefault();
         return false;
+    }
+
+    scope.getPopUpPosition = function (row, column) {
+        var position = '';
+        position = row <= 2 ? 'bottom' : 'top';
+        if (column == 0)
+            position = position + '-left';
+        else if (column == 6)
+            position = position + '-right';
+
+        console.log('row : ' + row + ', column : ' + column + ', position : ' + position);
+        return position;
     }
 
 }])

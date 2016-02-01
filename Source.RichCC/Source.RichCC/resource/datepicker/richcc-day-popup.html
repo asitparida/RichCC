@@ -1,5 +1,21 @@
-﻿<div>
-    <div class="col-xs-12" ng-repeat="event in eventDetails[dt.key]">
-        <div>{{event.name}}</div>
+﻿<div class="richcc-day-popup">
+    <div class="event-container">
+        <div class="event-container-label">{{dt.date | date:'dd MMM, yyyy'}} ({{eventDetails[dt.key].length}} Events)</div>
+        <div class="event-details-container">
+            <div class="event-detail" ng-repeat="event in eventDetails[dt.key]">
+                <div class="event-marker"></div>
+                <div class="event-title-holder" ng-style="{'border-left-color': event.bgcolor}">
+                    <span class="event-title">{{event.name}}</span> : <span class="event-subject">{{event.subject}}</span>
+                    <div class="event-timing-holder">
+                        <span class="event-time">{{event.startDt | date:'MM/dd/yy'}} 9.00</span><span style="padding: 0 15px;">-</span><span class="event-time">{{event.endDt | date:'MM/dd/yy'}} 9.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="event-action-container">
+        <button class="event-action">Add Events</button>
+        <button class="event-action">Edit Events</button>
+        <div class="event-separator"></div>
     </div>
 </div>
