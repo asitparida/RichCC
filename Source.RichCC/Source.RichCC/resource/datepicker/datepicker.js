@@ -186,6 +186,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
           if ($attrs['events']) {
               watchListeners.push($scope.$parent.$watch($attrs['events'], function (value) {
                   self['_events'] = $scope['events'] = angular.isDefined(value) ? value : $attrs['events'];
+                  console.log(self['_events']);
+                  self.refreshView();
               }));
           }
 
