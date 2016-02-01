@@ -4135,6 +4135,7 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
     animation: true,
     popupDelay: 0,
     popupCloseDelay: 0,
+    popupClass: '',
     useContentExp: false
   };
 
@@ -4207,7 +4208,7 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
     }
 
     return function $tooltip(ttType, prefix, defaultTriggerShow, options) {
-      options = angular.extend({}, defaultOptions, globalOptions, options);
+        options = angular.extend({}, defaultOptions, globalOptions, options);
 
       /**
        * Returns an object of show and hide triggers.
