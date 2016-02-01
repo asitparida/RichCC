@@ -186,7 +186,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
           if ($attrs['events']) {
               watchListeners.push($scope.$parent.$watch($attrs['events'], function (value) {
                   self['_events'] = $scope['events'] = angular.isDefined(value) ? value : $attrs['events'];
-                  console.log(self['_events']);
+                  //console.log(self['_events']);
                   self.refreshView();
               }));
           }
@@ -456,8 +456,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         }
 
         scope.eventDetails = this.processEvents(this._events, scope.rows);
-        console.log(scope.eventDetails);
-        console.log(scope);
+        //console.log(scope.eventDetails);
+        //console.log(scope);
     };
 
     this.compare = function (date1, date2) {
@@ -567,7 +567,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
 
     this.processEvents = function (events, rows) {
         var _weekFirsts = _.map(rows, function (row) { var _first = row[0]; _first._date = _first.date.setHours(0, 0, 0, 0); return _first });
-        console.log(rows);
+        //console.log(rows);
         var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
         var _sortedEvents = _events.sort(function (a, b) {
             if (a._startDt == b._startDt) {
@@ -618,7 +618,6 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     }
 
     scope.viewAllEvents = function (events, e) {
-        console.log(events);
         e.stopPropagation();
         e.preventDefault();
         return false;
@@ -631,8 +630,6 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             position = position + '-left';
         else if (column == 6)
             position = position + '-right';
-
-        console.log('row : ' + row + ', column : ' + column + ', position : ' + position);
         return position;
     }
 
