@@ -1,0 +1,14 @@
+﻿<table class="uib-daypicker richcc-monthviewer" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}">
+    <thead>
+        <tr class="header-action-holder">
+            <th colspan="1">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="uib-weeks richcc-row" ng-repeat="row in [0,1,2,3,4,5,6] track by $index">
+            <td class="uib-day text-center richcc-td" role="gridcell">
+                <span class="marker" ng-show="$index == 1 || $index == 3 || $index == 5">{{monthWiseEventMarkers[0][row].abbr | limitTo:1}}</span>
+            </td>
+        </tr>
+    </tbody>
+</table>

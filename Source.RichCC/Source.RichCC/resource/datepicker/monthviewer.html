@@ -1,0 +1,21 @@
+﻿<table class="uib-daypicker richcc-monthviewer" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}" ng-init="parent = $parent">
+    <thead>
+        <tr class="header-action-holder">
+            <th colspan="7" cc-key="monthSelectCallback()">{{parent.monthViewData[monthIndex].dt.label | limitTo:3}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="uib-weeks richcc-row" ng-repeat="row in [0,1,2,3,4,5,6] track by $index">
+            <td ng-repeat="column in parent.monthViewData[monthIndex].rows" class="uib-day text-center richcc-td" role="gridcell"
+                id="{{::mdt.key}}"
+                colspan="1"
+                ng-style="{'opacity': column[row].monthIndex != monthIndex ? 0 : 1}"
+                ng-init="mdt = column[row]"
+                ng-attr-len="{{parent.monthWiseEventDetails[monthIndex][mdt.key].length}}">
+                <div class="richcc-mv-box" 
+                     ng-class="{'fullyOpaque': parent.monthWiseEventDetails[monthIndex][mdt.key].length > 2}" 
+                     ng-attr-transparent="{{parent.monthWiseEventDetails[monthIndex][mdt.key].length}}"></div>
+            </td>
+        </tr>
+    </tbody>
+</table>
