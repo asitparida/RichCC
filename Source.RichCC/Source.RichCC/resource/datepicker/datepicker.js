@@ -186,7 +186,13 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
           if ($attrs['events']) {
               watchListeners.push($scope.$parent.$watch($attrs['events'], function (value) {
                   self['_events'] = $scope['events'] = angular.isDefined(value) ? value : $attrs['events'];
-                  //console.log(self['_events']);
+                  self.refreshView();
+              }));
+          }
+
+          if ($attrs['light']) {
+              watchListeners.push($scope.$parent.$watch($attrs['light'], function (value) {
+                  self['light'] = $scope['light'] = angular.isDefined(value) ? value : $attrs['light'];
                   self.refreshView();
               }));
           }
@@ -456,6 +462,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         }
 
         scope.eventDetails = this.processEvents(this._events, scope.rows);
+        scope.light = this.light;
+        console.log(scope.light);
         //console.log(scope.eventDetails);
         //console.log(scope);
     };
@@ -760,7 +768,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             dateDisabled: '&',
             customClass: '&',
             shortcutPropagation: '&?',
-            events: '='
+            events: '=',
+            light: '='
         },
         require: ['uibDatepickerTemp', '^ngModel'],
         controller: 'UibDatepickerControllerTemp',

@@ -1,8 +1,8 @@
-<table class="uib-daypicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+<table class="uib-daypicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}">
     <thead>
         <tr class="header-action-holder">
-            <th colspan="1"></th>
-            <th colspan="5">
+            <th colspan="1" ng-if="light != true"></th>
+            <th colspan="{{light == true ? 8 : 5}}">
                 <div class="header-actions">
                     <div class="icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0">
                         <i class="icon icon-ScrollChevronLeftLegacy"></i>
@@ -15,11 +15,12 @@
                     </div>
                 </div>
             </th>
-            <th colspan="1"></th>
+            <th colspan="1" ng-if="light != true"></th>
         </tr>
         <tr class="header-dayname-row">
             <th ng-if="showWeeks && false" class="text-center"></th>
             <th colspan="1" ng-repeat="label in ::labels track by $index" class="text-center dayTitle"><span aria-label="{{::label.full}}">{{::label.abbr | limitTo:1}}</span></th>
+            <th colspan="1" ng-if="light == true"></th>
         </tr>
     </thead>
     <tbody>
@@ -31,9 +32,9 @@
                 colspan="1"
                 ng-disabled="::dt.disabled"
                 ng-init="columnindex = $index"
-                uib-popover-template="'resource/datepicker/richcc-day-popup.html'" 
-                popover-trigger="{{eventDetails[dt.key].length > 0 ? 'outsideClick' : 'none'}}" 
-                popover-append-to-body="true" 
+                uib-popover-template="'resource/datepicker/richcc-day-popup.html'"
+                popover-trigger="{{eventDetails[dt.key].length > 0 ? 'outsideClick' : 'none'}}"
+                popover-append-to-body="true"
                 popover-placement="{{getPopUpPosition(rowindex, columnindex)}}"
                 popover-class="richcc-popup-container">
                 <div class="icon-container dayHolder"
@@ -42,8 +43,8 @@
                      'cc-active' for activeDt
                      on dt"
                      ng-class="::{'cc-current': dt.current, 'cc-muted': dt.secondary}"
-                     cc-key="select(dt.date)"
-                     tabindex="0">
+                     tabindex="0"
+                     ng-if="light != true">
                     <div class="richcc-day">
                         <span>{{::dt.label}}</span>
                     </div>
@@ -51,20 +52,24 @@
                 <div class="markHolder" style="position:relative;" ng-show="eventDetails[dt.key].length > 0">
                     <div class="mark step-{{event.step}}"
                          ng-class="{'top': event.order == 1, 'bottom': event.order == 2}"
-                         ng-style="{'color': event.color, 'width': 'calc(' + 100 * event.paintBoxLength + '% - 5px)'}"
+                         ng-style="{'color': event.color, 'width': light != true ?  'calc(' + 100 * event.paintBoxLength + '% - 5px)' : 'calc(' + 100 * event.paintBoxLength + '% - 20px)'}"
                          ng-repeat="event in eventDetails[dt.key]"
                          ng-if="event.startPaint == true"
                          style="color:#fff;">
+                        <div class="mark-text-initial" ng-if="light == true" ng-style="{'color': event.bgcolor}">{{event.initial | limitTo: 1}}</div>
                         <div class="mark-stripe" ng-style="{'background-color': event.bgcolor}">
                             <span class="text">{{event.name}}</span>
                         </div>
                     </div>
-                    <div class="mark morePresent" ng-show="eventDetails[dt.key].length > 2" ng-click="viewAllEvents(eventDetails[dt.key], $event)">
+                    <div class="mark morePresent" ng-show="eventDetails[dt.key].length > 2">
                         <div class="icon-container">
                             <i class="icon icon-more"></i>
                         </div>
                     </div>
                 </div>
+            </td>
+            <td colspan="1" ng-if="light == true" class="richcc-td richcc-light-lastdaymark">
+                <span>{{::row[6].label}}</span>
             </td>
         </tr>
     </tbody>
