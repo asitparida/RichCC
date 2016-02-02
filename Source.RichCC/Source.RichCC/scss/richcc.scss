@@ -303,7 +303,7 @@
                     }
 
                     .labelHolder {
-                        width: calc(100% - 104px);
+                        width: calc(100% - 80px);
                         display: inline-block;
                         height: 36px;
                         vertical-align: top;
@@ -527,6 +527,7 @@
                                     width: 30px;
                                     opacity: 1;
                                     pointer-events: none;
+                                    height: 10px;
 
                                     .icon-container {
                                         height: 10px;
@@ -645,7 +646,7 @@
                             text-transform: uppercase;
                             margin: 0 0 0 5px;
                             font-size: 11px;
-                            opacity:0.75;
+                            opacity: 0.75;
                             vertical-align: middle;
                         }
                     }
