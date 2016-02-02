@@ -282,8 +282,6 @@
                     height: 36px;
 
                     .header-actions {
-                        min-width: 300px;
-                        width: 350px;
                         display: block;
                         margin: 0 auto;
                         height: 36px;
@@ -528,9 +526,10 @@
                                     background: none;
                                     width: 30px;
                                     opacity: 1;
+                                    pointer-events: none;
 
                                     .icon-container {
-                                        height: 15px;
+                                        height: 10px;
                                         width: 25px;
 
                                         .icon {
@@ -588,6 +587,66 @@
                             box-shadow: none;
                             line-height: 18px;
                             font-size: small;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.richcc-light {
+            tbody {
+                .richcc-row {
+                    .richcc-td {
+                        /*.dayHolder{
+                            display:none;
+                        }*/
+                        .markHolder {
+                            height: 100%;
+
+                            .mark {
+
+                                &.top {
+                                    top: 15%;
+                                }
+
+                                &.bottom {
+                                    top: 45%;
+                                }
+
+                                .mark-text-initial {
+                                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                    font-weight: 400;
+                                    text-transform: uppercase;
+                                    padding: 0;
+                                    margin: 0 0 0 5px;
+                                    width: 10px;
+                                    font-size: 12px;
+                                }
+
+                                .mark-stripe {
+                                    height: 4px;
+                                    border-radius: 2px;
+                                    position: absolute;
+                                    top: 5px;
+                                    width: calc(100% - 50px);
+                                    margin-left: 18px;
+
+                                    .text {
+                                        display: none;
+                                    }
+                                }
+                            }
+                        }
+
+                        &.richcc-light-lastdaymark {
+                            padding: 0 0 0 20px;
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            font-weight: 400;
+                            text-transform: uppercase;
+                            margin: 0 0 0 5px;
+                            font-size: 11px;
+                            opacity:0.75;
+                            vertical-align: middle;
                         }
                     }
                 }
