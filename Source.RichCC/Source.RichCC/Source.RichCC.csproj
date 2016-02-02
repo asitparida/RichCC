@@ -72,6 +72,8 @@
     <Content Include="packages.config" />
     <Content Include="package.json" />
     <Content Include="resource\arrowImgSprite.png" />
+    <Content Include="resource\datepicker\monthviewer.html" />
+    <Content Include="resource\datepicker\monthviewerdaymarker.html" />
     <Content Include="resource\datepicker\richcc-day-popup.html" />
     <Content Include="scss\richcc.scss" />
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.eot" />
