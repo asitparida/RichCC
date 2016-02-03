@@ -1,16 +1,16 @@
-<table class="uib-daypicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}">
+1<table class="uib-daypicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}">
     <thead>
         <tr class="header-action-holder">
             <th colspan="1" ng-if="light != true"></th>
             <th colspan="{{light == true ? 8 : 5}}">
                 <div class="header-actions">
-                    <div class="icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0">
+                    <div class="icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                         <i class="icon icon-ScrollChevronLeftLegacy"></i>
                     </div>
-                    <div class="icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode  || light == true" tabindex="0">
+                    <div class="icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode  || light == true || preventCalNav == true" tabindex="0">
                         <label class="title">{{title}}</label>
                     </div>
-                    <div class="icon-container nav-right" cc-key="move(1)" role="button" tabindex="0">
+                    <div class="icon-container nav-right" cc-key="move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                         <i class="icon icon-ScrollChevronRightLegacy"></i>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                 ng-disabled="::dt.disabled"
                 ng-init="columnindex = $index"
                 uib-popover-template="'resource/datepicker/richcc-day-popup.html'"
-                popover-trigger="{{eventDetails[dt.key].length > 0 ? 'outsideClick' : 'none'}}"
+                popover-trigger="{{eventDetails[dt.key].length > 0 && eventPopupHide != true ? 'outsideClick' : 'none'}}"
                 popover-append-to-body="true"
                 popover-placement="{{getPopUpPosition(rowindex, columnindex)}}"
                 popover-class="richcc-popup-container">

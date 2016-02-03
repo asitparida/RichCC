@@ -200,6 +200,20 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
               }));
           }
 
+          if ($attrs['eventPopupHide']) {
+              watchListeners.push($scope.$parent.$watch($attrs['eventPopupHide'], function (value) {
+                  self['eventPopupHide'] = $scope['eventPopupHide'] = angular.isDefined(value) ? value : $attrs['eventPopupHide'];
+                  self.refreshView();
+              }));
+          }
+
+          if ($attrs['preventCalNav']) {
+              watchListeners.push($scope.$parent.$watch($attrs['preventCalNav'], function (value) {
+                  self['preventCalNav'] = $scope['preventCalNav'] = angular.isDefined(value) ? value : $attrs['preventCalNav'];
+                  self.refreshView();
+              }));
+          }
+
           if (angular.isDefined($attrs.initDate)) {
               this.activeDate = dateParser.fromTimezone($scope.$parent.$eval($attrs.initDate), ngModelOptions.timezone) || new Date();
               watchListeners.push($scope.$parent.$watch($attrs.initDate, function (initDate) {
@@ -474,6 +488,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
 
         scope.eventDetails = this.processEvents(this._events, scope.rows);
         scope.light = this.light;
+        scope.eventPopupHide = this.eventPopupHide;
+        scope.preventCalNav = this.preventCalNav;
     };
 
     this.compare = function (date1, date2) {
@@ -716,6 +732,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         }
         scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
         scope.light = this.light;
+        scope.eventPopupHide = this.eventPopupHide;
+        scope.preventCalNav = this.preventCalNav;
     };
 
 
@@ -848,7 +866,9 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             customClass: '&',
             shortcutPropagation: '&?',
             events: '=',
-            light: '='
+            light: '=',
+            eventPopupHide: "=",
+            preventCalNav:"="
         },
         require: ['uibDatepickerTemp', '^ngModel'],
         controller: 'UibDatepickerControllerTemp',
