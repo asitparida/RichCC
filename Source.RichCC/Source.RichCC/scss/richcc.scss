@@ -199,8 +199,8 @@
         &.disabled,
         &[disabled] {
             background: transparent;
-            opacity: 0.33;
-            filter: alpha(opacity = 33);
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
             cursor: none;
 
             &:hover {
