@@ -80,7 +80,6 @@
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.woff2" />
-    <None Include="Properties\PublishProfiles\richcc.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -118,6 +117,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="resource\bootstrap-master\" />
   </ItemGroup>
   <PropertyGroup>
