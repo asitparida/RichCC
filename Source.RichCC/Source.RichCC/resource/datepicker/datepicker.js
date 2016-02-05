@@ -200,6 +200,13 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
               }));
           }
 
+          if ($attrs['yearMapHeat']) {
+              watchListeners.push($scope.$parent.$watch($attrs['yearMapHeat'], function (value) {
+                  self['yearMapHeat'] = $scope['yearMapHeat'] = angular.isDefined(value) ? value : $attrs['yearMapHeat'];
+                  self.refreshView();
+              }));
+          }
+
           if ($attrs['eventPopupHide']) {
               watchListeners.push($scope.$parent.$watch($attrs['eventPopupHide'], function (value) {
                   self['eventPopupHide'] = $scope['eventPopupHide'] = angular.isDefined(value) ? value : $attrs['eventPopupHide'];
@@ -422,11 +429,18 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     };
     var self = this;
 
-    this.initForAllMonthsData = function (ctrl) {
+    this.initForAllMonthsHeatData = function (ctrl) {
         self._actMonViewDate = scope.monthDate;
         self.activeMonthViewDate = scope.monthDate.date;
         angular.extend(this, ctrl);
-        self._refreshMonthView();
+        self._refreshMonthView(true);
+    }
+
+    this.initForAllMonthsEventsData = function (ctrl) {
+        self._actMonViewDate = scope.monthDate;
+        self.activeMonthViewDate = scope.monthDate.date;
+        angular.extend(this, ctrl);
+        self._refreshMonthView(false);
     }
 
     this.getDates = function (startDate, n) {
@@ -488,6 +502,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
 
         scope.eventDetails = this.processEvents(this._events, scope.rows);
         scope.light = this.light;
+        scope.yearMapHeat = this.yearMapHeat;
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
     };
@@ -634,12 +649,13 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                     }
                     var _newOrder = _eventDetail.order;
                     if (_oldOrder != _newOrder && _newOrder <= 2)
-                        _eventDetail.startPaint = true;
+                        _eventDetail.startPaint = _eventDetail.startPaintForMonth =  true;
                     else
-                        _eventDetail.startPaint = false;
+                        _eventDetail.startPaint = _eventDetail.startPaintForMonth = false;
                     if (dayIsWeekFirst(_day, _weekFirsts) == true && _newOrder <= 2)
                         _eventDetail.startPaint = true;
                     _eventDetail.paintBoxLength = Math.min(7 - _day.getDay(), _days.length - _iter);
+                    _eventDetail.paintBoxLengthForMonth = _days.length;
                     if (_eventDetail.startPaint == true) {
                         _eventDetail.step = _step;
                         _step = _step + 1;
@@ -676,8 +692,9 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         return dt;
     };
 
-    this._refreshMonthView = function () {
-        this.activeMonthViewDate.setDate(15);
+    this._refreshMonthView = function (isHeatMap) {
+        if (isHeatMap == true)
+            this.activeMonthViewDate.setDate(15);
         var year = this.activeMonthViewDate.getFullYear(),
           month = this.activeMonthViewDate.getMonth(),
           firstDayOfMonth = new Date(this.activeMonthViewDate);
@@ -721,6 +738,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         scope.title = dateFilter(this.activeMonthViewDate, this.formatDayTitle);
         scope.rows = this.split(days, 7);
         scope.monthViewData[this.activeMonthViewDate.getMonth()] = { 'dt': this._actMonViewDate, 'rows': scope.rows };
+        console.log(scope.monthViewData[this.activeMonthViewDate.getMonth()]);
         if (scope.showWeeks) {
             scope.weekNumbers = [];
             var thursdayIndex = (4 + 7 - this.startingDay) % 7,
@@ -731,7 +749,9 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             }
         }
         scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
+        console.log(scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()]);
         scope.light = this.light;
+        scope.yearMapHeat = this.yearMapHeat
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
     };
@@ -747,6 +767,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         angular.extend(ctrl, this);
         ctrl.refreshView();
     };
+    console.log(scope);
 
     this._refreshView = function () {
         var months = new Array(12),
@@ -763,7 +784,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         }
 
         scope.title = dateFilter(this.activeDate, this.formatMonthTitle);
-        scope.rows = this.split(months, 6);
+        var splitInto = scope.yearMapHeat == true ? 6 : 1;
+        scope.rows = this.split(months, splitInto);
     };
 
     this.compare = function (date1, date2) {
@@ -868,7 +890,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             events: '=',
             light: '=',
             eventPopupHide: "=",
-            preventCalNav:"="
+            preventCalNav: "=",
+            yearMapHeat: "="
         },
         require: ['uibDatepickerTemp', '^ngModel'],
         controller: 'UibDatepickerControllerTemp',
@@ -909,13 +932,36 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             'monthIndex': '=',
             'monthSelectCallback': "&"
         },
-        require: ['^uibDatepickerTemp', '^uibMonthpickerTemp', 'richMonthsViewer'],
+        require: ['^uibDatepickerTemp', '^uibMonthpickerHeatmap', 'richMonthsViewer'],
         controller: 'UibDaypickerControllerTemp',
         link: function (scope, element, attrs, ctrls) {
             var datepickerCtrl = ctrls[0],
                 monthpickerCtrl = ctrls[1],
                 daypickerCtrl = ctrls[2];
-            daypickerCtrl.initForAllMonthsData(datepickerCtrl);
+            daypickerCtrl.initForAllMonthsHeatData(datepickerCtrl);
+        }
+    };
+})
+
+.directive('richMonthsEventViewer', function () {
+    return {
+        replace: true,
+        templateUrl: function (element, attrs) {
+            return attrs.templateUrl || 'resource/datepicker/monthviewer.html';
+        },
+        transclude: true,
+        scope: {
+            'monthDate': '=',
+            'monthIndex': '=',
+            'monthSelectCallback': "&"
+        },
+        require: ['^uibDatepickerTemp', '^uibMonthpickerEventmap', 'richMonthsEventViewer'],
+        controller: 'UibDaypickerControllerTemp',
+        link: function (scope, element, attrs, ctrls) {
+            var datepickerCtrl = ctrls[0],
+                monthpickerCtrl = ctrls[1],
+                daypickerCtrl = ctrls[2];
+            daypickerCtrl.initForAllMonthsEventsData(datepickerCtrl);
         }
     };
 })
@@ -929,13 +975,13 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     };
 })
 
-.directive('uibMonthpickerTemp', function () {
+.directive('uibMonthpickerHeatmap', function () {
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/month.html';
+            return attrs.templateUrl || 'resource/datepicker/month-heat.html';
         },
-        require: ['^uibDatepickerTemp', 'uibMonthpickerTemp'],
+        require: ['^uibDatepickerTemp', 'uibMonthpickerHeatmap'],
         controller: 'UibMonthpickerControllerTemp',
         link: function (scope, element, attrs, ctrls) {
             var datepickerCtrl = ctrls[0],
@@ -945,6 +991,24 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         }
     };
 })
+
+.directive('uibMonthpickerEventmap', function () {
+    return {
+        replace: true,
+        templateUrl: function (element, attrs) {
+            return attrs.templateUrl || 'resource/datepicker/month-event.html';
+        },
+        require: ['^uibDatepickerTemp', 'uibMonthpickerEventmap'],
+        controller: 'UibMonthpickerControllerTemp',
+        link: function (scope, element, attrs, ctrls) {
+            var datepickerCtrl = ctrls[0],
+              monthpickerCtrl = ctrls[1];
+
+            monthpickerCtrl.init(datepickerCtrl);
+        }
+    };
+})
+
 
 .directive('uibYearpickerTemp', function () {
     return {
