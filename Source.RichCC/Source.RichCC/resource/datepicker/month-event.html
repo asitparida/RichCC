@@ -1,8 +1,9 @@
-<table class="uib-yearpicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+﻿<table class="uib-monthpicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
     <thead>
         <tr class="header-action-holder">
+            <th colspan="1" class="w48"></th>
             <th colspan="1"></th>
-            <th colspan="3">
+            <th colspan="4">
                 <div class="header-actions">
                     <div class="icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                         <i class="icon icon-ScrollChevronLeftLegacy"></i>
@@ -18,22 +19,18 @@
             <th colspan="1"></th>
         </tr>
     </thead>
-  <thead>
-  </thead>
-  <tbody>
-    <tr class="uib-years" ng-repeat="row in rows track by $index">
-      <td ng-repeat="dt in row" class="uib-year text-center" role="gridcell"
-        id="{{::dt.uid}}"
-        ng-class="::dt.customClass">
-        <button type="button" class="btn btn-default"
-          uib-is-class="
-            'btn-info' for selectedDt,
-            'active' for activeDt
-            on dt"
-          ng-click="select(dt.date)"
-          ng-disabled="::dt.disabled"
-          tabindex="-1"><span ng-class="::{'text-info': dt.current}">{{::dt.label}}</span></button>
-      </td>
-    </tr>
-  </tbody>
+    <tbody>
+        <tr class="uib-months" ng-repeat="row in rows track by $index">
+            <td class="uib-month text-center w48" role="gridcell"
+                colspan="1">
+                <rich-months-day-marker></rich-months-day-marker>
+            </td>
+            <td ng-repeat="dt in row" class="uib-month text-center" role="gridcell"
+                id="{{::dt.uid}}"
+                ng-class="::dt.customClass"
+                colspan="1">
+                <rich-months-event-viewer month-date="dt" month-index="dt.monthIndex" month-select-callback="select(dt.date)"></rich-months-event-viewer>
+            </td>
+        </tr>
+    </tbody>
 </table>

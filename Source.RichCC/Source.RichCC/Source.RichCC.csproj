@@ -72,6 +72,7 @@
     <Content Include="packages.config" />
     <Content Include="package.json" />
     <Content Include="resource\arrowImgSprite.png" />
+    <Content Include="resource\datepicker\month-event.html" />
     <Content Include="resource\datepicker\monthviewer.html" />
     <Content Include="resource\datepicker\monthviewerdaymarker.html" />
     <Content Include="resource\datepicker\richcc-day-popup.html" />
@@ -80,7 +81,6 @@
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.woff2" />
-    <None Include="Properties\PublishProfiles\richcc.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -108,7 +108,7 @@
     <Content Include="dist\js\demo.js" />
     <Content Include="resource\datepicker\datepicker.html" />
     <Content Include="resource\datepicker\day.html" />
-    <Content Include="resource\datepicker\month.html" />
+    <Content Include="resource\datepicker\month-heat.html" />
     <Content Include="resource\datepicker\popup.html" />
     <Content Include="resource\datepicker\year.html" />
     <Content Include="resource\richcc.js" />
@@ -118,6 +118,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="resource\bootstrap-master\" />
   </ItemGroup>
   <PropertyGroup>

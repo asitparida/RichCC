@@ -199,8 +199,8 @@
         &.disabled,
         &[disabled] {
             background: transparent;
-            opacity: 0.60;
-            filter: alpha(opacity = 33);
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
             cursor: none;
 
             &:hover {
@@ -323,7 +323,7 @@
 
                             td {
                                 &.richcc-td {
-                                    height: 19px;
+                                    height: 18px;
                                     vertical-align: middle;
 
                                     .marker {
@@ -338,10 +338,10 @@
                                     }
 
                                     .richcc-mv-box {
-                                        width: 17px;
+                                        width: 18px;
                                         height: 18px;
                                         display: block;
-                                        margin: calc(0.5 * (100% - 30px)) auto;
+                                        margin: 0 auto;
                                         background-color: #f8f8f8;
                                         opacity: 1;
                                         -moz-animation-duration: 800ms;
@@ -364,6 +364,7 @@
                                         -o-animation-delay: 0;
                                         -webkit-animation-delay: 0;
                                         animation-delay: 0;
+                                        transition:none;
 
                                         &[transparent='1'] {
                                             -moz-animation-name: richcc-opacity33-animation;
