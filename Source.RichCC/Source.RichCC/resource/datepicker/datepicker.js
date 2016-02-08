@@ -666,7 +666,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             _eventDetail.order = null;
             _eventDetail.first = null;
             _.each(_days, function (_day, _iter) {
-                var _proceedFurther = _dayInCurrentMonth(_day, rows);
+                var _proceedFurther = _dayInCurrentRows(_day, rows);
                 if (_proceedFurther == true) {
                     var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
                     if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
@@ -680,7 +680,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                     }
                     var _newOrder = _eventDetail.order;
                     if (_oldOrder != _newOrder && _newOrder <= 2)
-                        _eventDetail.startPaint = _eventDetail.startPaintForMonth =  true;
+                        _eventDetail.startPaint = _eventDetail.startPaintForMonth = true;
                     else
                         _eventDetail.startPaint = _eventDetail.startPaintForMonth = false;
                     if (dayIsWeekFirst(_day, _weekFirsts) == true && _newOrder <= 2)
@@ -691,6 +691,66 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                         _eventDetail.step = _step;
                         _step = _step + 1;
                     }
+                    var _newEventDetail = _.clone(_eventDetail);
+                    _dayEventDetails[key].push(_newEventDetail);
+                }
+            });
+        });
+        return _dayEventDetails;
+    }
+
+    this.processEventsForMonthEventViewer = function (events, rows) {
+        //var _weekFirsts = _.map(rows, function (row) { var _first = row[0]; _first._date = _first.date.setHours(0, 0, 0, 0); return _first });
+        var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
+        var _sortedEvents = _events.sort(function (a, b) {
+            if (a._startDt == b._startDt) {
+                return dtCompare(a._endDt, b._endDt);
+            }
+            else
+                return dtCompare(a._startDt, b._startDt);
+        });
+        var _dayEventDetails = {};
+        var _monthEventDetails = {};
+        var _step = 1;
+        _.each(_sortedEvents, function (_event) {
+            var _days = getDaysBetweenDates(_event._startDt, _event._endDt);
+            var _eventDetail = {};
+            angular.extend(_eventDetail, _event);
+            _eventDetail.order = null;
+            _eventDetail.first = null;
+            _.each(_days, function (_day, _iter) {
+                var _proceedFurther = _dayInCurrentMonth(_day, rows);
+                if (_proceedFurther == true) {
+                    var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
+                    if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
+                        _dayEventDetails[key] = [];
+                    var _oldOrder = _eventDetail.order;
+                    if (_iter == 0) {
+                        _eventDetail.order = getOrder(_dayEventDetails[key]);
+                    }
+                    ////if (dayIsWeekFirst(_day, _weekFirsts) == true) {
+                    ////    _eventDetail.order = getOrder(_dayEventDetails[key]);
+                    ////}
+                    var _newOrder = _eventDetail.order;
+                    var _evKey = _eventDetail.id + '_' + _day.getMonth();
+
+                    if (_oldOrder != _newOrder && _newOrder <= 2 && _monthEventDetails[_evKey] != true) {
+                        _eventDetail.startPaintForMonth = true;
+                        _monthEventDetails[_evKey] = true;
+                    }
+                    else
+                        _eventDetail.startPaintForMonth = false;
+                    _eventDetail.paintBoxLengthForMonth = _getDayListExistingInCurrentMOnth(_days,rows).length;
+                    //else
+                    //    _eventDetail.startPaint = _eventDetail.startPaintForMonth = false;
+                    ////if (dayIsWeekFirst(_day, _weekFirsts) == true && _newOrder <= 2)
+                    ////    _eventDetail.startPaint = true;
+                    //_eventDetail.paintBoxLength = Math.min(7 - _day.getDay(), _days.length - _iter);
+                    //_eventDetail.paintBoxLengthForMonth = _days.length;
+                    //if (_eventDetail.startPaint == true) {
+                    //    _eventDetail.step = _step;
+                    //    _step = _step + 1;
+                    //}
                     var _newEventDetail = _.clone(_eventDetail);
                     _dayEventDetails[key].push(_newEventDetail);
                 }
@@ -779,7 +839,10 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                   getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
             }
         }
-        scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
+        if (this.yearMapHeat)
+            scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
+        else
+            scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEventsForMonthEventViewer(this._events, scope.rows);
         console.log(scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()]);
         scope.light = this.light;
         scope.yearMapHeat = this.yearMapHeat

@@ -644,8 +644,8 @@
                                         margin: 0 auto;
                                         height: 100%;
                                         background: #f6f6f6;
-                                        border-left: 1px solid #E0E0E0;
-                                        border-right: 1px solid #E0E0E0;
+                                        border-left: 1px solid #fff;
+                                        border-right: 1px solid #fff;
                                         -moz-box-sizing: content-box;
                                         -webkit-box-sizing: content-box;
                                         box-sizing: content-box;
@@ -659,16 +659,24 @@
                                         .markHolder {
                                             width: 100%;
                                             height: 100%;
-                                            display: block;
-
+                                            /*display: block;*/
                                             .mark {
                                                 background: none;
+                                                opacity: 1;
+
+                                                &.top {
+                                                    top: 3px;
+                                                }
+
+                                                &.bottom {
+                                                    top: 15px;
+                                                }
 
                                                 .mark-text-initial {
-                                                    font-size: 12px;
+                                                    font-size: 9px;
                                                     position: relative;
                                                     left: 4px;
-                                                    width: 12px;
+                                                    width: 10px;
                                                 }
 
                                                 .mark-stripe {
