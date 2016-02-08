@@ -602,7 +602,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             return true;
     }
 
-    function _dayInCurrentMonth(_day, rows) {
+    function _dayInCurrentRows(_day, rows) {
         var result = false;
         if (rows.length > 0) {
             var _totalNumberOfRows = rows.length
@@ -615,9 +615,40 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         return result;
     }
 
+    function _dayInCurrentMonth(_day, _rows) {
+        var result = false;
+        if (_rows.length > 0) {
+            var _totalNumberOfRows = _rows.length
+            if (_rows[0].length > 0) {
+                var _midDate = _rows[2][3];
+                var _firstDay = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth(), 1)).setHours(0, 0, 0, 0);
+                var _lastDay = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth() + 1, 0)).setHours(0, 0, 0, 0);
+                if (_day >= _firstDay && _day <= _lastDay)
+                    result = true;
+            }
+        }
+        return result;
+    }
+
+    function _getDayListExistingInCurrentMOnth(_days, _rows) {
+        var _daysCurrent = [];
+        if (_rows.length > 0) {
+            //new Date(2008, month + 1, 0);
+            var _totalNumberOfRows = _rows.length
+            if (_rows[0].length > 0) {
+                var _midDate = _rows[2][3];
+                var _lastday = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth() + 1, 0)).setHours(0, 0, 0, 0);
+                _daysCurrent = _.filter(_days, function (_day) {
+                    var _totalNumberOfColumns = _rows[_totalNumberOfRows - 1].length;
+                    return (_day >= _rows[0][0].date && _day <= _lastday);
+                });
+            }
+        }
+        return _daysCurrent;
+    }
+
     this.processEvents = function (events, rows) {
         var _weekFirsts = _.map(rows, function (row) { var _first = row[0]; _first._date = _first.date.setHours(0, 0, 0, 0); return _first });
-        //console.log(rows);
         var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
         var _sortedEvents = _events.sort(function (a, b) {
             if (a._startDt == b._startDt) {
@@ -920,11 +951,11 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     };
 })
 
-.directive('richMonthsViewer', function () {
+.directive('richMonthsHeatViewer', function () {
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthviewer.html';
+            return attrs.templateUrl || 'resource/datepicker/monthHeatViewer.html';
         },
         transclude: true,
         scope: {
@@ -932,7 +963,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             'monthIndex': '=',
             'monthSelectCallback': "&"
         },
-        require: ['^uibDatepickerTemp', '^uibMonthpickerHeatmap', 'richMonthsViewer'],
+        require: ['^uibDatepickerTemp', '^uibMonthpickerHeatmap', 'richMonthsHeatViewer'],
         controller: 'UibDaypickerControllerTemp',
         link: function (scope, element, attrs, ctrls) {
             var datepickerCtrl = ctrls[0],
@@ -947,7 +978,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthviewer.html';
+            return attrs.templateUrl || 'resource/datepicker/monthEventViewer.html';
         },
         transclude: true,
         scope: {
@@ -979,7 +1010,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/month-heat.html';
+            return attrs.templateUrl || 'resource/datepicker/monthHeatWrap.html';
         },
         require: ['^uibDatepickerTemp', 'uibMonthpickerHeatmap'],
         controller: 'UibMonthpickerControllerTemp',
@@ -996,7 +1027,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/month-event.html';
+            return attrs.templateUrl || 'resource/datepicker/monthEventWrap.html';
         },
         require: ['^uibDatepickerTemp', 'uibMonthpickerEventmap'],
         controller: 'UibMonthpickerControllerTemp',
