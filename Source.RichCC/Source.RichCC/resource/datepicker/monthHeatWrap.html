@@ -1,4 +1,4 @@
-﻿<table class="uib-monthpicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+<table class="uib-monthpicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
     <thead>
         <tr class="header-action-holder">
             <th colspan="1" class="w48"></th>
@@ -29,7 +29,7 @@
                 id="{{::dt.uid}}"
                 ng-class="::dt.customClass"
                 colspan="1">
-                <rich-months-event-viewer month-date="dt" month-index="dt.monthIndex" month-select-callback="select(dt.date)"></rich-months-event-viewer>
+                <rich-months-heat-viewer month-date="dt" month-index="dt.monthIndex" month-select-callback="select(dt.date)"></rich-months-heat-viewer>
             </td>
         </tr>
     </tbody>
