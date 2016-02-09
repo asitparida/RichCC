@@ -21,7 +21,8 @@
                                  ng-class="{'top': event.order == 1, 'bottom': event.order == 2}"
                                  ng-style="{'color': event.color, 'width': 'calc(' + 100 * event.paintBoxLengthForMonth + '% - 18px)'}"
                                  ng-repeat="event in parent.monthWiseEventDetails[monthIndex][column.key]"
-                                 ng-if="event.startPaintForMonth == true">
+                                 ng-if="event.startPaintForMonth == true"
+                                 style="color:#fff;">
                                 <div class="mark-text-initial" ng-style="{'color': event.bgcolor}">{{event.initial | limitTo: 1}}</div>
                                 <div class="mark-stripe light" ng-style="{'background-color': event.bgcolor}"></div>
                             </div>

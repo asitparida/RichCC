@@ -578,6 +578,14 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         return _days;
     }
 
+    function isSameDay(d1, d2) {
+        d1.setHours(0, 0, 0, 0);
+        d2.setHours(0, 0, 0, 0);
+        console.log(' d1 : ' + d1.toString() + ' ' + ' d2 : ' + d2.toString() + ' ccmp : ' + (d1.getTime() === d2.getTime()));
+        return d1.getTime() === d2.getTime();
+
+    }
+
     function getOrder(days) {
         var _proceed = true;
         var i = 1;
@@ -645,6 +653,15 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             }
         }
         return _daysCurrent;
+    }
+
+    function _getDayListBasedOnEvent(_days, _pday, _stday) {
+        var diff = getDaysBetweenDates(_pday, _stday);
+        if (_pday.getMonth() == _stday.getMonth())
+            return _days.splice(diff.length - 1).length;
+        else {
+            return _days.length;
+        }
     }
 
     this.processEvents = function (events, rows) {
@@ -724,33 +741,23 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                     var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
                     if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
                         _dayEventDetails[key] = [];
-                    var _oldOrder = _eventDetail.order;
-                    if (_iter == 0) {
-                        _eventDetail.order = getOrder(_dayEventDetails[key]);
-                    }
-                    ////if (dayIsWeekFirst(_day, _weekFirsts) == true) {
-                    ////    _eventDetail.order = getOrder(_dayEventDetails[key]);
-                    ////}
-                    var _newOrder = _eventDetail.order;
                     var _evKey = _eventDetail.id + '_' + _day.getMonth();
-
-                    if (_oldOrder != _newOrder && _newOrder <= 2 && _monthEventDetails[_evKey] != true) {
-                        _eventDetail.startPaintForMonth = true;
-                        _monthEventDetails[_evKey] = true;
-                    }
-                    else
+                    if (_monthEventDetails[_evKey] != true) {
+                        var _oldOrder = _eventDetail.order;
+                        _eventDetail.order = getOrder(_dayEventDetails[key]);
+                        var _newOrder = _eventDetail.order;
+                        if (_oldOrder != _newOrder && _newOrder <= 2) {
+                            _eventDetail.startPaintForMonth = true;
+                            var _availableDaysToMark = _getDayListExistingInCurrentMOnth(_days, rows);
+                            _eventDetail.paintBoxLengthForMonth = _getDayListBasedOnEvent(_availableDaysToMark, _day, new Date(_event._startDt));
+                            _monthEventDetails[_evKey] = true;
+                        }
+                        else {
+                            _eventDetail.startPaintForMonth = false;
+                        }
+                    } else {
                         _eventDetail.startPaintForMonth = false;
-                    _eventDetail.paintBoxLengthForMonth = _getDayListExistingInCurrentMOnth(_days,rows).length;
-                    //else
-                    //    _eventDetail.startPaint = _eventDetail.startPaintForMonth = false;
-                    ////if (dayIsWeekFirst(_day, _weekFirsts) == true && _newOrder <= 2)
-                    ////    _eventDetail.startPaint = true;
-                    //_eventDetail.paintBoxLength = Math.min(7 - _day.getDay(), _days.length - _iter);
-                    //_eventDetail.paintBoxLengthForMonth = _days.length;
-                    //if (_eventDetail.startPaint == true) {
-                    //    _eventDetail.step = _step;
-                    //    _step = _step + 1;
-                    //}
+                    }
                     var _newEventDetail = _.clone(_eventDetail);
                     _dayEventDetails[key].push(_newEventDetail);
                 }
