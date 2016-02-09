@@ -189,6 +189,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                   $scope['monthViewData'] = {};
                   $scope['monthWiseEventDetails'] = {};
                   $scope['monthWiseEventMarkers'] = {};
+                  console.log('***** attr events ****');
+                  console.log($scope);
                   self.refreshView();
               }));
           }
@@ -867,12 +869,17 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             this.labels.push(label);
             scope.labels[j] = label;
         }
-        scope.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()] = this.labels;
-        console.log(scope.monthWiseEventMarkers);
+        console.log(scope);
+        if (typeof scope.monthWiseEventMarkers !== 'undefined')
+            scope.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()] = this.labels;
+        else if (typeof scope.parent.monthWiseEventMarkers !== 'undefined')
+            scope.parent.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()] = this.labels;
         scope.title = dateFilter(this.activeMonthViewDate, this.formatDayTitle);
         scope.rows = this.split(days, 7);
-        scope.monthViewData[this.activeMonthViewDate.getMonth()] = { 'dt': this._actMonViewDate, 'rows': scope.rows };
-        console.log(scope.monthViewData[this.activeMonthViewDate.getMonth()]);
+        if (typeof scope.monthViewData !== 'undefined')
+            scope.monthViewData[this.activeMonthViewDate.getMonth()] = { 'dt': this._actMonViewDate, 'rows': scope.rows };
+        else if (typeof scope.parent.monthViewData !== 'undefined')
+            scope.parent.monthViewData[this.activeMonthViewDate.getMonth()] = { 'dt': this._actMonViewDate, 'rows': scope.rows };
         if (scope.showWeeks) {
             scope.weekNumbers = [];
             var thursdayIndex = (4 + 7 - this.startingDay) % 7,
@@ -882,11 +889,18 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                   getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
             }
         }
-        if (this.yearMapHeat)
-            scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
-        else
-            scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEventsForMonthEventViewer(this._events, scope.rows);
-        console.log(scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()]);
+        if (this.yearMapHeat) {
+            if (typeof scope.monthViewData !== 'undefined')
+                scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
+            else if (typeof scope.parent.monthViewData !== 'undefined')
+                scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
+        }
+        else {
+            if (typeof scope.monthViewData !== 'undefined')
+                scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEventsForMonthEventViewer(this._events, scope.rows);
+            else if (typeof scope.parent.monthViewData !== 'undefined')
+                scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEventsForMonthEventViewer(this._events, scope.rows);
+        }
         scope.light = this.light;
         scope.yearMapHeat = this.yearMapHeat
         scope.eventPopupHide = this.eventPopupHide;
