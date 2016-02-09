@@ -868,6 +868,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             scope.labels[j] = label;
         }
         scope.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()] = this.labels;
+        console.log(scope.monthWiseEventMarkers);
         scope.title = dateFilter(this.activeMonthViewDate, this.formatDayTitle);
         scope.rows = this.split(days, 7);
         scope.monthViewData[this.activeMonthViewDate.getMonth()] = { 'dt': this._actMonViewDate, 'rows': scope.rows };
@@ -1106,7 +1107,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthviewerdaymarker.html';
+            return attrs.templateUrl || 'resource/datepicker/monthViewerDayMarker.html';
         }
     };
 })
