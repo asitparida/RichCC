@@ -1,0 +1,40 @@
+﻿<table class="uib-daypicker richcc-monthviewer" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}" ng-init="parent = $parent">
+    <thead style="height:0 !important; margin:0;padding:0;line-height:0;">
+        <tr class="header-action-holder" style="height:0 !important; margin:0;padding:0;line-height:0;">
+            <th colspan="1" class="w48" style="height:0 !important; margin:0;padding:0;line-height:0;"></th>
+            <th colspan="18" style="height:0 !important; margin:0;padding:0;line-height:0;">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="uib-weeks richcc-row">
+            <td colspan="1" class="w48" cc-key="monthSelectCallback()">{{parent.monthViewData[monthIndex].dt.label | limitTo:3}}</td>
+            <td ng-repeat="row in parent.monthViewData[monthIndex].rows track by $index" role="gridcell"
+                colspan="3"
+                class="uib-day text-center richcc-td">
+                <div class="richcc-month-eventbox" ng-repeat="column in row track by $index">
+                    <div class="richcc-eventbox-content"
+                         ng-class="{'notInPresentMonth' : column.monthIndex != monthIndex}"
+                         ng-attr-mi="{{monthIndex}}"
+                         ng-attr-mdi="{{column.monthIndex}}"
+                         uib-popover-template="'resource/datepicker/richcc-month-popup.html'"
+                         popover-trigger="{{parent.monthWiseEventDetails[monthIndex][column.key].length > 0 && eventPopupHide != true ? 'outsideClick' : 'none'}}"
+                         popover-append-to-body="true"
+                         popover-placement="bottom"
+                         popover-class="richcc-popup-container">
+                        <div class="markHolder" style="position:relative;" ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length > 0">
+                            <div class="mark step-{{event.step}}"
+                                 ng-class="{'top': event.order == 1, 'bottom': event.order == 2}"
+                                 ng-style="{'color': event.color, 'width': 'calc(' + 100 * event.paintBoxLengthForMonth + '% - 18px)'}"
+                                 ng-repeat="event in parent.monthWiseEventDetails[monthIndex][column.key]"
+                                 ng-if="event.startPaintForMonth == true"
+                                 style="color:#fff;">
+                                <div class="mark-text-initial" ng-style="{'color': event.bgcolor}">{{event.initial | limitTo: 1}}</div>
+                                <div class="mark-stripe light" ng-style="{'background-color': event.bgcolor}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
