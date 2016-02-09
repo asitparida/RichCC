@@ -717,7 +717,6 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     }
 
     this.processEventsForMonthEventViewer = function (events, rows) {
-        //var _weekFirsts = _.map(rows, function (row) { var _first = row[0]; _first._date = _first.date.setHours(0, 0, 0, 0); return _first });
         var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
         var _sortedEvents = _events.sort(function (a, b) {
             if (a._startDt == b._startDt) {
