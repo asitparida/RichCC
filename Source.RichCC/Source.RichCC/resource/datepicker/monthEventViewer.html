@@ -15,7 +15,12 @@
                     <div class="richcc-eventbox-content"
                          ng-class="{'notInPresentMonth' : column.monthIndex != monthIndex}"
                          ng-attr-mi="{{monthIndex}}"
-                         ng-attr-mdi="{{column.monthIndex}}">
+                         ng-attr-mdi="{{column.monthIndex}}"
+                         uib-popover-template="'resource/datepicker/richcc-month-popup.html'"
+                         popover-trigger="{{parent.monthWiseEventDetails[monthIndex][column.key].length > 0 && eventPopupHide != true ? 'outsideClick' : 'none'}}"
+                         popover-append-to-body="true"
+                         popover-placement="bottom"
+                         popover-class="richcc-popup-container">
                         <div class="markHolder" style="position:relative;" ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length > 0">
                             <div class="mark step-{{event.step}}"
                                  ng-class="{'top': event.order == 1, 'bottom': event.order == 2}"
