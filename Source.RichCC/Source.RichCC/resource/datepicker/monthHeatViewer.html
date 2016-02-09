@@ -10,10 +10,15 @@
                 id="{{::mdt.key}}"
                 colspan="1"
                 ng-style="{'opacity': column[row].monthIndex != monthIndex ? 0 : 1}"
-                ng-init="mdt = column[row]"
-                ng-attr-len="{{parent.monthWiseEventDetails[monthIndex][mdt.key].length}}">
-                <div class="richcc-mv-box" 
-                     ng-class="{'fullyOpaque': parent.monthWiseEventDetails[monthIndex][mdt.key].length > 2}" 
+                ng-init="mdt = column[row]; popitem = column[row]"
+                ng-attr-len="{{parent.monthWiseEventDetails[monthIndex][mdt.key].length}}"
+                uib-popover-template="'resource/datepicker/richcc-month-popup.html'"
+                popover-trigger="{{parent.monthWiseEventDetails[monthIndex][popitem.key].length > 0 && eventPopupHide != true ? 'outsideClick' : 'none'}}"
+                popover-append-to-body="true"
+                popover-placement="{{getPopUpPositionForMonthHeatMap(monthIndex)}}"
+                popover-class="richcc-popup-container">
+                <div class="richcc-mv-box"
+                     ng-class="{'fullyOpaque': parent.monthWiseEventDetails[monthIndex][mdt.key].length > 2}"
                      ng-attr-transparent="{{parent.monthWiseEventDetails[monthIndex][mdt.key].length}}"></div>
             </td>
         </tr>

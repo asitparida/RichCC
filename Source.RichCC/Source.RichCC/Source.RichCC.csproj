@@ -75,7 +75,7 @@
     <Content Include="resource\datepicker\monthEventViewer.html" />
     <Content Include="resource\datepicker\monthEventWrap.html" />
     <Content Include="resource\datepicker\monthHeatViewer.html" />
-    <Content Include="resource\datepicker\monthviewerdaymarker.html" />
+    <Content Include="resource\datepicker\monthViewerDayMarker.html" />
     <Content Include="resource\datepicker\richcc-day-popup.html" />
     <Content Include="resource\datepicker\richcc-month-popup.html" />
     <Content Include="scss\richcc.scss" />

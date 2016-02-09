@@ -771,13 +771,49 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         return false;
     }
 
-    scope.getPopUpPosition = function (row, column) {
+    scope.getPopUpPositionForDayMap = function (row, column) {
         var position = '';
         position = row <= 2 ? 'bottom' : 'top';
         if (column == 0)
             position = position + '-left';
         else if (column == 6)
             position = position + '-right';
+        return position;
+    }
+
+    scope.getPopUpPositionForMonthHeatMap = function (monthindex) {
+        var position = '';
+        switch (monthindex) {
+            case 0:
+            case 1: position = 'bottom-left'; break;
+            case 6:
+            case 7: position = 'top-left'; break;
+            case 4:
+            case 5: position = 'bottom-right'; break;
+            case 10:
+            case 11: position = 'top-right'; break;
+            case 8:
+            case 9: position = 'top'; break;
+            case 2:
+            case 3:
+            default: position = 'bottom'; break;
+        }
+        return position;
+    }
+
+    scope.getPopUpPositionForMonthEventMap = function (monthindex, weekindex) {
+        var position = '';
+        if (monthindex < 6)
+            position = 'bottom';
+        else
+            position = 'top';
+        switch (weekindex) {
+            case 0:
+            case 1: position = position + '-left'; break;
+            case 5:
+            case 6: position = position + '-right'; break;
+            default: position = position; break;
+        }
         return position;
     }
 
@@ -832,6 +868,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             scope.labels[j] = label;
         }
         scope.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()] = this.labels;
+        console.log(scope.monthWiseEventMarkers);
         scope.title = dateFilter(this.activeMonthViewDate, this.formatDayTitle);
         scope.rows = this.split(days, 7);
         scope.monthViewData[this.activeMonthViewDate.getMonth()] = { 'dt': this._actMonViewDate, 'rows': scope.rows };
@@ -1070,7 +1107,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthviewerdaymarker.html';
+            return attrs.templateUrl || 'resource/datepicker/monthViewerDayMarker.html';
         }
     };
 })
