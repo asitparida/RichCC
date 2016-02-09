@@ -801,6 +801,22 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         return position;
     }
 
+    scope.getPopUpPositionForMonthEventMap = function (monthindex, weekindex) {
+        var position = '';
+        if (monthindex < 6)
+            position = 'bottom';
+        else
+            position = 'top';
+        switch (weekindex) {
+            case 0:
+            case 1: position = position + '-left'; break;
+            case 5:
+            case 6: position = position + '-right'; break;
+            default: position = position; break;
+        }
+        return position;
+    }
+
     function _dupCreateDateObject(date, format) {
         var dt = {
             date: date,
