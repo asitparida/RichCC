@@ -35,7 +35,7 @@
                 uib-popover-template="'resource/datepicker/richcc-day-popup.html'"
                 popover-trigger="{{eventDetails[dt.key].length > 0 && eventPopupHide != true ? 'outsideClick' : 'none'}}"
                 popover-append-to-body="true"
-                popover-placement="{{getPopUpPosition(rowindex, columnindex)}}"
+                popover-placement="{{getPopUpPositionForDayMap(rowindex, columnindex)}}"
                 popover-class="richcc-popup-container">
                 <div class="icon-container dayHolder"
                      uib-is-class="

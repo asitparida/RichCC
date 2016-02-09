@@ -771,13 +771,33 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         return false;
     }
 
-    scope.getPopUpPosition = function (row, column) {
+    scope.getPopUpPositionForDayMap = function (row, column) {
         var position = '';
         position = row <= 2 ? 'bottom' : 'top';
         if (column == 0)
             position = position + '-left';
         else if (column == 6)
             position = position + '-right';
+        return position;
+    }
+
+    scope.getPopUpPositionForMonthHeatMap = function (monthindex) {
+        var position = '';
+        switch (monthindex) {
+            case 0:
+            case 1: position = 'bottom-left'; break;
+            case 6:
+            case 7: position = 'top-left'; break;
+            case 4:
+            case 5: position = 'bottom-right'; break;
+            case 10:
+            case 11: position = 'top-right'; break;
+            case 8:
+            case 9: position = 'top'; break;
+            case 2:
+            case 3:
+            default: position = 'bottom'; break;
+        }
         return position;
     }
 
