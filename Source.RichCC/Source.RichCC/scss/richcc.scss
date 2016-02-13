@@ -272,6 +272,22 @@
                         &.w48 {
                             width: 4%;
                         }
+
+                        &.richcc-td-space0,
+                        &.richcc-td-space1,
+                        &.richcc-td-space2,
+                        &.richcc-td-space3,
+                        &.richcc-td-space4 {
+                            width: 17.68%;
+                        }
+
+                        &.richcc-td-space5 {
+                            width: 7.74%;
+
+                            .richcc-month-eventbox {
+                                width: 33%;
+                            }
+                        }
                     }
                 }
             }
@@ -280,6 +296,22 @@
                 tr {
                     td {
                         width: 16%;
+
+                        &.richcc-td-space0,
+                        &.richcc-td-space1,
+                        &.richcc-td-space2,
+                        &.richcc-td-space3,
+                        &.richcc-td-space4 {
+                            width: 17.68%;
+                        }
+
+                        &.richcc-td-space5 {
+                            width: 7.74%;
+
+                            .richcc-month-eventbox {
+                                width: 33% !important;
+                            }
+                        }
 
                         &.w48 {
                             width: 4%;
