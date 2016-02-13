@@ -77,6 +77,8 @@
     <Content Include="resource\datepicker\monthViewerDayMarker.html" />
     <Content Include="resource\datepicker\richcc-day-popup.html" />
     <Content Include="resource\datepicker\richcc-month-popup.html" />
+    <Content Include="resource\richcc-templates.html" />
+    <Content Include="resource\richcc-templates.js" />
     <Content Include="scss\richcc.scss" />
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.ttf" />
@@ -108,7 +110,7 @@
     <Content Include="resource\datepicker\monthHeatWrap.html" />
     <Content Include="resource\datepicker\popup.html" />
     <Content Include="resource\datepicker\year.html" />
-    <Content Include="resource\datepicker\richcc.js" />
+    <Content Include="resource\richcc.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

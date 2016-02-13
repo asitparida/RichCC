@@ -1,4 +1,4 @@
-﻿angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dateparser', 'ui.bootstrap.isClass', 'ui.bootstrap.position'])
+angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dateparser', 'ui.bootstrap.isClass', 'ui.bootstrap.position'])
 
 .value('$datepickerSuppressError', false)
 
@@ -1025,7 +1025,7 @@
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/datepicker.html';
+            return attrs.templateUrl || 'template/richcc/datepicker.html';
         },
         scope: {
             datepickerMode: '=?',
@@ -1053,7 +1053,7 @@
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/day.html';
+            return attrs.templateUrl || 'template/richcc/day.html';
         },
         require: ['^richccDatepicker', 'richccDaypicker'],
         controller: 'RichccDaypickerController',
@@ -1070,7 +1070,7 @@
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthHeatViewer.html';
+            return attrs.templateUrl || 'template/richcc/monthHeatViewer.html';
         },
         transclude: true,
         scope: {
@@ -1093,7 +1093,7 @@
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthEventViewer.html';
+            return attrs.templateUrl || 'template/richcc/monthEventViewer.html';
         },
         transclude: true,
         scope: {
@@ -1116,7 +1116,7 @@
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthViewerDayMarker.html';
+            return attrs.templateUrl || 'template/richcc/monthViewerDayMarker.html';
         }
     };
 })
@@ -1125,7 +1125,7 @@
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthHeatWrap.html';
+            return attrs.templateUrl || 'template/richcc/monthHeatWrap.html';
         },
         require: ['^richccDatepicker', 'richccMonthpickerHeatmap'],
         controller: 'RichccMonthpickerController',
@@ -1142,7 +1142,7 @@
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthEventWrap.html';
+            return attrs.templateUrl || 'template/richcc/monthEventWrap.html';
         },
         require: ['^richccDatepicker', 'richccMonthpickerEventmap'],
         controller: 'RichccMonthpickerController',
@@ -1160,7 +1160,7 @@
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/year.html';
+            return attrs.templateUrl || 'template/richcc/year.html';
         },
         require: ['^richccDatepicker', 'richccYearpicker'],
         controller: 'RichccYearpickerController',
@@ -1182,8 +1182,8 @@
     closeText: 'Done',
     currentText: 'Today',
     datepickerPopup: 'yyyy-MM-dd',
-    datepickerPopupTemplateUrl: 'resource/datepicker/popup.html',
-    datepickerTemplateUrl: 'resource/datepicker/datepicker.html',
+    datepickerPopupTemplateUrl: 'template/richcc/popup.html',
+    datepickerTemplateUrl: 'template/richcc/datepicker.html',
     html5Types: {
         date: 'yyyy-MM-dd',
         'datetime-local': 'yyyy-MM-ddTHH:mm:ss.sss',
@@ -1611,7 +1611,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
         replace: true,
         transclude: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/popup.html';
+            return attrs.templateUrl || 'template/richcc/popup.html';
         }
     };
 })
