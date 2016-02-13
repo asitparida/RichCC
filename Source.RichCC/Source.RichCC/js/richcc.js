@@ -1,8 +1,8 @@
-angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.dateparser', 'ui.bootstrap.isClass', 'ui.bootstrap.position'])
+angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dateparser', 'ui.bootstrap.isClass', 'ui.bootstrap.position'])
 
 .value('$datepickerSuppressError', false)
 
-.constant('uibDatepickerConfigTemp', {
+.constant('richccDatepickerConfig', {
     datepickerMode: 'day',
     formatDay: 'dd',
     formatMonth: 'MMMM',
@@ -21,7 +21,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     yearRows: 4
 })
 
-.controller('UibDatepickerControllerTemp', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'uibDatepickerConfigTemp', '$datepickerSuppressError', 'uibDateParser',
+.controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser',
   function ($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser) {
       var self = this,
           ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl;
@@ -412,7 +412,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
       });
   }])
 
-.controller('UibDaypickerControllerTemp', ['$scope', '$element', 'dateFilter', function (scope, $element, dateFilter) {
+.controller('RichccDaypickerController', ['$scope', '$element', 'dateFilter', function (scope, $element, dateFilter) {
     var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     this.step = { months: 1 };
@@ -906,7 +906,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
 
 }])
 
-.controller('UibMonthpickerControllerTemp', ['$scope', '$element', 'dateFilter', function (scope, $element, dateFilter) {
+.controller('RichccMonthpickerController', ['$scope', '$element', 'dateFilter', function (scope, $element, dateFilter) {
     this.step = { years: 1 };
     this.element = $element;
 
@@ -965,7 +965,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     };
 }])
 
-.controller('UibYearpickerControllerTemp', ['$scope', '$element', 'dateFilter', function (scope, $element, dateFilter) {
+.controller('RichccYearpickerController', ['$scope', '$element', 'dateFilter', function (scope, $element, dateFilter) {
     var columns, range;
     this.element = $element;
 
@@ -1021,11 +1021,11 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     };
 }])
 
-.directive('uibDatepickerTemp', function () {
+.directive('richccDatepicker', function () {
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/datepicker.html';
+            return attrs.templateUrl || 'template/richcc/datepicker.html';
         },
         scope: {
             datepickerMode: '=?',
@@ -1039,8 +1039,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             preventCalNav: "=",
             yearMapHeat: "="
         },
-        require: ['uibDatepickerTemp', '^ngModel'],
-        controller: 'UibDatepickerControllerTemp',
+        require: ['richccDatepicker', '^ngModel'],
+        controller: 'RichccDatepickerController',
         controllerAs: 'datepicker',
         link: function (scope, element, attrs, ctrls) {
             var datepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
@@ -1049,14 +1049,14 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     };
 })
 
-.directive('uibDaypickerTemp', function () {
+.directive('richccDaypicker', function () {
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/day.html';
+            return attrs.templateUrl || 'template/richcc/day.html';
         },
-        require: ['^uibDatepickerTemp', 'uibDaypickerTemp'],
-        controller: 'UibDaypickerControllerTemp',
+        require: ['^richccDatepicker', 'richccDaypicker'],
+        controller: 'RichccDaypickerController',
         link: function (scope, element, attrs, ctrls) {
             var datepickerCtrl = ctrls[0],
               daypickerCtrl = ctrls[1];
@@ -1070,7 +1070,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthHeatViewer.html';
+            return attrs.templateUrl || 'template/richcc/monthHeatViewer.html';
         },
         transclude: true,
         scope: {
@@ -1078,8 +1078,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             'monthIndex': '=',
             'monthSelectCallback': "&"
         },
-        require: ['^uibDatepickerTemp', '^uibMonthpickerHeatmap', 'richMonthsHeatViewer'],
-        controller: 'UibDaypickerControllerTemp',
+        require: ['^richccDatepicker', '^richccMonthpickerHeatmap', 'richMonthsHeatViewer'],
+        controller: 'RichccDaypickerController',
         link: function (scope, element, attrs, ctrls) {
             var datepickerCtrl = ctrls[0],
                 monthpickerCtrl = ctrls[1],
@@ -1093,7 +1093,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthEventViewer.html';
+            return attrs.templateUrl || 'template/richcc/monthEventViewer.html';
         },
         transclude: true,
         scope: {
@@ -1101,8 +1101,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             'monthIndex': '=',
             'monthSelectCallback': "&"
         },
-        require: ['^uibDatepickerTemp', '^uibMonthpickerEventmap', 'richMonthsEventViewer'],
-        controller: 'UibDaypickerControllerTemp',
+        require: ['^richccDatepicker', '^richccMonthpickerEventmap', 'richMonthsEventViewer'],
+        controller: 'RichccDaypickerController',
         link: function (scope, element, attrs, ctrls) {
             var datepickerCtrl = ctrls[0],
                 monthpickerCtrl = ctrls[1],
@@ -1116,19 +1116,19 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthViewerDayMarker.html';
+            return attrs.templateUrl || 'template/richcc/monthViewerDayMarker.html';
         }
     };
 })
 
-.directive('uibMonthpickerHeatmap', function () {
+.directive('richccMonthpickerHeatmap', function () {
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthHeatWrap.html';
+            return attrs.templateUrl || 'template/richcc/monthHeatWrap.html';
         },
-        require: ['^uibDatepickerTemp', 'uibMonthpickerHeatmap'],
-        controller: 'UibMonthpickerControllerTemp',
+        require: ['^richccDatepicker', 'richccMonthpickerHeatmap'],
+        controller: 'RichccMonthpickerController',
         link: function (scope, element, attrs, ctrls) {
             var datepickerCtrl = ctrls[0],
               monthpickerCtrl = ctrls[1];
@@ -1138,14 +1138,14 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     };
 })
 
-.directive('uibMonthpickerEventmap', function () {
+.directive('richccMonthpickerEventmap', function () {
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/monthEventWrap.html';
+            return attrs.templateUrl || 'template/richcc/monthEventWrap.html';
         },
-        require: ['^uibDatepickerTemp', 'uibMonthpickerEventmap'],
-        controller: 'UibMonthpickerControllerTemp',
+        require: ['^richccDatepicker', 'richccMonthpickerEventmap'],
+        controller: 'RichccMonthpickerController',
         link: function (scope, element, attrs, ctrls) {
             var datepickerCtrl = ctrls[0],
               monthpickerCtrl = ctrls[1];
@@ -1156,14 +1156,14 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
 })
 
 
-.directive('uibYearpickerTemp', function () {
+.directive('richccYearpicker', function () {
     return {
         replace: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/year.html';
+            return attrs.templateUrl || 'template/richcc/year.html';
         },
-        require: ['^uibDatepickerTemp', 'uibYearpickerTemp'],
-        controller: 'UibYearpickerControllerTemp',
+        require: ['^richccDatepicker', 'richccYearpicker'],
+        controller: 'RichccYearpickerController',
         link: function (scope, element, attrs, ctrls) {
             var ctrl = ctrls[0];
             angular.extend(ctrl, ctrls[1]);
@@ -1174,7 +1174,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     };
 })
 
-.constant('uibDatepickerPopupConfigTemp', {
+.constant('richccDatepickerPopupConfig', {
     altInputFormats: [],
     appendToBody: false,
     clearText: 'Clear',
@@ -1182,8 +1182,8 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     closeText: 'Done',
     currentText: 'Today',
     datepickerPopup: 'yyyy-MM-dd',
-    datepickerPopupTemplateUrl: 'resource/datepicker/popup.html',
-    datepickerTemplateUrl: 'resource/datepicker/datepicker.html',
+    datepickerPopupTemplateUrl: 'template/richcc/popup.html',
+    datepickerTemplateUrl: 'template/richcc/datepicker.html',
     html5Types: {
         date: 'yyyy-MM-dd',
         'datetime-local': 'yyyy-MM-ddTHH:mm:ss.sss',
@@ -1193,7 +1193,7 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     showButtonBar: true
 })
 
-.controller('UibDatepickerPopupControllerTemp', ['$scope', '$element', '$attrs', '$compile', '$parse', '$document', '$rootScope', '$uibPosition', 'dateFilter', 'uibDateParser', 'uibDatepickerPopupConfigTemp', '$timeout', 'uibDatepickerConfigTemp',
+.controller('RichccDatepickerPopupController', ['$scope', '$element', '$attrs', '$compile', '$parse', '$document', '$rootScope', '$uibPosition', 'dateFilter', 'uibDateParser', 'richccDatepickerPopupConfig', '$timeout', 'richccDatepickerConfig',
 function (scope, element, attrs, $compile, $parse, $document, $rootScope, $position, dateFilter, dateParser, datepickerPopupConfig, $timeout, datepickerConfig) {
     var cache = {},
       isHtml5DateInput = false;
@@ -1584,10 +1584,10 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     }
 }])
 
-.directive('uibDatepickerPopupTemp', function () {
+.directive('richccDatepickerPopup', function () {
     return {
-        require: ['ngModel', 'uibDatepickerPopupTemp'],
-        controller: 'UibDatepickerPopupControllerTemp',
+        require: ['ngModel', 'richccDatepickerPopup'],
+        controller: 'RichccDatepickerPopupController',
         scope: {
             datepickerOptions: '=?',
             isOpen: '=?',
@@ -1606,12 +1606,12 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     };
 })
 
-.directive('uibDatepickerPopupWrapTemp', function () {
+.directive('richccDatepickerPopupWrap', function () {
     return {
         replace: true,
         transclude: true,
         templateUrl: function (element, attrs) {
-            return attrs.templateUrl || 'resource/datepicker/popup.html';
+            return attrs.templateUrl || 'template/richcc/popup.html';
         }
     };
 })

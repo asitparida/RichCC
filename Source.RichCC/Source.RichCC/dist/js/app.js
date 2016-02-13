@@ -1,4 +1,4 @@
-﻿angular.module('richCCSample', ['ui.bootstrap.datepicker.temp'])
+﻿angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
 .controller('richCCController', ["$scope", "$timeout", function ($scope, $timeout) {
     var self = this;
     self.sampleEvents = [

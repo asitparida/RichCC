@@ -1,7 +1,6 @@
 ﻿<table class="uib-monthpicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
     <thead>
         <tr class="header-action-holder">
-            <!--<th colspan="1" class="w48"></th>-->
             <th colspan="1"></th>
             <th colspan="4">
                 <div class="header-actions">
@@ -26,10 +25,6 @@
             </td>
         </tr>
         <tr class="uib-months" ng-repeat="row in rows track by $index">
-            <!--<td class="uib-month text-center w48" role="gridcell"
-                colspan="1">
-                <rich-months-day-marker></rich-months-day-marker>
-            </td>-->
             <td ng-repeat="dt in row" class="uib-month text-center richcc-month-event-box-holder" role="gridcell"
                 id="{{::dt.uid}}"
                 ng-class="::dt.customClass"
