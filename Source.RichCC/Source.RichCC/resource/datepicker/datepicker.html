@@ -1,9 +1,9 @@
 <div class="uib-datepicker richcc-datepicker" ng-switch="datepickerMode" role="application" ng-keydown="keydown($event)">
     <div class="richcc-comp-title">Calendar</div>
     <div class="richcc-cal-holder">
-        <uib-daypicker-temp ng-switch-when="day" tabindex="0"></uib-daypicker-temp>
-        <uib-monthpicker-heatmap ng-switch-when="month" ng-if="yearMapHeat == true" tabindex="0"></uib-monthpicker-heatmap>
-        <uib-monthpicker-eventmap ng-switch-when="month" ng-if="yearMapHeat == false" tabindex="0"></uib-monthpicker-eventmap>
-        <uib-yearpicker-temp ng-switch-when="year" tabindex="0"></uib-yearpicker-temp>
+        <richcc-daypicker ng-switch-when="day" tabindex="0"></richcc-daypicker>
+        <richcc-monthpicker-heatmap ng-switch-when="month" ng-if="yearMapHeat == true" tabindex="0"></richcc-monthpicker-heatmap>
+        <richcc-monthpicker-eventmap ng-switch-when="month" ng-if="yearMapHeat == false" tabindex="0"></richcc-monthpicker-eventmap>
+        <richcc-yearpicker ng-switch-when="year" tabindex="0"></richcc-yearpicker>
     </div>
 </div>
