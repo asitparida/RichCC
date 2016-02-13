@@ -1,4 +1,4 @@
-angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dateparser', 'ui.bootstrap.isClass', 'ui.bootstrap.position'])
+﻿angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dateparser', 'ui.bootstrap.isClass', 'ui.bootstrap.position'])
 
 .value('$datepickerSuppressError', false)
 
