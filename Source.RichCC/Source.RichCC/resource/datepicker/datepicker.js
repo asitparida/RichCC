@@ -189,8 +189,6 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
                   $scope['monthViewData'] = {};
                   $scope['monthWiseEventDetails'] = {};
                   $scope['monthWiseEventMarkers'] = {};
-                  console.log('***** attr events ****');
-                  console.log($scope);
                   self.refreshView();
               }));
           }
@@ -583,7 +581,6 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
     function isSameDay(d1, d2) {
         d1.setHours(0, 0, 0, 0);
         d2.setHours(0, 0, 0, 0);
-        console.log(' d1 : ' + d1.toString() + ' ' + ' d2 : ' + d2.toString() + ' ccmp : ' + (d1.getTime() === d2.getTime()));
         return d1.getTime() === d2.getTime();
 
     }
@@ -869,7 +866,6 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
             this.labels.push(label);
             scope.labels[j] = label;
         }
-        console.log(scope);
         if (typeof scope.monthWiseEventMarkers !== 'undefined')
             scope.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()] = this.labels;
         else if (typeof scope.parent.monthWiseEventMarkers !== 'undefined')
@@ -918,7 +914,6 @@ angular.module('ui.bootstrap.datepicker.temp', ['ui.bootstrap', 'ui.bootstrap.da
         angular.extend(ctrl, this);
         ctrl.refreshView();
     };
-    console.log(scope);
 
     this._refreshView = function () {
         var months = new Array(12),
