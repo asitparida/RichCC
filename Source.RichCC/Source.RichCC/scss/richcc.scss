@@ -272,6 +272,22 @@
                         &.w48 {
                             width: 4%;
                         }
+
+                        &.richcc-td-space0,
+                        &.richcc-td-space1,
+                        &.richcc-td-space2,
+                        &.richcc-td-space3,
+                        &.richcc-td-space4 {
+                            width: 17.68%;
+                        }
+
+                        &.richcc-td-space5 {
+                            width: 7.74%;
+
+                            .richcc-month-eventbox {
+                                width: 33%;
+                            }
+                        }
                     }
                 }
             }
@@ -280,6 +296,22 @@
                 tr {
                     td {
                         width: 16%;
+
+                        &.richcc-td-space0,
+                        &.richcc-td-space1,
+                        &.richcc-td-space2,
+                        &.richcc-td-space3,
+                        &.richcc-td-space4 {
+                            width: 17.68%;
+                        }
+
+                        &.richcc-td-space5 {
+                            width: 7.74%;
+
+                            .richcc-month-eventbox {
+                                width: 33% !important;
+                            }
+                        }
 
                         &.w48 {
                             width: 4%;
@@ -710,6 +742,14 @@
                 color: #303030;
             }
 
+            .eventMonthMarker {
+                cursor: pointer;
+
+                &:hover {
+                    background: #f0f0f0;
+                }
+            }
+
             .richcc-month-eventbox {
                 &.eventDayMarker {
                     width: 14.28%;
@@ -731,6 +771,52 @@
                 tr {
                     td {
                         width: 20%;
+
+                        &.uib-year {
+                            button {
+                                height: 100px;
+                                width: 100px;
+                                border-radius: 50%;
+                                min-width: auto;
+                                border: none;
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                font-weight: 100;
+                                font-size: x-large;
+                                -moz-transition: all 0.3s linear 0s;
+                                -o-transition: all 0.3s linear 0s;
+                                -webkit-transition: all 0.3s linear 0s;
+                                transition: all 0.3s linear 0s;
+
+                                &.btn-info {
+                                    border: 1px solid #0073c6;
+                                    background: none;
+                                    color: #0073c6;
+
+                                    &.active {
+                                        background: #0073c6;
+                                        color: #fff;
+
+                                        .text-info {
+                                            color: #fff;
+                                        }
+                                    }
+                                }
+
+                                &.active {
+                                    background: #0073c6;
+                                    color: #fff;
+                                }
+
+                                &:hover {
+                                    border: none;
+                                    background: #f0f0f0;
+                                }
+
+                                &:focus {
+                                    outline: 1px dotted rgba(0,0,0, 0.20);
+                                }
+                            }
+                        }
                     }
                 }
             }

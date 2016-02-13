@@ -7,7 +7,7 @@
     <thead style="height:0 !important; margin:0;padding:0;line-height:0;" ng-if="yearMapHeat == false">
         <tr class="header-action-holder" style="height:0 !important; margin:0;padding:0;line-height:0;">
             <th colspan="1" class="w48" style="height:0 !important; margin:0;padding:0;line-height:0;"></th>
-            <th colspan="18" style="height:0 !important; margin:0;padding:0;line-height:0;">&nbsp;</th>
+            <th colspan="38" style="height:0 !important; margin:0;padding:0;line-height:0;">&nbsp;</th>
         </tr>
     </thead>
     <tbody>
@@ -19,10 +19,10 @@
         <tr class="uib-weeks richcc-row" ng-if="yearMapHeat == false">
             <td colspan="1" class="w48">&nbsp;</td>
             <td ng-repeat="row in parent.monthViewData[0].rows track by $index" role="gridcell"
-                colspan="3"
-                class="uib-day text-center richcc-td"
+                ng-attr-colspan="{{weekindex == 5 ? 3 : 7}}"
+                class="uib-day text-center richcc-td richcc-td-space{{weekindex}}"
                 ng-init="weekindex = $index">
-                <div class="richcc-month-eventbox eventDayMarker" ng-repeat="column in row track by $index">
+                <div class="richcc-month-eventbox eventDayMarker" ng-repeat="column in row track by $index" ng-if="(weekindex != 5) || (weekindex == 5 && $index < 3)">
                     <span>{{monthWiseEventMarkers[0][$index].abbr | limitTo:1}}</span>
                 </div>
             </td>
