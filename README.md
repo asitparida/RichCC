@@ -59,7 +59,7 @@ Sample  Preview @ <a href="http://richcc.azurewebsites.net/">http://richcc.azure
     angular.module('myModule', ['richcc.bootstrap.datepicker']);
 
 ##Note
-Since all modules have been built by refactoring the Angular JS UI BootStrap's Datepicker module, the module name for the plugin have been changed so as to mitigate/prevent any instance clash.
+Since all modules have been built by refactoring the Angular JS UI BootStrap's Datepicker module, the module names have been changed so as to mitigate/prevent any instance clash.
 
 
 
