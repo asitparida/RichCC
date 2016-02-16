@@ -21,6 +21,18 @@
         console.log(self.sampleEvents);
     }
 
+    self.popupSettings = {
+        'hidden': false,
+        'showLeft': true,
+        'showRight': false,
+        'leftLabel': 'Add Events',
+        'rightLabel': 'Edit Details',
+    };
+
+    self.popupSettingsHidden = {
+        'hidden': true
+    };
+
     self.daySelected = function (data) {
         console.log('daySelected');
         console.log(data);

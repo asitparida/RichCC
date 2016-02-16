@@ -1064,7 +1064,8 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             yearMapHeat: "=",
             daySelectCallback: '&',
             eventPopupLeftCallback:'&',
-            eventPopupRightCallback:'&'
+            eventPopupRightCallback: '&',
+            eventPopupSettings:'='
         },
         require: ['richccDatepicker', '^ngModel'],
         controller: 'RichccDatepickerController',
