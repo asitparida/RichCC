@@ -69,8 +69,9 @@
                         colspan="1"
                         ng-disabled="::dt.disabled"
                         ng-init="columnindex = $index"
+                        ng-click="richccDaySelected(dt, eventDetails[dt.key])"
                         uib-popover-template="'template/richcc/richccDayPopup.html'"
-                        popover-trigger="{{eventDetails[dt.key].length > 0 && eventPopupHide != true ? 'outsideClick' : 'none'}}"
+                        popover-trigger="{{eventDetails[dt.key].length > 0 && eventPopupSettings.hidden != true ? 'outsideClick' : 'none'}}"
                         popover-append-to-body="true"
                         popover-placement="{{getPopUpPositionForDayMap(rowindex, columnindex)}}"
                         popover-class="richcc-popup-container">
@@ -134,7 +135,8 @@
                                  ng-class="{'notInPresentMonth' : column.monthIndex != monthIndex}"
                                  ng-init="popitem = column;"
                                  uib-popover-template="'template/richcc/richccMonthPopup.html'"
-                                 popover-trigger="{{parent.monthWiseEventDetails[monthIndex][popitem.key].length > 0 && eventPopupHide != true && column.monthIndex == monthIndex ? 'outsideClick' : 'none'}}"
+                                 ng-click="richccDaySelected(column, parent.monthWiseEventDetails[monthIndex][popitem.key])"
+                                 popover-trigger="{{parent.monthWiseEventDetails[monthIndex][popitem.key].length > 0 &&  eventPopupSettings.hidden != true && column.monthIndex == monthIndex ? 'outsideClick' : 'none'}}"
                                  popover-append-to-body="true"
                                  popover-placement="{{getPopUpPositionForMonthEventMap(monthIndex, weekindex)}}"
                                  popover-class="richcc-popup-container">
@@ -212,8 +214,9 @@
                         ng-style="{'opacity': column[row].monthIndex != monthIndex ? 0 : 1}"
                         ng-init="mdt = column[row]; popitem = column[row]"
                         ng-attr-len="{{parent.monthWiseEventDetails[monthIndex][mdt.key].length}}"
-                        uib-popover-template="'template/richcc/richcc-month-popup.html'"
-                        popover-trigger="{{parent.monthWiseEventDetails[monthIndex][popitem.key].length > 0 && eventPopupHide != true ? 'outsideClick' : 'none'}}"
+                        ng-click="richccDaySelected(column, parent.monthWiseEventDetails[monthIndex][popitem.key])"
+                        uib-popover-template="'template/richcc/richccMonthPopup.html'"
+                        popover-trigger="{{parent.monthWiseEventDetails[monthIndex][popitem.key].length > 0 &&  eventPopupSettings.hidden != true ? 'outsideClick' : 'none'}}"
                         popover-append-to-body="true"
                         popover-placement="{{getPopUpPositionForMonthHeatMap(monthIndex)}}"
                         popover-class="richcc-popup-container">
@@ -334,9 +337,9 @@
                     </div>
                 </div>
             </div>
-            <div class="event-action-container">
-                <button class="event-action">Add Events</button>
-                <button class="event-action">Edit Events</button>
+            <div class="event-action-container" ng-class="{'singleButtonOnly' : (eventPopupSettings.showLeft != false && eventPopupSettings.showRight == false) || (eventPopupSettings.showLeft == false && eventPopupSettings.showRight != false)}">
+                <button class="event-action" ng-if="eventPopupSettings.showLeft != false" ng-click="popUpLeftHandler(dt, eventDetails[dt.key])">{{eventPopupSettings.leftLabel || 'Add Events'}}</button>
+                <button class="event-action" ng-if="eventPopupSettings.showRight != false" ng-click="popUpRightHandler(dt, eventDetails[dt.key])">{{eventPopupSettings.rightLabel || 'Edit Events'}}</button>
                 <div class="event-separator"></div>
             </div>
         </div>
@@ -358,9 +361,9 @@
                     </div>
                 </div>
             </div>
-            <div class="event-action-container">
-                <button class="event-action">Add Events</button>
-                <button class="event-action">Edit Events</button>
+            <div class="event-action-container" ng-class="{'singleButtonOnly' : (parent.eventPopupSettings.showLeft != false && parent.eventPopupSettings.showRight == false) || (parent.eventPopupSettings.showLeft == false && parent.eventPopupSettings.showRight != false)}">
+                <button class="event-action" ng-if="parent.eventPopupSettings.showLeft != false" ng-click="popUpLeftHandler(popitem, parent.monthWiseEventDetails[monthIndex][popitem.key])">{{parent.eventPopupSettings.leftLabel || 'Add Events'}}</button>
+                <button class="event-action" ng-if="parent.eventPopupSettings.showRight != false" ng-click="popUpRightHandler(popitem, parent.monthWiseEventDetails[monthIndex][popitem.key])">{{parent.eventPopupSettings.rightLabel || 'Edit Events'}}</button>
                 <div class="event-separator"></div>
             </div>
         </div>

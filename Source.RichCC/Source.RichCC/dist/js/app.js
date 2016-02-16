@@ -21,6 +21,33 @@
         console.log(self.sampleEvents);
     }
 
+    self.popupSettings = {
+        'hidden': false,
+        'showLeft': true,
+        'showRight': false,
+        'leftLabel': 'Add Events',
+        'rightLabel': 'Edit Details',
+    };
+
+    self.popupSettingsHidden = {
+        'hidden': true
+    };
+
+    self.daySelected = function (data) {
+        console.log('daySelected');
+        console.log(data);
+    }
+
+    self.leftCallback = function (data) {
+        console.log('leftCallback');
+        console.log(data);
+    }
+
+    self.rightCallback = function (data) {
+        console.log('rightCallback');
+        console.log(data);
+    }
+
     self.today = function () {
         self.dt = new Date('01/09/2016');
     };

@@ -136,6 +136,16 @@
             background: #0073c6;
             position: relative;
 
+            &.singleButtonOnly {
+                .event-action {
+                    width: 100%;
+                }
+
+                .event-separator {
+                    display: none;
+                }
+            }
+
             .event-action {
                 width: 49%;
                 display: inline-block;
