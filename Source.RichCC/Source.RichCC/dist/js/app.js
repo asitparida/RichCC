@@ -21,6 +21,21 @@
         console.log(self.sampleEvents);
     }
 
+    self.daySelected = function (data) {
+        console.log('daySelected');
+        console.log(data);
+    }
+
+    self.leftCallback = function (data) {
+        console.log('leftCallback');
+        console.log(data);
+    }
+
+    self.rightCallback = function (data) {
+        console.log('rightCallback');
+        console.log(data);
+    }
+
     self.today = function () {
         self.dt = new Date('01/09/2016');
     };

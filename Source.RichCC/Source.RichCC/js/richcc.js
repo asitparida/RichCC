@@ -443,6 +443,30 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         self._refreshMonthView(false);
     }
 
+    scope.richccDaySelected = function (dt, events) {
+        var data = { 'dt': dt, 'events': events };
+        if (typeof scope.daySelectCallback === 'function')
+            scope.daySelectCallback({ 'data': data });
+        else if (typeof scope.$parent.daySelectCallback === 'function')
+            scope.$parent.daySelectCallback({ 'data': data });
+    }
+
+    scope.popUpLeftHandler = function (dt, events) {
+        var data = { 'dt': dt, 'events': events };
+        if (typeof scope.eventPopupLeftCallback === 'function')
+            scope.eventPopupLeftCallback({ 'data': data });
+        else if (typeof scope.$parent.eventPopupLeftCallback === 'function')
+            scope.$parent.eventPopupLeftCallback({ 'data': data });
+    }
+
+    scope.popUpRightHandler = function (dt, events) {
+        var data = { 'dt': dt, 'events': events };
+        if (typeof scope.eventPopupRightCallback === 'function')
+            scope.eventPopupRightCallback({ 'data': data });
+        else if (typeof scope.$parent.eventPopupRightCallback === 'function')
+            scope.$parent.eventPopupRightCallback({ 'data': data });
+    }
+
     this.getDates = function (startDate, n) {
         var dates = new Array(n), current = new Date(startDate), i = 0, date;
         while (i < n) {
@@ -1037,7 +1061,10 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             light: '=',
             eventPopupHide: "=",
             preventCalNav: "=",
-            yearMapHeat: "="
+            yearMapHeat: "=",
+            daySelectCallback: '&',
+            eventPopupLeftCallback:'&',
+            eventPopupRightCallback:'&'
         },
         require: ['richccDatepicker', '^ngModel'],
         controller: 'RichccDatepickerController',

@@ -69,6 +69,7 @@
                         colspan="1"
                         ng-disabled="::dt.disabled"
                         ng-init="columnindex = $index"
+                        ng-click="richccDaySelected(dt, eventDetails[dt.key])"
                         uib-popover-template="'template/richcc/richccDayPopup.html'"
                         popover-trigger="{{eventDetails[dt.key].length > 0 && eventPopupHide != true ? 'outsideClick' : 'none'}}"
                         popover-append-to-body="true"
@@ -134,6 +135,7 @@
                                  ng-class="{'notInPresentMonth' : column.monthIndex != monthIndex}"
                                  ng-init="popitem = column;"
                                  uib-popover-template="'template/richcc/richccMonthPopup.html'"
+                                 ng-click="richccDaySelected(column, parent.monthWiseEventDetails[monthIndex][popitem.key])"
                                  popover-trigger="{{parent.monthWiseEventDetails[monthIndex][popitem.key].length > 0 && eventPopupHide != true && column.monthIndex == monthIndex ? 'outsideClick' : 'none'}}"
                                  popover-append-to-body="true"
                                  popover-placement="{{getPopUpPositionForMonthEventMap(monthIndex, weekindex)}}"
@@ -212,7 +214,8 @@
                         ng-style="{'opacity': column[row].monthIndex != monthIndex ? 0 : 1}"
                         ng-init="mdt = column[row]; popitem = column[row]"
                         ng-attr-len="{{parent.monthWiseEventDetails[monthIndex][mdt.key].length}}"
-                        uib-popover-template="'template/richcc/richcc-month-popup.html'"
+                        ng-click="richccDaySelected(column, parent.monthWiseEventDetails[monthIndex][popitem.key])"
+                        uib-popover-template="'template/richcc/richccMonthPopup.html'"
                         popover-trigger="{{parent.monthWiseEventDetails[monthIndex][popitem.key].length > 0 && eventPopupHide != true ? 'outsideClick' : 'none'}}"
                         popover-append-to-body="true"
                         popover-placement="{{getPopUpPositionForMonthHeatMap(monthIndex)}}"
@@ -335,8 +338,8 @@
                 </div>
             </div>
             <div class="event-action-container">
-                <button class="event-action">Add Events</button>
-                <button class="event-action">Edit Events</button>
+                <button class="event-action" ng-click="popUpLeftHandler(dt, eventDetails[dt.key])">Add Events</button>
+                <button class="event-action" ng-click="popUpRightHandler(dt, eventDetails[dt.key])">Edit Events</button>
                 <div class="event-separator"></div>
             </div>
         </div>
@@ -359,8 +362,8 @@
                 </div>
             </div>
             <div class="event-action-container">
-                <button class="event-action">Add Events</button>
-                <button class="event-action">Edit Events</button>
+                <button class="event-action" ng-click="popUpLeftHandler(popitem, parent.monthWiseEventDetails[monthIndex][popitem.key])">Add Events</button>
+                <button class="event-action" ng-click="popUpRightHandler(popitem, parent.monthWiseEventDetails[monthIndex][popitem.key])">Edit Events</button>
                 <div class="event-separator"></div>
             </div>
         </div>
