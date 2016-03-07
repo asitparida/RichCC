@@ -21,6 +21,13 @@
     yearRows: 4
 })
 
+.constant('richccConfigDefs', {
+    light: false,
+    yearMapHeat: false,
+    preventModeToggle: false,
+    preventCalNav: false
+})
+
 .controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser',
   function ($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser) {
       var self = this,
@@ -1066,12 +1073,13 @@
             dateDisabled: '&',
             customClass: '&',
             shortcutPropagation: '&?',
+            richccConfig:'=',
             events: '=',
-            light: '=',
+            light: '=',  //deprecate
             eventPopupHide: "=",
-            preventCalNav: "=",
-            preventModeToggle:"=",
-            yearMapHeat: "=",
+            preventCalNav: "=", //deprecate
+            preventModeToggle: "=", //deprecate
+            yearMapHeat: "=", //deprecate
             daySelectCallback: '&',
             eventPopupLeftCallback:'&',
             eventPopupRightCallback: '&',
