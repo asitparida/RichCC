@@ -29,6 +29,30 @@
         'rightLabel': 'Edit Details',
     };
 
+    self.config = {
+        'yearMapHeat': true,
+        'prevent-mode-toggle':true
+    }
+
+    self.config2 = {
+        'yearMapHeat': false,
+        'prevent-mode-toggle': true
+    }
+
+    self.lightconfig = {
+        'light': true,
+        'yearMapHeat': false,
+        'preventModeToggle': false,
+        'preventCalNav':true
+    }
+
+    self.lightconfig2 = {
+        'light': true,
+        'yearMapHeat': false,
+        'preventModeToggle': false,
+        'preventCalNav': false
+    }
+
     self.popupSettingsHidden = {
         'hidden': true
     };
