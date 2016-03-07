@@ -189,6 +189,19 @@
               }
           });
 
+          if (angular.isDefined($attrs.initDate)) {
+              this.activeDate = dateParser.fromTimezone($scope.$parent.$eval($attrs.initDate), ngModelOptions.timezone) || new Date();
+              watchListeners.push($scope.$parent.$watch($attrs.initDate, function (initDate) {
+                  if (initDate && (ngModelCtrl.$isEmpty(ngModelCtrl.$modelValue) || ngModelCtrl.$invalid)) {
+                      self.activeDate = dateParser.fromTimezone(initDate, ngModelOptions.timezone);
+                      self.refreshView();
+                  }
+              }));
+          } else {
+              this.activeDate = new Date();
+          }
+      }
+
           //Events Variable Watch Added
           if ($attrs['events']) {
               watchListeners.push($scope.$parent.$watch($attrs['events'], function (value) {
@@ -233,19 +246,6 @@
                   self['preventModeToggle'] = $scope['preventModeToggle'] = angular.isDefined(value) ? value : $attrs['preventModeToggle'];
                   self.refreshView();
               }));
-          }
-
-          if (angular.isDefined($attrs.initDate)) {
-              this.activeDate = dateParser.fromTimezone($scope.$parent.$eval($attrs.initDate), ngModelOptions.timezone) || new Date();
-              watchListeners.push($scope.$parent.$watch($attrs.initDate, function (initDate) {
-                  if (initDate && (ngModelCtrl.$isEmpty(ngModelCtrl.$modelValue) || ngModelCtrl.$invalid)) {
-                      self.activeDate = dateParser.fromTimezone(initDate, ngModelOptions.timezone);
-                      self.refreshView();
-                  }
-              }));
-          } else {
-              this.activeDate = new Date();
-          }
       }
 
       $scope.datepickerMode = $scope.datepickerMode || datepickerConfig.datepickerMode;
@@ -1081,9 +1081,9 @@
             preventModeToggle: "=", //deprecate
             yearMapHeat: "=", //deprecate
             daySelectCallback: '&',
-            eventPopupLeftCallback:'&',
+            eventPopupLeftCallback: '&',
             eventPopupRightCallback: '&',
-            eventPopupSettings:'='
+            eventPopupSettings: '='
         },
         require: ['richccDatepicker', '^ngModel'],
         controller: 'RichccDatepickerController',
