@@ -221,6 +221,13 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
               }));
           }
 
+          if ($attrs['preventModeToggle']) {
+              watchListeners.push($scope.$parent.$watch($attrs['preventModeToggle'], function (value) {
+                  self['preventModeToggle'] = $scope['preventModeToggle'] = angular.isDefined(value) ? value : $attrs['preventModeToggle'];
+                  self.refreshView();
+              }));
+          }
+
           if (angular.isDefined($attrs.initDate)) {
               this.activeDate = dateParser.fromTimezone($scope.$parent.$eval($attrs.initDate), ngModelOptions.timezone) || new Date();
               watchListeners.push($scope.$parent.$watch($attrs.initDate, function (initDate) {
@@ -529,6 +536,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         scope.yearMapHeat = this.yearMapHeat;
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
+        scope.preventModeToggle = this.preventModeToggle;
     };
 
     this.compare = function (date1, date2) {
@@ -925,6 +933,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         scope.yearMapHeat = this.yearMapHeat
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
+        scope.preventModeToggle = this.preventModeToggle;
     };
 
 
@@ -1061,6 +1070,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             light: '=',
             eventPopupHide: "=",
             preventCalNav: "=",
+            preventModeToggle:"=",
             yearMapHeat: "=",
             daySelectCallback: '&',
             eventPopupLeftCallback:'&',
