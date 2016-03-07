@@ -234,6 +234,13 @@
           }));
       }
 
+      if ($attrs['preventModeToggle']) {
+          watchListeners.push($scope.$parent.$watch($attrs['preventModeToggle'], function (value) {
+              self['preventModeToggle'] = $scope['preventModeToggle'] = angular.isDefined(value) ? value : $attrs['preventModeToggle'];
+              self.refreshView();
+          }));
+      }
+
       $scope.datepickerMode = $scope.datepickerMode || datepickerConfig.datepickerMode;
       $scope.uniqueId = 'datepicker-' + $scope.$id + '-' + Math.floor(Math.random() * 10000);
 
@@ -529,6 +536,7 @@
         scope.yearMapHeat = this.yearMapHeat;
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
+        scope.preventModeToggle = this.preventModeToggle;
     };
 
     this.compare = function (date1, date2) {
@@ -925,6 +933,7 @@
         scope.yearMapHeat = this.yearMapHeat
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
+        scope.preventModeToggle = this.preventModeToggle;
     };
 
 
@@ -1061,11 +1070,12 @@
             light: '=',
             eventPopupHide: "=",
             preventCalNav: "=",
+            preventModeToggle: "=",
             yearMapHeat: "=",
             daySelectCallback: '&',
-            eventPopupLeftCallback:'&',
+            eventPopupLeftCallback: '&',
             eventPopupRightCallback: '&',
-            eventPopupSettings:'='
+            eventPopupSettings: '='
         },
         require: ['richccDatepicker', '^ngModel'],
         controller: 'RichccDatepickerController',
