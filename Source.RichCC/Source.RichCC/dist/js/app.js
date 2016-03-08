@@ -24,7 +24,13 @@
     self.dtPickerOptions = {
         customClass: getDayClass,
         showWeeks: false,
-        datepickerMode: 'month'
+        datepickerMode: 'day'
+    };
+
+    self.dtPickerOptionsMonth = {
+        customClass: getDayClass,
+        showWeeks: false,
+        datepickerMode:'month'
     };
 
     self.popupSettings = {

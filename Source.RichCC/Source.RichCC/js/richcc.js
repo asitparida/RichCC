@@ -88,6 +88,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
       if ($attrs.datepickerOptions) {
           angular.forEach([
             'customClass',
+            'datepickerMode',
             'formatDay',
             'formatDayHeader',
             'formatDayTitle',
@@ -108,6 +109,9 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
               switch (key) {
                   case 'customClass':
                       self[key] = $scope[key] = $scope.datepickerOptions[key] || angular.noop;
+                      break;
+                  case 'datepickerMode':
+                      self[key] = $scope[key] = angular.isDefined($scope.datepickerOptions.datepickerMode) ? $scope.datepickerOptions.datepickerMode : datepickerConfig.datepickerMode;
                       break;
                   case 'formatDay':
                   case 'formatDayHeader':
