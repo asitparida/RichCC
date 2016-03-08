@@ -31,12 +31,12 @@
 
     self.config = {
         'yearMapHeat': true,
-        'prevent-mode-toggle':true
+        'preventModeToggle': true
     }
 
     self.config2 = {
         'yearMapHeat': false,
-        'prevent-mode-toggle': true
+        'preventModeToggle': true
     }
 
     self.lightconfig = {
