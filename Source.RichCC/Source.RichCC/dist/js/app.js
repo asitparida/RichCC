@@ -27,10 +27,40 @@
         datepickerMode: 'day'
     };
 
+    self.dtPickerOptions1 = {
+        customClass: getDayClass,
+        showWeeks: false,
+        datepickerMode: 'day',
+        'yearMapHeat': true,
+        'preventModeToggle': true
+    };
+
+    self.dtPickerOptionsLight = {
+        customClass: getDayClass,
+        showWeeks: false,
+        datepickerMode: 'day',
+        'light': true,
+        'yearMapHeat': false,
+        'preventModeToggle': false,
+        'preventCalNav': true
+    };
+
+    self.dtPickerOptionsLight2 = {
+        customClass: getDayClass,
+        showWeeks: false,
+        datepickerMode: 'day',
+        'light': true,
+        'yearMapHeat': false,
+        'preventModeToggle': false,
+        'preventCalNav': false
+    };
+
     self.dtPickerOptionsMonth = {
         customClass: getDayClass,
         showWeeks: false,
-        datepickerMode:'month'
+        datepickerMode: 'month',
+        'yearMapHeat': false,
+        'preventModeToggle': true
     };
 
     self.popupSettings = {
@@ -40,30 +70,6 @@
         'leftLabel': 'Add Events',
         'rightLabel': 'Edit Details',
     };
-
-    self.config = {
-        'yearMapHeat': true,
-        'preventModeToggle': true
-    }
-
-    self.config2 = {
-        'yearMapHeat': false,
-        'preventModeToggle': true
-    }
-
-    self.lightconfig = {
-        'light': true,
-        'yearMapHeat': false,
-        'preventModeToggle': false,
-        'preventCalNav':true
-    }
-
-    self.lightconfig2 = {
-        'light': true,
-        'yearMapHeat': false,
-        'preventModeToggle': false,
-        'preventCalNav': false
-    }
 
     self.popupSettingsHidden = {
         'hidden': true
