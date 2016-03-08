@@ -14,6 +14,8 @@
     <script src="lib/ui-bootstrap-tpls-1.1.1.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap.min.js"></script>
     <script src="dist/min/js/richcc.min.js"></script>
+    <!--<script src="resource/richcc.js"></script>
+    <script src="resource/richcc-templates.js"></script>-->
     <script src="dist/js/app.js"></script>
     <style>
         .full button span {
@@ -27,6 +29,11 @@
             border-radius: 32px;
             color: black;
         }
+
+        .richcc-td.dayDisabled {
+            background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAI0lEQVQIW2NkQAbFx9IY4fziY2kMvVazIAJQDojJiMwBCQAAOWkKpPDCzSoAAAAASUVORK5CYII=);
+        }
+
     </style>
 </head>
 <body ng-controller="richCCController as sample" style="background:#f0f0f0;">
@@ -37,7 +44,7 @@
             <div class="col-xs-12">
                 <div class="col-xs-8">
                     <div class="" style="display:inline-block;width:800px;height:600px;">
-                        <richcc-datepicker datepicker-mode="'day'" richcc-options="sample.config" ng-model="sample.dt" event-popup-settings="sample.popupSettings" events="sample.sampleEvents" show-weeks="false" class="well well-sm" event-popup-left-callback="sample.leftCallback(data)" ></richcc-datepicker>
+                        <richcc-datepicker datepicker-options="sample.dtPickerOptions" richcc-options="sample.config" ng-model="sample.dt" event-popup-settings="sample.popupSettings" events="sample.sampleEvents" class="well well-sm" event-popup-left-callback="sample.leftCallback(data)" ></richcc-datepicker>
                     </div>
                 </div>
                 <div class="col-xs-4" style="padding:0;">

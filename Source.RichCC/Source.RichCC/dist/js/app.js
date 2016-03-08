@@ -21,6 +21,12 @@
         console.log(self.sampleEvents);
     }
 
+    self.dtPickerOptions = {
+        customClass: getDayClass,
+        showWeeks: false,
+        datepickerMode: 'month'
+    };
+
     self.popupSettings = {
         'hidden': false,
         'showLeft': true,
@@ -138,19 +144,12 @@
         }
       ];
 
-    self.getDayClass = function (date, mode) {
-        if (mode === 'day') {
-            var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
-
-            for (var i = 0; i < self.events.length; i++) {
-                var currentDay = new Date(self.events[i].date).setHours(0, 0, 0, 0);
-
-                if (dayToCheck === currentDay) {
-                    return self.events[i].status;
-                }
-            }
+    function getDayClass(data) {
+        var result = '';
+        if (data.mode === 'day') {
+            if (data.date.getDay() == 0 || data.date.getDay() == 6)
+                result = 'dayDisabled';
         }
-
-        return '';
+        return result;
     };
 }]);
