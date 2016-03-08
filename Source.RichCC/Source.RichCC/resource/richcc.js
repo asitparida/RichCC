@@ -28,8 +28,8 @@
     preventCalNav: false
 })
 
-.controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser',
-  function ($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser) {
+.controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', 'richccConfigDefs', '$datepickerSuppressError', 'uibDateParser',
+  function ($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, richccConfigDefs, $datepickerSuppressError, dateParser) {
       var self = this,
           ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl;
           ngModelOptions = {},
@@ -37,6 +37,53 @@
 
       // Modes chain
       this.modes = ['day', 'month', 'year'];
+
+      if ($attrs.richccOptions) {
+          angular.forEach([
+              'light',
+              'yearMapHeat',
+              'preventModeToggle',
+              'preventCalNav'
+          ], function (key) {
+              self[key] = $scope[key] = angular.isDefined($scope.richccOptions[key]) ? $scope.richccOptions[key] : richccConfigDefs[key];
+              if ($scope.richccOptions[key]) {
+                  $scope.$watch(function () { return $scope.richccOptions[key]; }, function (value) {
+                      self[key] = $scope[key] = angular.isDefined(value) ? value : richccOptions[key];
+                      self.refreshView();
+                  });
+              }
+          });
+      } else {
+
+          if ($attrs['light']) {
+              watchListeners.push($scope.$parent.$watch($attrs['light'], function (value) {
+                  self['light'] = $scope['light'] = angular.isDefined(value) ? value : $attrs['light'];
+                  self.refreshView();
+              }));
+          }
+
+          if ($attrs['yearMapHeat']) {
+              watchListeners.push($scope.$parent.$watch($attrs['yearMapHeat'], function (value) {
+                  self['yearMapHeat'] = $scope['yearMapHeat'] = angular.isDefined(value) ? value : $attrs['yearMapHeat'];
+                  self.refreshView();
+              }));
+          }
+
+          if ($attrs['preventCalNav']) {
+              watchListeners.push($scope.$parent.$watch($attrs['preventCalNav'], function (value) {
+                  self['preventCalNav'] = $scope['preventCalNav'] = angular.isDefined(value) ? value : $attrs['preventCalNav'];
+                  self.refreshView();
+              }));
+          }
+
+          if ($attrs['preventModeToggle']) {
+              watchListeners.push($scope.$parent.$watch($attrs['preventModeToggle'], function (value) {
+                  self['preventModeToggle'] = $scope['preventModeToggle'] = angular.isDefined(value) ? value : $attrs['preventModeToggle'];
+                  self.refreshView();
+              }));
+          }
+
+      }
 
       if ($attrs.datepickerOptions) {
           angular.forEach([
@@ -202,50 +249,22 @@
           }
       }
 
-          //Events Variable Watch Added
-          if ($attrs['events']) {
-              watchListeners.push($scope.$parent.$watch($attrs['events'], function (value) {
-                  self['_events'] = $scope['events'] = angular.isDefined(value) ? value : $attrs['events'];
-                  $scope['monthViewData'] = {};
-                  $scope['monthWiseEventDetails'] = {};
-                  $scope['monthWiseEventMarkers'] = {};
-                  self.refreshView();
-              }));
-          }
+      //Events Variable Watch Added
+      if ($attrs['events']) {
+          watchListeners.push($scope.$parent.$watch($attrs['events'], function (value) {
+              self['_events'] = $scope['events'] = angular.isDefined(value) ? value : $attrs['events'];
+              $scope['monthViewData'] = {};
+              $scope['monthWiseEventDetails'] = {};
+              $scope['monthWiseEventMarkers'] = {};
+              self.refreshView();
+          }));
+      }
 
-          if ($attrs['light']) {
-              watchListeners.push($scope.$parent.$watch($attrs['light'], function (value) {
-                  self['light'] = $scope['light'] = angular.isDefined(value) ? value : $attrs['light'];
-                  self.refreshView();
-              }));
-          }
-
-          if ($attrs['yearMapHeat']) {
-              watchListeners.push($scope.$parent.$watch($attrs['yearMapHeat'], function (value) {
-                  self['yearMapHeat'] = $scope['yearMapHeat'] = angular.isDefined(value) ? value : $attrs['yearMapHeat'];
-                  self.refreshView();
-              }));
-          }
-
-          if ($attrs['eventPopupHide']) {
-              watchListeners.push($scope.$parent.$watch($attrs['eventPopupHide'], function (value) {
-                  self['eventPopupHide'] = $scope['eventPopupHide'] = angular.isDefined(value) ? value : $attrs['eventPopupHide'];
-                  self.refreshView();
-              }));
-          }
-
-          if ($attrs['preventCalNav']) {
-              watchListeners.push($scope.$parent.$watch($attrs['preventCalNav'], function (value) {
-                  self['preventCalNav'] = $scope['preventCalNav'] = angular.isDefined(value) ? value : $attrs['preventCalNav'];
-                  self.refreshView();
-              }));
-          }
-
-          if ($attrs['preventModeToggle']) {
-              watchListeners.push($scope.$parent.$watch($attrs['preventModeToggle'], function (value) {
-                  self['preventModeToggle'] = $scope['preventModeToggle'] = angular.isDefined(value) ? value : $attrs['preventModeToggle'];
-                  self.refreshView();
-              }));
+      if ($attrs['eventPopupHide']) {
+          watchListeners.push($scope.$parent.$watch($attrs['eventPopupHide'], function (value) {
+              self['eventPopupHide'] = $scope['eventPopupHide'] = angular.isDefined(value) ? value : $attrs['eventPopupHide'];
+              self.refreshView();
+          }));
       }
 
       $scope.datepickerMode = $scope.datepickerMode || datepickerConfig.datepickerMode;
@@ -1073,7 +1092,7 @@
             dateDisabled: '&',
             customClass: '&',
             shortcutPropagation: '&?',
-            richccConfig:'=',
+            richccOptions: '=',
             events: '=',
             light: '=',  //deprecate
             eventPopupHide: "=",
