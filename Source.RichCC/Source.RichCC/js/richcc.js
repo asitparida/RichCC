@@ -87,6 +87,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
 
       if ($attrs.datepickerOptions) {
           angular.forEach([
+            'customClass',
             'formatDay',
             'formatDayHeader',
             'formatDayTitle',
@@ -105,6 +106,9 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             'yearRows'
           ], function (key) {
               switch (key) {
+                  case 'customClass':
+                      self[key] = $scope[key] = $scope.datepickerOptions[key] || angular.noop;
+                      break;
                   case 'formatDay':
                   case 'formatDayHeader':
                   case 'formatDayTitle':
@@ -180,6 +184,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                       }
               }
           });
+
       }
       else {
           // Interpolated configuration attributes
