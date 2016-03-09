@@ -1095,7 +1095,6 @@
             dateDisabled: '&',
             customClass: '&',
             shortcutPropagation: '&?',
-            richccOptions: '=',
             events: '=',
             light: '=',  //deprecate
             eventPopupHide: "=",

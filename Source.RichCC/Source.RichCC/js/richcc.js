@@ -1095,7 +1095,6 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             dateDisabled: '&',
             customClass: '&',
             shortcutPropagation: '&?',
-            richccOptions: '=',
             events: '=',
             light: '=',  //deprecate
             eventPopupHide: "=",
