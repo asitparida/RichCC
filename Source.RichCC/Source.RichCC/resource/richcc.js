@@ -22,7 +22,8 @@
     light: false,
     yearMapHeat: false,
     preventModeToggle: false,
-    preventCalNav: false
+    preventCalNav: false,
+    showMarkerForMoreEvents:true
 })
 
 .controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig' , '$datepickerSuppressError', 'uibDateParser',
@@ -41,6 +42,7 @@
             'yearMapHeat',
             'preventModeToggle',
             'preventCalNav',
+            'showMarkerForMoreEvents',
             'customClass',
             'datepickerMode',
             'formatDay',
@@ -65,6 +67,7 @@
                   case 'yearMapHeat':
                   case 'preventModeToggle':
                   case 'preventCalNav':
+                  case 'showMarkerForMoreEvents':
                       self[key] = $scope[key] = angular.isDefined($scope.datepickerOptions[key]) ? $scope.datepickerOptions[key] : datepickerConfig[key];
                       if ($scope.datepickerOptions[key]) {
                           $scope.$watch(function () { return $scope.datepickerOptions[key]; }, function (value) {
