@@ -916,6 +916,7 @@
                         -webkit-transition: all 0.2s linear;
                         transition: all 0.2s linear;
                         height: 16.67%;
+                        text-align: left;
 
                         &:hover, &:active, &:focus {
                             /*background: rgba(0,115,198, 0.05);*/
@@ -1116,6 +1117,7 @@
                             background: transparent;
                             border-radius: 50%;
                             margin: 5px 0 0 0;
+                            display: inline-block;
 
                             &.cc-info,
                             &.cc-info.cc-current,
@@ -1150,6 +1152,16 @@
                             line-height: 18px;
                             font-size: small;
                         }
+                    }
+
+                    .richcc-time-label {
+                        display: inline;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        font-weight: 600;
+                        margin-left: 5px;
+                        line-height: 18px;
+                        font-size: small;
+                        color: rgba(0,0,0,0.60);
                     }
                 }
             }
