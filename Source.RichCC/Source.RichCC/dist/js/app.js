@@ -21,6 +21,15 @@
         console.log(self.sampleEvents);
     }
 
+    self.labelData = [
+        {'dt': '01-02-2016','label': '09:00'},
+        {'dt': '01-04-2016','label': '05:45'},
+        {'dt': '01-08-2016','label': '12:00'},
+        {'dt': '01-07-2016','label': '03:30'},
+        {'dt': '01-06-2016','label': '01:00'},
+        {'dt': '01-16-2016','label': '10:00'}
+    ];
+
     self.dtPickerOptions = {
         customClass: getDayClass,
         showWeeks: false,
@@ -33,7 +42,9 @@
         datepickerMode: 'day',
         'yearMapHeat': true,
         'preventModeToggle': true,
-        'showMarkerForMoreEvents': false
+        'showMarkerForMoreEvents': true,
+        'showDataLabel': true,
+        'defaultDataLabel':'00:00'
     };
 
     self.dtPickerOptionsLight = {
@@ -43,7 +54,8 @@
         'light': true,
         'yearMapHeat': false,
         'preventModeToggle': false,
-        'preventCalNav': true
+        'preventCalNav': true,
+        'showMarkerForMoreEvents': false
     };
 
     self.dtPickerOptionsLight2 = {
@@ -53,7 +65,8 @@
         'light': true,
         'yearMapHeat': false,
         'preventModeToggle': false,
-        'preventCalNav': false
+        'preventCalNav': false,
+        'showMarkerForMoreEvents': false
     };
 
     self.dtPickerOptionsMonth = {

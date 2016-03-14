@@ -23,10 +23,12 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
     yearMapHeat: false,
     preventModeToggle: false,
     preventCalNav: false,
-    showMarkerForMoreEvents:true
+    showMarkerForMoreEvents: true,
+    showDataLabel: false,
+    defaultDataLabel:'00:00'
 })
 
-.controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig' , '$datepickerSuppressError', 'uibDateParser',
+.controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser',
   function ($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser) {
       var self = this,
           ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl;
@@ -43,6 +45,8 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             'preventModeToggle',
             'preventCalNav',
             'showMarkerForMoreEvents',
+            'showDataLabel',
+            'defaultDataLabel',
             'customClass',
             'datepickerMode',
             'formatDay',
@@ -68,6 +72,8 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                   case 'preventModeToggle':
                   case 'preventCalNav':
                   case 'showMarkerForMoreEvents':
+                  case 'showDataLabel':
+                  case 'defaultDataLabel':
                       self[key] = $scope[key] = angular.isDefined($scope.datepickerOptions[key]) ? $scope.datepickerOptions[key] : datepickerConfig[key];
                       if ($scope.datepickerOptions[key]) {
                           $scope.$watch(function () { return $scope.datepickerOptions[key]; }, function (value) {
@@ -262,6 +268,14 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
               $scope['monthViewData'] = {};
               $scope['monthWiseEventDetails'] = {};
               $scope['monthWiseEventMarkers'] = {};
+              self.refreshView();
+          }));
+      }
+
+      //Events Variable Watch Added
+      if ($attrs['dayLabels']) {
+          watchListeners.push($scope.$parent.$watch($attrs['dayLabels'], function (value) {
+              self['_dayLabels'] = $scope['dayLabels'] = angular.isDefined(value) ? value : $attrs['dayLabels'];
               self.refreshView();
           }));
       }
@@ -563,6 +577,10 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             }
         }
 
+        if (this.showDataLabel == true) {
+            scope.dataLabels = this.processLabels(this._dayLabels);
+        }
+
         scope.eventDetails = this.processEvents(this._events, scope.rows);
         scope.light = this.light;
         scope.yearMapHeat = this.yearMapHeat;
@@ -826,6 +844,16 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             });
         });
         return _dayEventDetails;
+    }
+
+    this.processLabels = function (labelData) {
+        var _modLabels = {};
+        _.each(labelData, function (item) {
+            var _dt = new Date(item.dt);
+            var key = _dt.getFullYear() + '_' + _dt.getMonth() + '_' + _dt.getDate();
+            _modLabels[key] = item.label;
+        });
+        return _modLabels;
     }
 
     scope.viewAllEvents = function (events, e) {
@@ -1099,6 +1127,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             customClass: '&',
             shortcutPropagation: '&?',
             events: '=',
+            dayLabels: '=',
             light: '=',  //deprecate
             eventPopupHide: "=",
             preventCalNav: "=", //deprecate
