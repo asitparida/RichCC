@@ -23,9 +23,10 @@
     yearMapHeat: false,
     preventModeToggle: false,
     preventCalNav: false,
+    hideCalNav: false,
     showMarkerForMoreEvents: true,
     showDataLabel: false,
-    defaultDataLabel:'00:00'
+    defaultDataLabel: '00:00',
 })
 
 .controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser',
@@ -44,6 +45,7 @@
             'yearMapHeat',
             'preventModeToggle',
             'preventCalNav',
+            'hideCalNav',
             'showMarkerForMoreEvents',
             'showDataLabel',
             'defaultDataLabel',
@@ -71,6 +73,7 @@
                   case 'yearMapHeat':
                   case 'preventModeToggle':
                   case 'preventCalNav':
+                  case 'hideCalNav':
                   case 'showMarkerForMoreEvents':
                   case 'showDataLabel':
                   case 'defaultDataLabel':
@@ -409,9 +412,30 @@
               month = self.activeDate.getMonth() + direction * (self.step.months || 0);
           self.activeDate.setFullYear(year, month, 1);
           self.refreshView();
+          var _retData = {
+              'datepickerMode': $scope.datepickerMode,
+              'activeDate': self.activeDate
+          };
+          if (typeof $scope.datepickerOptions.moveModeCallback === "function") {
+              $scope.datepickerOptions.moveModeCallback(_retData);
+          }
+
       };
 
       $scope.toggleMode = function (direction) {
+
+          var _retData = {
+              'datepickerMode': $scope.datepickerMode,
+              'activeDate':self.activeDate
+          };
+
+          if (typeof $scope.datepickerOptions.toggleModeCallBack === "function") {
+              $scope.datepickerOptions.toggleModeCallBack(_retData);
+          }
+
+          if (this.light || this.preventModeToggle)
+              return;
+
           direction = direction || 1;
 
           if ($scope.datepickerMode === self.maxMode && direction === 1 ||

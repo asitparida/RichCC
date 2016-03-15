@@ -36,6 +36,14 @@
         datepickerMode: 'day'
     };
 
+    self.toggleModeCallBack = function (data) {
+        console.log(data);
+    }
+
+    self.moveModeCallback = function (data) {
+        console.log(data);
+    }
+
     self.dtPickerOptions1 = {
         customClass: getDayClass,
         showWeeks: false,
@@ -44,7 +52,8 @@
         'preventModeToggle': true,
         'showMarkerForMoreEvents': true,
         'showDataLabel': true,
-        'defaultDataLabel':'00:00'
+        'defaultDataLabel': '00:00',
+        moveModeCallback: self.moveModeCallback
     };
 
     self.dtPickerOptionsLight = {
@@ -55,7 +64,9 @@
         'yearMapHeat': false,
         'preventModeToggle': false,
         'preventCalNav': true,
-        'showMarkerForMoreEvents': false
+        'showMarkerForMoreEvents': false,
+        'hideCalNav': true,
+        toggleModeCallBack: self.toggleModeCallBack
     };
 
     self.dtPickerOptionsLight2 = {
@@ -66,7 +77,8 @@
         'yearMapHeat': false,
         'preventModeToggle': false,
         'preventCalNav': false,
-        'showMarkerForMoreEvents': false
+        'showMarkerForMoreEvents': false,
+        'hideCalNav' : true
     };
 
     self.dtPickerOptionsMonth = {

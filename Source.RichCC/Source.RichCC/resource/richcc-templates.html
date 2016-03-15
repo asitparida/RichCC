@@ -40,14 +40,14 @@
                 <tr class="header-action-holder">
                     <th colspan="1" ng-if="light != true"></th>
                     <th colspan="{{light == true ? 8 : 5}}">
-                        <div class="header-actions">
-                            <div class="icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
+                        <div class="header-actions" ng-class="{'calNavHidden' : hideCalNav == true}">
+                            <div class="icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true" ng-hide="hideCalNav == true">
                                 <i class="icon icon-ScrollChevronLeftLegacy"></i>
                             </div>
-                            <div class="icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode  || light == true || preventModeToggle == true" tabindex="0">
+                            <div class="icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
                                 <label class="title">{{title}}</label>
                             </div>
-                            <div class="icon-container nav-right" cc-key="move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
+                            <div class="icon-container nav-right" cc-key="move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true" ng-hide="hideCalNav == true">
                                 <i class="icon icon-ScrollChevronRightLegacy"></i>
                             </div>
                         </div>
@@ -174,7 +174,7 @@
                             <div class="icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                                 <i class="icon icon-ScrollChevronLeftLegacy"></i>
                             </div>
-                            <div class="icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode || preventModeToggle == true" tabindex="0">
+                            <div class="icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
                                 <label class="title">{{title}}</label>
                             </div>
                             <div class="icon-container nav-right" cc-key="move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
@@ -245,7 +245,7 @@
                             <div class="icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                                 <i class="icon icon-ScrollChevronLeftLegacy"></i>
                             </div>
-                            <div class="icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode || preventModeToggle == true" tabindex="0">
+                            <div class="icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
                                 <label class="title">{{title}}</label>
                             </div>
                             <div class="icon-container nav-right" cc-key="move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
@@ -383,7 +383,7 @@
                             <div class="icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                                 <i class="icon icon-ScrollChevronLeftLegacy"></i>
                             </div>
-                            <div class="icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode || preventModeToggle == true" tabindex="0">
+                            <div class="icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
                                 <label class="title">{{title}}</label>
                             </div>
                             <div class="icon-container nav-right" cc-key="move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">

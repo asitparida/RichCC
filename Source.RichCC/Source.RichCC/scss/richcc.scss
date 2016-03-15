@@ -847,6 +847,12 @@
                         margin: 0 auto;
                         height: 36px;
 
+                        &.calNavHidden {
+                            .labelHolder {
+                                width: 100%;
+                            }
+                        }
+
                         .icon {
                             top: 5px;
                             left: 7px;
