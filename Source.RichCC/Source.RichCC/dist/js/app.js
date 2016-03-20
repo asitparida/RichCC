@@ -66,7 +66,8 @@
         'preventCalNav': true,
         'showMarkerForMoreEvents': false,
         'hideCalNav': true,
-        toggleModeCallBack: self.toggleModeCallBack
+        toggleModeCallBack: self.toggleModeCallBack,
+        'dayPopUpTmpl': 'someCustomPopUp.html'
     };
 
     self.dtPickerOptionsLight2 = {
