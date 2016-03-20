@@ -92,6 +92,14 @@
     self.popupSettings = {
         'hidden': false,
         'showLeft': true,
+        'showRight': true,
+        'leftLabel': 'Add Events',
+        'rightLabel': 'Edit Details',
+    };
+
+    self.popupSettings2 = {
+        'hidden': false,
+        'showLeft': false,
         'showRight': false,
         'leftLabel': 'Add Events',
         'rightLabel': 'Edit Details',

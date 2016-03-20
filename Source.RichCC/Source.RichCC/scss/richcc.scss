@@ -70,6 +70,10 @@
             height: calc(100% - 48px);
             width: 100%;
 
+            &.noActions {
+                height: 100%;
+            }
+
             .event-container-label {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 font-size: small;
