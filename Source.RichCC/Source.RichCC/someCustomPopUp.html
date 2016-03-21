@@ -1,0 +1,22 @@
+﻿<div class="richcc-day-popup">
+    <div class="event-container" ng-class="{'noActions': !(eventPopupSettings.showLeft || eventPopupSettings.showRight)}">
+        <div class="event-container-label">{{dt.date | date:'short'}}</div>
+        <div class="event-details-container">
+            <div class="event-detail" ng-repeat="event in eventDetails[dt.key]">
+                <div class="event-marker"></div>
+                <div class="event-title-holder" ng-style="{'border-left-color': event.bgcolor}">
+                    <span class="event-title">{{event.name}}</span> : <span class="event-subject">{{event.subject}}</span>
+                    <div class="event-timing-holder">
+                        <span class="event-time">{{event.startDt | date:'MM/dd/yy'}} 9.00</span><span style="padding: 0 15px;">-</span><span class="event-time">{{event.endDt | date:'MM/dd/yy'}} 9.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="event-action-container"
+         ng-class="{'singleButtonOnly' : (eventPopupSettings.showLeft != false && eventPopupSettings.showRight == false) || (eventPopupSettings.showLeft == false && eventPopupSettings.showRight != false)}"
+         ng-show="eventPopupSettings.showLeft || eventPopupSettings.showRight">
+        <button class="event-action" ng-if="eventPopupSettings.showLeft != false" ng-click="popUpLeftHandler(dt, eventDetails[dt.key])">Custom Labels Only</button>
+
+    </div>
+</div>

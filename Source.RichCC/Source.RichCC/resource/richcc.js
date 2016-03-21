@@ -27,6 +27,8 @@
     showMarkerForMoreEvents: true,
     showDataLabel: false,
     defaultDataLabel: '00:00',
+    monthPopUpTmpl: 'template/richcc/richccMonthPopup.html',
+    dayPopUpTmpl: 'template/richcc/richccDayPopup.html'
 })
 
 .controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser',
@@ -49,6 +51,8 @@
             'showMarkerForMoreEvents',
             'showDataLabel',
             'defaultDataLabel',
+            'monthPopUpTmpl',
+            'dayPopUpTmpl',
             'customClass',
             'datepickerMode',
             'formatDay',
@@ -77,6 +81,8 @@
                   case 'showMarkerForMoreEvents':
                   case 'showDataLabel':
                   case 'defaultDataLabel':
+                  case 'monthPopUpTmpl':
+                  case 'dayPopUpTmpl':
                       self[key] = $scope[key] = angular.isDefined($scope.datepickerOptions[key]) ? $scope.datepickerOptions[key] : datepickerConfig[key];
                       if ($scope.datepickerOptions[key]) {
                           $scope.$watch(function () { return $scope.datepickerOptions[key]; }, function (value) {
@@ -426,7 +432,7 @@
 
           var _retData = {
               'datepickerMode': $scope.datepickerMode,
-              'activeDate':self.activeDate
+              'activeDate': self.activeDate
           };
 
           if (typeof $scope.datepickerOptions.toggleModeCallBack === "function") {
