@@ -617,6 +617,9 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
         scope.preventModeToggle = this.preventModeToggle;
+        scope.monthPopUpTmpl = this.monthPopUpTmpl;
+        scope.dayPopUpTmpl = this.dayPopUpTmpl;
+
     };
 
     this.compare = function (date1, date2) {
@@ -1024,6 +1027,8 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
         scope.preventModeToggle = this.preventModeToggle;
+        scope.monthPopUpTmpl = this.monthPopUpTmpl;
+        scope.dayPopUpTmpl = this.dayPopUpTmpl;
     };
 
 
