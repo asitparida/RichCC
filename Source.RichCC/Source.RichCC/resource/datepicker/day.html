@@ -4,14 +4,14 @@
             <th colspan="1" ng-if="light != true"></th>
             <th colspan="{{light == true ? 8 : 5}}">
                 <div class="header-actions">
-                    <div class="icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
-                        <i class="icon icon-ScrollChevronLeftLegacy"></i>
+                    <div class="richcc-icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
+                        <i class="richcc-icon icon-ScrollChevronLeftLegacy"></i>
                     </div>
-                    <div class="icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode  || light == true || preventCalNav == true" tabindex="0">
+                    <div class="richcc-icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode  || light == true || preventCalNav == true" tabindex="0">
                         <label class="title">{{title}}</label>
                     </div>
-                    <div class="icon-container nav-right" cc-key="move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
-                        <i class="icon icon-ScrollChevronRightLegacy"></i>
+                    <div class="richcc-icon-container nav-right" cc-key="move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
+                        <i class="richcc-icon icon-ScrollChevronRightLegacy"></i>
                     </div>
                 </div>
             </th>
@@ -37,7 +37,7 @@
                 popover-append-to-body="true"
                 popover-placement="{{getPopUpPositionForDayMap(rowindex, columnindex)}}"
                 popover-class="richcc-popup-container">
-                <div class="icon-container dayHolder"
+                <div class="richcc-icon-container dayHolder"
                      uib-is-class="
                      'cc-info' for selectedDt,
                      'cc-active' for activeDt
@@ -63,7 +63,7 @@
                     </div>
                     <div class="mark morePresent" ng-show="eventDetails[dt.key].length > 2">
                         <div class="icon-container">
-                            <i class="icon icon-more"></i>
+                            <i class="richcc-icon icon-more"></i>
                         </div>
                     </div>
                 </div>
