@@ -188,7 +188,7 @@
         padding: 0 8px;
     }
 
-    .icon-container {
+    .richcc-icon-container {
         outline: none;
         border: 0;
         display: block;
@@ -223,7 +223,7 @@
         }
     }
 
-    .icon {
+    .richcc-icon {
         background-image: url("data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAABfBAMAAADxD0GSAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAALVBMVEUAAABgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGAAAAAxfQTqAAAADXRSTlMAEbszzHeqIt3uZpmInD1Z3wAAAAFiS0dEAIgFHUgAAAAJcEhZcwAALiMAAC4jAXilP3YAAABjSURBVDjLY2CAAEZlBgQQuYpgM/oGDJwEQ24CDmeh6hlAKeRwG9qAWRGJw3pFAIkX6zgopJBTA4oMsh66S6CE2yigDmCE0hWzgMTeDQwMXDMKGM5eAUrcvcjAwHL3AKoMsh4A9UYwcBnNwrwAAAAASUVORK5CYII=");
         display: inline-block;
         width: 40px;
@@ -857,7 +857,7 @@
                             }
                         }
 
-                        .icon {
+                        .richcc-icon {
                             top: 5px;
                             left: 7px;
                         }
@@ -1101,11 +1101,11 @@
                                     pointer-events: none;
                                     height: 10px;
 
-                                    .icon-container {
+                                    .richcc-icon-container {
                                         height: 10px;
                                         width: 25px;
 
-                                        .icon {
+                                        .richcc-icon {
                                             height: 15px;
                                             width: 30px;
                                             top: -5px;
@@ -1120,7 +1120,7 @@
                         }
                     }
 
-                    .icon-container {
+                    .richcc-icon-container {
                         &.dayHolder {
                             width: 20px;
                             height: 20px;
