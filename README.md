@@ -61,6 +61,8 @@ Sample  Preview @ <a href="http://richcc.azurewebsites.net/">http://richcc.azure
 ##Note
 Since all modules have been built by refactoring the Angular JS UI BootStrap's Datepicker module, the module names have been changed so as to mitigate/prevent any instance clash.
 
+Inline documentation + README last updated 15/03/2016. Please refer sample app in the repo for updated capabilities.</h6>
+
 
 
 
