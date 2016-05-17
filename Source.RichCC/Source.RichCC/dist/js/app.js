@@ -46,6 +46,7 @@
 
     self.dtPickerOptions1 = {
         customClass: getDayClass,
+        //customIconClass:getIconClass,
         showWeeks: false,
         datepickerMode: 'day',
         'yearMapHeat': true,
@@ -199,4 +200,12 @@
         }
         return result;
     };
+
+    function getIconClass(data) {
+        var result = '';
+        if (data.mode === 'day') {
+            result = 'glyphicon glyphicon-search';
+        }
+        return result;
+    }
 }]);

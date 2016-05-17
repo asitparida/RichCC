@@ -54,6 +54,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             'monthPopUpTmpl',
             'dayPopUpTmpl',
             'customClass',
+            'customIconClass',
             'datepickerMode',
             'formatDay',
             'formatDayHeader',
@@ -91,6 +92,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                           });
                       }
                       break;
+                  case 'customIconClass':
                   case 'customClass':
                       self[key] = $scope[key] = $scope.datepickerOptions[key] || angular.noop;
                       break;
@@ -366,7 +368,8 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
               selected: model && this.compare(date, model) === 0,
               disabled: this.isDisabled(date),
               current: this.compare(date, new Date()) === 0,
-              customClass: this.customClass(date) || null
+              customClass: this.customClass(date) || null,
+              customIconClass: this.customIconClass(date) || null
           };
 
           if (model && this.compare(date, model) === 0) {
@@ -389,6 +392,10 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
 
       this.customClass = function (date) {
           return $scope.customClass({ date: date, mode: $scope.datepickerMode });
+      };
+
+      this.customIconClass = function (date) {
+          return $scope.customIconClass({ date: date, mode: $scope.datepickerMode });
       };
 
       // Split array into smaller arrays
@@ -1160,6 +1167,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             datepickerOptions: '=?',
             dateDisabled: '&',
             customClass: '&',
+            customIconClass:'&',
             shortcutPropagation: '&?',
             events: '=',
             dayLabels: '=',
@@ -1471,6 +1479,10 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             datepickerEl.attr('custom-class', 'customClass({ date: date, mode: mode })');
         }
 
+        if (attrs.customIconClass) {
+            datepickerEl.attr('custom-class', 'customIconClass({ date: date, mode: mode })');
+        }
+
         if (!isHtml5DateInput) {
             // Internal API to maintain the correct ng-invalid-[key] class
             ngModel.$$parserName = 'date';
@@ -1729,7 +1741,8 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             clearText: '@',
             closeText: '@',
             dateDisabled: '&',
-            customClass: '&'
+            customClass: '&',
+            customIconClass:'&'
         },
         link: function (scope, element, attrs, ctrls) {
             var ngModel = ctrls[0],

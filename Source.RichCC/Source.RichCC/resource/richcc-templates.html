@@ -90,6 +90,7 @@
                         <div class="richcc-time-label" ng-show="showDataLabel == true && light != true">
                             <span ng-show="dataLabels[dt.key]">{{::dataLabels[dt.key]}}</span>
                             <span ng-hide="dataLabels[dt.key]">{{::defaultDataLabel}}</span>
+                            <span ng-class="::dt.customIconClass"></span>
                         </div>
                         <div class="markHolder" style="position:relative;" ng-show="eventDetails[dt.key].length > 0">
                             <div class="mark step-{{event.step}}"
