@@ -100,7 +100,7 @@
                                  ng-if="event.startPaint == true"
                                  style="color:#fff;">
                                 <div class="mark-text-initial" ng-if="light == true" ng-style="{'color': event.bgcolor}">{{event.initial | limitTo: 1}}</div>
-                                <div class="mark-stripe" ng-style="{'background-color': event.bgcolor}">
+                                <div class="mark-stripe" ng-style="{'background-color': event.bgcolor, 'border-color': event.highlightBorderColor}" ng-class="{'highlightBorder': light == false ? event.highlightBorder : ''}">
                                     <span class="text">{{event.name}}</span>
                                 </div>
                             </div>

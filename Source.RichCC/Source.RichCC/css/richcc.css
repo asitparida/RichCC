@@ -597,6 +597,13 @@
             -o-animation-fill-mode: forwards;
             -webkit-animation-fill-mode: forwards;
             animation-fill-mode: forwards; }
+            .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark .mark-stripe.highlightBorder {
+              border-width: 2px;
+              border-style: dashed;
+              border-color: #000000;
+              -moz-box-sizing: content-box;
+              -webkit-box-sizing: content-box;
+              box-sizing: content-box; }
 
 @-webkit-keyframes richcc-width-animation {
   0% {
