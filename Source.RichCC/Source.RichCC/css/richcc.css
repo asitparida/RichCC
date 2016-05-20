@@ -566,7 +566,7 @@
           padding: 0;
           line-height: 14px;
           opacity: 0;
-          background: #fcfcfc;
+          background: transparent;
           -moz-transition: all 300ms linear 300ms, width 300ms linear;
           -o-transition: all 300ms linear 300ms, width 300ms linear;
           -webkit-transition: all 300ms linear 300ms, width 300ms linear;
@@ -596,14 +596,25 @@
             -moz-animation-fill-mode: forwards;
             -o-animation-fill-mode: forwards;
             -webkit-animation-fill-mode: forwards;
-            animation-fill-mode: forwards; }
+            animation-fill-mode: forwards;
+            border: 2px dashed transparent;
+            -moz-box-sizing: content-box;
+            -webkit-box-sizing: content-box;
+            box-sizing: content-box; }
             .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark .mark-stripe.highlightBorder {
-              border-width: 2px;
-              border-style: dashed;
-              border-color: #000000;
-              -moz-box-sizing: content-box;
-              -webkit-box-sizing: content-box;
-              box-sizing: content-box; }
+              border-color: #000000; }
+              .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark .mark-stripe.highlightBorder .mark-stripe-color {
+                width: calc(100% - 2px);
+                height: calc(100% - 2px);
+                position: absolute;
+                top: 1px;
+                left: 1px; }
+            .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark .mark-stripe .mark-stripe-color {
+              width: 100%;
+              height: calc(100% - 2px);
+              position: absolute;
+              top: 1px;
+              left: 0; }
 
 @-webkit-keyframes richcc-width-animation {
   0% {
@@ -2930,11 +2941,13 @@
             text-transform: uppercase;
             padding: 0 5px;
             margin: 0;
-            font-size: 12px; }
+            font-size: 12px;
+            position: relative;
+            top: -1px; }
           .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark.top {
             top: 5px; }
           .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark.bottom {
-            top: 25px; }
+            top: 28px; }
           .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark.morePresent {
             bottom: 0;
             background: none;
