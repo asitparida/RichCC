@@ -566,7 +566,7 @@
           padding: 0;
           line-height: 14px;
           opacity: 0;
-          background: #fcfcfc;
+          background: transparent;
           -moz-transition: all 300ms linear 300ms, width 300ms linear;
           -o-transition: all 300ms linear 300ms, width 300ms linear;
           -webkit-transition: all 300ms linear 300ms, width 300ms linear;
@@ -574,7 +574,7 @@
           .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark .mark-stripe {
             width: 0;
             white-space: nowrap;
-            height: 15px;
+            height: 17px;
             position: absolute;
             display: block;
             -moz-animation-name: richcc-width-animation;
@@ -596,14 +596,25 @@
             -moz-animation-fill-mode: forwards;
             -o-animation-fill-mode: forwards;
             -webkit-animation-fill-mode: forwards;
-            animation-fill-mode: forwards; }
+            animation-fill-mode: forwards;
+            border: 2px dashed transparent;
+            -moz-box-sizing: content-box;
+            -webkit-box-sizing: content-box;
+            box-sizing: content-box; }
             .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark .mark-stripe.highlightBorder {
-              border-width: 2px;
-              border-style: dashed;
-              border-color: #000000;
-              -moz-box-sizing: content-box;
-              -webkit-box-sizing: content-box;
-              box-sizing: content-box; }
+              border-color: #000000; }
+              .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark .mark-stripe.highlightBorder .mark-stripe-color {
+                width: calc(100% - 4px);
+                height: calc(100% - 4px);
+                position: absolute;
+                top: 2px;
+                left: 2px; }
+            .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark .mark-stripe .mark-stripe-color {
+              width: 100%;
+              height: calc(100% - 4px);
+              position: absolute;
+              top: 2px;
+              left: 0; }
 
 @-webkit-keyframes richcc-width-animation {
   0% {
@@ -2930,11 +2941,13 @@
             text-transform: uppercase;
             padding: 0 5px;
             margin: 0;
-            font-size: 12px; }
+            font-size: 12px;
+            position: relative;
+            top: -1px; }
           .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark.top {
             top: 5px; }
           .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark.bottom {
-            top: 25px; }
+            top: 30px; }
           .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark.morePresent {
             bottom: 0;
             background: none;
@@ -3017,6 +3030,12 @@
             top: 5px;
             width: calc(100% - 50px);
             margin-left: 18px; }
+            .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder .mark .mark-stripe .mark-stripe-color {
+              width: 100%;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 0; }
             .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder .mark .mark-stripe .text {
               display: none; }
       .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td.richcc-light-lastdaymark {
