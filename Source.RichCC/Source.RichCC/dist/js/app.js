@@ -46,7 +46,7 @@
 
     self.dtPickerOptions1 = {
         customClass: getDayClass,
-        //customIconClass:getIconClass,
+        customIconClass:getIconClass,
         showWeeks: false,
         datepickerMode: 'day',
         'yearMapHeat': true,
