@@ -71,7 +71,7 @@
                         ng-init="columnindex = $index"
                         ng-click="richccDaySelected(dt, eventDetails[dt.key])"
                         uib-popover-template="dayPopUpTmpl"
-                        popover-trigger="{{eventDetails[dt.key].length > 0 && eventPopupSettings.hidden != true ? 'outsideClick' : 'none'}}"
+                        popover-trigger="{{popUpTrigger(eventDetails[dt.key])}}"
                         popover-append-to-body="true"
                         popover-placement="{{getPopUpPositionForDayMap(rowindex, columnindex)}}"
                         popover-class="richcc-popup-container">
@@ -138,26 +138,31 @@
                         class="uib-day text-center richcc-td richcc-td-space{{weekindex}}"
                         ng-init="weekindex = $index">
                         <div class="richcc-month-eventbox" ng-repeat="column in row track by $index" ng-if="(weekindex != 5) || (weekindex == 5 && $index < 3)">
-                            <div class="richcc-eventbox-content"
-                                 ng-class="{'notInPresentMonth' : column.monthIndex != monthIndex}"
-                                 ng-init="popitem = column;"
+                            <div class="richcc-eventbox-content {{::column.customClass}}"
+                                 ng-class="{'notInPresentMonth' : column.monthIndex != monthIndex, 'showingDates': parent.eventPopupSettings.showDateInYearView == true}"
+                                 ng-init="popitem = column;mEvents = parent.monthWiseEventDetails[monthIndex][popitem.key]"                                 
                                  uib-popover-template="monthPopUpTmpl"
                                  ng-click="richccDaySelected(column, parent.monthWiseEventDetails[monthIndex][popitem.key])"
-                                 popover-trigger="{{parent.monthWiseEventDetails[monthIndex][popitem.key].length > 0 &&  eventPopupSettings.hidden != true && column.monthIndex == monthIndex ? 'outsideClick' : 'none'}}"
+                                 popover-trigger="{{popUpTriggerYearView(mEvents)}}"
                                  popover-append-to-body="true"
                                  popover-placement="{{getPopUpPositionForMonthEventMap(monthIndex, weekindex)}}"
-                                 popover-class="richcc-popup-container">
-                                <div class="markHolder" style="position:relative;" ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length > 0">
+                                 popover-class="richcc-popup-container">                                
+                                <div class="markHolder" style="position:relative;">
+                                    <div class="month-date" ng-show="column.monthIndex == monthIndex && parent.eventPopupSettings.showDateInYearView == true">{{popitem.date | date:'dd'}}</div>
                                     <div class="mark step-{{event.step}}"
+                                         ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length > 0"
                                          ng-class="{'top': event.order == 1, 'bottom': event.order == 2}"
                                          ng-style="{'color': event.color, 'width': 'calc(' + 100 * event.paintBoxLengthForMonth + '% - 18px)'}"
                                          ng-repeat="event in parent.monthWiseEventDetails[monthIndex][column.key]"
                                          ng-if="event.startPaintForMonth == true"
                                          style="color:#fff;">
                                         <div class="mark-text-initial" ng-style="{'color': event.bgcolor}">{{event.initial | limitTo: 1}}</div>
-                                        <div class="mark-stripe light" ng-style="{'background-color': event.bgcolor}"></div>
+                                        <!--<div class="mark-stripe light" ng-style="{'background-color': event.bgcolor}"></div>-->
+                                        <div class="mark-stripe light">
+                                            <div class="mark-stripe-color" ng-style="{'background-color': event.bgcolor}"></div>
+                                        </div>
                                     </div>
-                                </div>
+                                </div>                                
                             </div>
                         </div>
                     </td>
@@ -331,7 +336,7 @@
     <div id="richccTmplDayPopup">
         <div class="richcc-day-popup">
             <div class="event-container" ng-class="{'noActions': !(eventPopupSettings.showLeft || eventPopupSettings.showRight)}">
-                <div class="event-container-label">{{dt.date | date:'dd MMM, yyyy'}} ({{eventDetails[dt.key].length}} Events)</div>
+                <div class="event-container-label">{{dt.date | date:'dd MMM, yyyy'}} <span ng-show="eventDetails[dt.key].length > 0 ">({{eventDetails[dt.key].length}} Events)</span></div>
                 <div class="event-details-container">
                     <div class="event-detail" ng-repeat="event in eventDetails[dt.key]">
                         <div class="event-marker"></div>
@@ -357,7 +362,7 @@
     <div id="richccTmplRichccMonthPopup">
         <div class="richcc-day-popup">
             <div class="event-container" ng-class="{'noActions': !(parent.eventPopupSettings.showLeft || parent.eventPopupSettings.showRight)}">
-                <div class="event-container-label">{{popitem.date | date:'dd MMM, yyyy'}} ({{parent.monthWiseEventDetails[monthIndex][popitem.key].length}} Events)</div>
+                <div class="event-container-label">{{popitem.date | date:'dd MMM, yyyy'}} <span ng-show="parent.monthWiseEventDetails[monthIndex][popitem.key].length > 0 ">({{parent.monthWiseEventDetails[monthIndex][popitem.key].length}} Events)</span></div>
                 <div class="event-details-container">
                     <div class="event-detail" ng-repeat="event in parent.monthWiseEventDetails[monthIndex][popitem.key]">
                         <div class="event-marker"></div>
