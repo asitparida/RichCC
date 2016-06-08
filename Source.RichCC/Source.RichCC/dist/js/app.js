@@ -31,7 +31,7 @@
     ];
 
     self.dtPickerOptions = {
-        customClass: getDayClass,
+        //customClass: getDayClass,
         showWeeks: false,
         datepickerMode: 'day'
     };
@@ -97,14 +97,17 @@
         'showRight': true,
         'leftLabel': 'Add Events',
         'rightLabel': 'Edit Details',
+        'showWhenEventsEmpty': true
     };
 
     self.popupSettings2 = {
         'hidden': false,
-        'showLeft': false,
-        'showRight': false,
+        'showLeft': true,
+        'showRight': true,
         'leftLabel': 'Add Events',
         'rightLabel': 'Edit Details',
+        'showWhenEventsEmpty': true,
+        'showDateInYearView': true
     };
 
     self.popupSettingsHidden = {
@@ -194,7 +197,7 @@
 
     function getDayClass(data) {
         var result = '';
-        if (data.mode === 'day') {
+        if (data.mode === 'day' || data.mode === 'year') {
             if (data.date.getDay() == 0 || data.date.getDay() == 6)
                 result = 'dayDisabled';
         }

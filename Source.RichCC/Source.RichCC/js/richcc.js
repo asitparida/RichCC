@@ -541,6 +541,36 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             scope.$parent.daySelectCallback({ 'data': data });
     }
 
+    scope.popUpTrigger = function (events) {
+        var eventPopupSettings = scope.eventPopupSettings;
+        if (typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty != true) {
+            if (typeof events === 'undefined' || events == null || events == {})
+                return 'none';
+            else if (events.length > 0 && eventPopupSettings.hidden != true)
+                return 'outsideClick';
+        }
+        else if (typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty == true) {
+            return 'outsideClick';
+        }
+        else
+            return 'none';
+    }
+
+    scope.popUpTriggerYearView = function (events) {
+        var eventPopupSettings = scope.parent.eventPopupSettings;
+        if (typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty != true) {
+            if (typeof events === 'undefined' || events == null || events == {})
+                return 'none';
+            else if (events.length > 0 && eventPopupSettings.hidden != true)
+                return 'outsideClick';
+        }
+        else if (typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty == true) {
+            return 'outsideClick';
+        }
+        else
+            return 'none';
+    }
+
     scope.popUpLeftHandler = function (dt, events) {
         var data = { 'dt': dt, 'events': events };
         if (typeof scope.eventPopupLeftCallback === 'function')
@@ -985,8 +1015,13 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                 key: days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate(),
                 monthIndex: days[i].getMonth()
             });
+            if (typeof scope.customClass !== 'undefined' && typeof scope.customClass === 'function')
+                days[i].customClass = scope.customClass({ date: days[i].date, mode: 'year' }) || null;
+            else if (typeof scope.datepickerOptions !== 'undefined' && typeof scope.datepickerOptions.customClass !== 'undefined' && typeof scope.datepickerOptions.customClass === 'function')
+                days[i].customClass = scope.datepickerOptions.customClass({ date: days[i].date, mode: 'year' }) || null;
+            else if (typeof scope.$parent.datepickerOptions !== 'undefined' && typeof scope.$parent.datepickerOptions.customClass !== 'undefined' && typeof scope.$parent.datepickerOptions.customClass === 'function')
+                days[i].customClass = scope.$parent.datepickerOptions.customClass({ date: days[i].date, mode: 'year' }) || null;
         }
-
 
         scope.labels = new Array(7);
         this.labels = [];
@@ -1167,7 +1202,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             datepickerOptions: '=?',
             dateDisabled: '&',
             customClass: '&',
-            customIconClass:'&',
+            customIconClass: '&',
             shortcutPropagation: '&?',
             events: '=',
             dayLabels: '=',
@@ -1742,7 +1777,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             closeText: '@',
             dateDisabled: '&',
             customClass: '&',
-            customIconClass:'&'
+            customIconClass: '&'
         },
         link: function (scope, element, attrs, ctrls) {
             var ngModel = ctrls[0],
