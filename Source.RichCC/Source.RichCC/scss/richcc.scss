@@ -128,6 +128,15 @@
                 min-height: 75px;
                 padding: 15px;
                 border-bottom: 1px solid #F0F0F0;
+                cursor: pointer;
+
+                &:active {
+                    -moz-transform: scale(0.98, 0.98);
+                    -ms-transform: scale(0.98, 0.98);
+                    -o-transform: scale(0.98, 0.98);
+                    -webkit-transform: scale(0.98, 0.98);
+                    transform: scale(0.98, 0.98);
+                }
 
                 &:first-child {
                     padding-top: 0;
