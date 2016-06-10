@@ -542,33 +542,42 @@
     }
 
     scope.popUpTrigger = function (events) {
-        var eventPopupSettings = scope.eventPopupSettings;
-        if (typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty != true) {
-            if (typeof events === 'undefined' || events == null || events == {})
-                return 'none';
-            else if (events.length > 0 && eventPopupSettings.hidden != true)
+        try {
+            var eventPopupSettings = scope.eventPopupSettings;
+            if (typeof eventPopupSettings !== 'undefined' && typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty != true) {
+                if (typeof events === 'undefined' || events == null || events == {})
+                    return 'none';
+                else if (events.length > 0 && eventPopupSettings.hidden != true)
+                    return 'outsideClick';
+            }
+            else if (typeof eventPopupSettings !== 'undefined' && typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty == true) {
                 return 'outsideClick';
-        }
-        else if (typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty == true) {
-            return 'outsideClick';
-        }
-        else
+            }
+            else
+                return 'none';
+        } catch (e) {
             return 'none';
+        }
     }
 
     scope.popUpTriggerYearView = function (events) {
-        var eventPopupSettings = scope.parent.eventPopupSettings;
-        if (typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty != true) {
-            if (typeof events === 'undefined' || events == null || events == {})
-                return 'none';
-            else if (events.length > 0 && eventPopupSettings.hidden != true)
+        try {
+            var eventPopupSettings = scope.parent.eventPopupSettings;
+            if (typeof eventPopupSettings !== 'undefined' && typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty != true) {
+                if (typeof events === 'undefined' || events == null || events == {})
+                    return 'none';
+                else if (events.length > 0 && eventPopupSettings.hidden != true)
+                    return 'outsideClick';
+            }
+            else if (typeof eventPopupSettings !== 'undefined' && typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty == true) {
                 return 'outsideClick';
-        }
-        else if (typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty == true) {
-            return 'outsideClick';
-        }
-        else
+            }
+            else
+                return 'none';
+        } catch (e) {
             return 'none';
+        }
+       
     }
 
     scope.popUpLeftHandler = function (dt, events) {
