@@ -93,8 +93,8 @@
 
     self.popupSettings = {
         'hidden': false,
-        'showLeft': true,
-        'showRight': true,
+        'showLeft': false,
+        'showRight': false,
         'leftLabel': 'Add Events',
         'rightLabel': 'Edit Details',
         'showWhenEventsEmpty': true
@@ -126,6 +126,11 @@
 
     self.rightCallback = function (data) {
         console.log('rightCallback');
+        console.log(data);
+    }
+
+    self.eventClickCallback = function(data) {
+        console.log('eventClickCallback');
         console.log(data);
     }
 
