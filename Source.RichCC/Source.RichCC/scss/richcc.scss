@@ -986,12 +986,12 @@
                                 transition: all 300ms linear 300ms, width 300ms linear;
 
                                 .mark-stripe {
-                                    width: 0;
+                                    width: 100%;
                                     white-space: nowrap;
                                     height: 17px;
                                     position: absolute;
                                     display: block;
-                                    -moz-animation-name: richcc-width-animation;
+                                    /*-moz-animation-name: richcc-width-animation;
                                     -o-animation-name: richcc-width-animation;
                                     -webkit-animation-name: richcc-width-animation;
                                     animation-name: richcc-width-animation;
@@ -1010,7 +1010,7 @@
                                     -moz-animation-fill-mode: forwards;
                                     -o-animation-fill-mode: forwards;
                                     -webkit-animation-fill-mode: forwards;
-                                    animation-fill-mode: forwards;
+                                    animation-fill-mode: forwards;*/
                                     border: 2px dashed transparent;
                                     -moz-box-sizing: content-box;
                                     -webkit-box-sizing: content-box;
