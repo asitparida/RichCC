@@ -60,7 +60,8 @@
         'showMarkerForMoreEvents': true,
         'showDataLabel': true,
         'defaultDataLabel': '00:00',
-        moveModeCallback: self.moveModeCallback
+        moveModeCallback: self.moveModeCallback,
+        enableWebWorkers: false
     };
 
     self.dtPickerOptionsLight = {

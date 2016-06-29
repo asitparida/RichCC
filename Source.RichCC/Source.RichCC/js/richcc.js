@@ -566,6 +566,22 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                   return i;
               }
 
+              function _dayInCurrentRows(_day, rows) {
+                  var result = false;
+                  if (rows.length > 0) {
+                      var _totalNumberOfRows = rows.length;
+                      if (rows[0].length > 0) {
+                          var _totalNumberOfColumns = rows[_totalNumberOfRows - 1].length;
+                          rows[0][0].date = new Date(rows[0][0].date);
+                          rows[_totalNumberOfRows - 1][_totalNumberOfColumns - 1].date = new Date(rows[_totalNumberOfRows - 1][_totalNumberOfColumns - 1].date);
+                          _day = new Date(_day);
+                          if (_day >= rows[0][0].date && _day <= rows[_totalNumberOfRows - 1][_totalNumberOfColumns - 1].date)
+                              result = true;
+                      }
+                  }
+                  return result;
+              }
+
               function _dayInCurrentMonth(_day, _rows) {
                   var result = false;
                   if (_rows.length > 0) {
@@ -573,8 +589,10 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                       if (_rows[0].length > 0) {
                           var _midDate = _rows[2][3];
                           _midDate.date = new Date(_midDate.date);
-                          var _firstDay = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth(), 1)).setHours(0, 0, 0, 0);
-                          var _lastDay = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth() + 1, 0)).setHours(0, 0, 0, 0);
+                          var _nt = new Date(_midDate.date.getFullYear(), _midDate.date.getMonth(), 1);
+                          var _firstDay = _nt.setHours(0, 0, 0, 0);
+                          var _et = new Date(_midDate.date.getFullYear(), _midDate.date.getMonth() + 1, 0);
+                          var _lastDay = _et.setHours(0, 0, 0, 0);
                           if (_day >= _firstDay && _day <= _lastDay)
                               result = true;
                       }
@@ -612,7 +630,69 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                   return _result;
               }
 
+              function dayIsWeekFirst(_day, _weekFirsts) {
+                  var _found = _.find(_weekFirsts, function (d) {
+                      return d.date.getDate() == _day.getDate() && d.date.getMonth() == _day.getMonth() && d.date.getFullYear() == _day.getFullYear();
+                  });
+                  if (typeof _found === 'undefined')
+                      return false;
+                  else
+                      return true;
+              }
+
               function processEvents(events, rows) {
+                  var _weekFirsts = _.map(rows, function (row) { var _first = row[0]; _first.date = new Date(_first.date); _first._date = _first.date.setHours(0, 0, 0, 0); return _first });
+                  var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
+                  var _sortedEvents = _events.sort(function (a, b) {
+                      if (a._startDt == b._startDt) {
+                          return dtCompare(a._endDt, b._endDt);
+                      }
+                      else
+                          return dtCompare(a._startDt, b._startDt);
+                  });
+                  var _dayEventDetails = {};
+                  var _step = 1;
+                  _.each(_sortedEvents, function (_event) {
+                      var _days = getDaysBetweenDates(_event._startDt, _event._endDt);                      
+                      var _eventDetail = {};
+                      angular.extend(_eventDetail, _event);
+                      _eventDetail.order = null;
+                      _eventDetail.first = null;
+                      _.each(_days, function (_day, _iter) {
+                          var _proceedFurther = _dayInCurrentRows(_day, rows);
+                          if (_proceedFurther == true) {
+                              var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
+                              if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
+                                  _dayEventDetails[key] = [];
+                              var _oldOrder = _eventDetail.order;
+                              if (_iter == 0) {
+                                  _eventDetail.order = getOrder(_dayEventDetails[key]);
+                              }
+                              if (dayIsWeekFirst(_day, _weekFirsts) == true) {
+                                  _eventDetail.order = getOrder(_dayEventDetails[key]);
+                              }
+                              var _newOrder = _eventDetail.order;
+                              if (_oldOrder != _newOrder && _newOrder <= 2)
+                                  _eventDetail.startPaint = _eventDetail.startPaintForMonth = true;
+                              else
+                                  _eventDetail.startPaint = _eventDetail.startPaintForMonth = false;
+                              if (dayIsWeekFirst(_day, _weekFirsts) == true && _newOrder <= 2)
+                                  _eventDetail.startPaint = true;
+                              _eventDetail.paintBoxLength = Math.min(7 - _day.getDay(), _days.length - _iter);
+                              _eventDetail.paintBoxLengthForMonth = _days.length;
+                              if (_eventDetail.startPaint == true) {
+                                  _eventDetail.step = _step;
+                                  _step = _step + 1;
+                              }
+                              var _newEventDetail = _.clone(_eventDetail);
+                              _dayEventDetails[key].push(_newEventDetail);
+                          }
+                      });
+                  });
+                  return _dayEventDetails;
+              }
+
+              function processEventsForMonthEventViewer(events, rows) {
                   var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
                   var _sortedEvents = _events.sort(function (a, b) {
                       if (a._startDt == b._startDt) {
@@ -661,9 +741,14 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                   });
                   return _dayEventDetails;
               }
+
               var _input = JSON.parse(input);
-              var result = processEvents(_input.evts, _input.rws);
-              output.resolve(JSON.stringify(result));
+              var _result;
+              if (_input.process == 'month')
+                  _result = processEventsForMonthEventViewer(_input.evts, _input.rws);
+              else if (_input.process == 'day')
+                  _result = processEvents(_input.evts, _input.rws);
+              output.resolve(JSON.stringify(_result));
           }]);
     }
 
@@ -819,7 +904,23 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             scope.dataLabels = this.processLabels(this._dayLabels);
         }
 
-        scope.eventDetails = this.processEvents(this._events, scope.rows);
+        if (_enableWebWorkers) {
+            var _evts = this._events;
+            workerPromise.then(function success(angularWorker) {
+                var inputObject = { 'evts': _evts, 'rws': scope.rows, 'process': 'day' };
+                return angularWorker.run(JSON.stringify(inputObject));
+            }, function error(reason) {
+                console.log('error' + _indexMonth);
+                console.log(reason);
+            }).then(function success(result) {
+                var _result = JSON.parse(result);
+                scope.eventDetails = _result;
+            });
+        }
+        else {
+            scope.eventDetails = this.processEvents(this._events, scope.rows);
+        }
+
         scope.light = this.light;
         scope.yearMapHeat = this.yearMapHeat;
         scope.eventPopupHide = this.eventPopupHide;
@@ -1228,18 +1329,16 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
 
         var _indexMonth = this.activeMonthViewDate.getMonth();
 
-        var _evts = this._events;
-
         if (_enableWebWorkers) {
+            var _evts = this._events;
             workerPromise.then(function success(angularWorker) {
-                var inputObject = { 'evts': _evts, 'rws': scope.rows };
+                var inputObject = { 'evts': _evts, 'rws': scope.rows, 'process': 'month' };
                 return angularWorker.run(JSON.stringify(inputObject));
             }, function error(reason) {
                 console.log('error' + _indexMonth);
                 console.log(reason);
             }).then(function success(result) {
                 var _result = JSON.parse(result);
-                console.log(_result);
                 if (this.yearMapHeat) {
                     if (typeof scope.monthViewData !== 'undefined')
                         scope.monthWiseEventDetails[_indexMonth] = _result;
@@ -1252,11 +1351,6 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                     else if (typeof scope.$parent.monthViewData !== 'undefined')
                         scope.$parent.monthWiseEventDetails[_indexMonth] = _result;
                 }
-                //handle result  
-            }, function error(reason) {
-                //handle error  
-            }, function notify(update) {
-                //handle update  
             });
         }
         else {
