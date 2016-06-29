@@ -1,11 +1,5 @@
-﻿angular.module('richCCSample', ['richcc.bootstrap.datepicker', 'FredrikSandell.worker-pool'])
-.run(['WorkerService',(function (WorkerService) {
-    //WorkerService.setAngularUrl('/lib/angular.min.js');
-    console.log(WorkerService);
-    WorkerService.setAngularUrl('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js');
-    //WorkerService.addDependency('', 'richCCSample', '');
-})])
-.controller('richCCController', ["$scope", "$timeout", "WorkerService", function ($scope, $timeout, WorkerService) {
+﻿angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
+.controller('richCCController', ["$scope", "$timeout", function ($scope, $timeout) {
     var self = this;
     self.sampleEvents = [
         { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true,   'highlightBorderColor' : '#000000' },
@@ -94,8 +88,7 @@
         showWeeks: false,
         datepickerMode: 'month',
         'yearMapHeat': false,
-        'preventModeToggle': true,
-        enableWebWorkers: true
+        'preventModeToggle': true
     };
 
     self.popupSettings = {
@@ -218,62 +211,4 @@
         }
         return result;
     }
-
-    //var workerPromise = WorkerService.createAngularWorker(['input', 'output' /*additional optional deps*/,
-    //function (input, output /*additional optional deps*/) {
-    //    // This contains the worker body.
-    //    // The function must be self contained. The function body will be 
-    //    // converted to source and passed to the worker.  
-    //    // The input parameter is what will be passed to the worker when
-    //    // it is executed. It must be a serializable object.
-    //    // The output parameter is a promise and is what the 
-    //    // worker will return to the main thread.  
-    //    // All communication from the worker to the main thread is performed
-    //    // by resolving, rejecting or notifying the output promise.
-    //    // We may optionally depend on other angular services. 
-    //    // These services can be used just as in the main thread. 
-    //    // But be aware that no state changes in the angular services in the
-    //    // worker are propagates to the main thread. Workers run in fully isolated
-    //    // contexts. All communication must be performed through the output parameter.
-    //    console.log(input);
-    //    output.resolve('hgouyuigu');
-    //    console.log(output);
-    //}]);
-
-    //workerPromise.then(function success(angularWorker) {
-    //    //The input must be serializable  
-    //    return angularWorker.run('hello');
-    //}, function error(reason) {
-    //    console.log('error');
-    //    console.log(reason);
-    //    //for some reason the worker failed to initialize  
-    //    //not all browsers support the HTML5 tech that is required, see below.  
-    //}).then(function success(result) {
-    //    console.log('result');
-    //    console.log(result);
-    //    //handle result  
-    //}, function error(reason) {
-    //    //handle error  
-    //}, function notify(update) {
-    //    //handle update  
-    //});
-
-    //workerPromise.then(function success(angularWorker) {
-    //    //The input must be serializable  
-    //    return angularWorker.run('hello2');
-    //}, function error(reason) {
-    //    console.log('error2');
-    //    console.log(reason);
-    //    //for some reason the worker failed to initialize  
-    //    //not all browsers support the HTML5 tech that is required, see below.  
-    //}).then(function success(result) {
-    //    console.log('result2');
-    //    console.log(result);
-    //    //handle result  
-    //}, function error(reason) {
-    //    //handle error  
-    //}, function notify(update) {
-    //    //handle update  
-    //});
-
 }]);

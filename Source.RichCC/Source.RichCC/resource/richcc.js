@@ -1,4 +1,4 @@
-﻿angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dateparser', 'ui.bootstrap.isClass', 'ui.bootstrap.position', 'FredrikSandell.worker-pool'])
+﻿angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dateparser', 'ui.bootstrap.isClass', 'ui.bootstrap.position'])
 
 .value('$datepickerSuppressError', false)
 
@@ -28,12 +28,11 @@
     showDataLabel: false,
     defaultDataLabel: '00:00',
     monthPopUpTmpl: 'template/richcc/richccMonthPopup.html',
-    dayPopUpTmpl: 'template/richcc/richccDayPopup.html',
-    enableWebWorkers: false
+    dayPopUpTmpl: 'template/richcc/richccDayPopup.html'
 })
 
-.controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser', 'WorkerService',
-  function ($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser, WorkerService) {
+.controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser',
+  function ($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser) {
       var self = this,
           ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl;
           ngModelOptions = {},
@@ -72,13 +71,11 @@
             'shortcutPropagation',
             'startingDay',
             'yearColumns',
-            'yearRows',
-            'enableWebWorkers'
+            'yearRows'
           ], function (key) {
               switch (key) {
                   case 'light':
                   case 'yearMapHeat':
-                  case 'enableWebWorkers':
                   case 'preventModeToggle':
                   case 'preventCalNav':
                   case 'hideCalNav':
@@ -244,13 +241,6 @@
           if ($attrs['yearMapHeat']) {
               watchListeners.push($scope.$parent.$watch($attrs['yearMapHeat'], function (value) {
                   self['yearMapHeat'] = $scope['yearMapHeat'] = angular.isDefined(value) ? value : $attrs['yearMapHeat'];
-                  self.refreshView();
-              }));
-          }
-
-          if ($attrs['enableWebWorkers']) {
-              watchListeners.push($scope.$parent.$watch($attrs['enableWebWorkers'], function (value) {
-                  self['enableWebWorkers'] = $scope['enableWebWorkers'] = angular.isDefined(value) ? value : $attrs['enableWebWorkers'];
                   self.refreshView();
               }));
           }
@@ -510,162 +500,10 @@
               watchListeners.shift()();
           }
       });
-
   }])
 
-.controller('RichccDaypickerController', ['$scope', '$element', 'dateFilter', 'WorkerService', function (scope, $element, dateFilter, WorkerService) {
+.controller('RichccDaypickerController', ['$scope', '$element', 'dateFilter', function (scope, $element, dateFilter) {
     var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-
-    var _enableWebWorkers = scope.enableWebWorkers || scope.$parent.enableWebWorkers;
-    var workerPromise;
-    if (_enableWebWorkers) {
-        workerPromise = WorkerService.createAngularWorker(['input', 'output' /*additional optional deps*/,
-          function (input, output) {
-
-              importScripts('https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js');
-
-              function dtCompare(dta, dtb) {
-                  if (dta < dtb)
-                      return -1;
-                  else if (dta == dtb)
-                      return 0;
-                  else if (dta > dtb)
-                      return 1;
-              }
-              function getDaysBetweenDates(dt1, dt2) {
-                  var _days = [];
-                  var _timeDiff = Math.abs((new Date(dt1)).getTime() - (new Date(dt2)).getTime());
-                  var _diffDays = Math.ceil(_timeDiff / (1000 * 3600 * 24)) + 1;
-                  _.each(_.range(_diffDays), function (i) {
-                      var _day = new Date(dt1);
-                      _day = _day.setDate(_day.getDate() + i);
-                      _days.push(new Date(_day));
-                  });
-                  return _days;
-              }
-
-              function isSameDay(d1, d2) {
-                  d1.setHours(0, 0, 0, 0);
-                  d2.setHours(0, 0, 0, 0);
-                  return d1.getTime() === d2.getTime();
-
-              }
-
-              function getOrder(days) {
-                  var _proceed = true;
-                  var i = 1;
-                  while (_proceed) {
-                      var _found = _.find(days, function (day) { return day.order == i; });
-                      if (typeof _found === 'undefined') {
-                          _proceed = false;
-                      }
-                      else
-                          i = i + 1;
-                  }
-                  return i;
-              }
-
-              function _dayInCurrentMonth(_day, _rows) {
-                  var result = false;
-                  if (_rows.length > 0) {
-                      var _totalNumberOfRows = _rows.length
-                      if (_rows[0].length > 0) {
-                          var _midDate = _rows[2][3];
-                          _midDate.date = new Date(_midDate.date);
-                          var _firstDay = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth(), 1)).setHours(0, 0, 0, 0);
-                          var _lastDay = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth() + 1, 0)).setHours(0, 0, 0, 0);
-                          if (_day >= _firstDay && _day <= _lastDay)
-                              result = true;
-                      }
-                  }
-                  return result;
-              }
-
-              function _getDayListExistingInCurrentMOnth(_days, _rows) {
-                  var _daysCurrent = [];
-                  if (_rows.length > 0) {
-                      //new Date(2008, month + 1, 0);
-                      var _totalNumberOfRows = _rows.length;
-                      if (_rows[0].length > 0) {
-                          var _midDate = _rows[2][3];
-                          var _lastday = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth() + 1, 0)).setHours(0, 0, 0, 0);
-                          _daysCurrent = _.filter(_days, function (_day) {
-                              var _totalNumberOfColumns = _rows[_totalNumberOfRows - 1].length;
-                              _day = new Date(_day);
-                              _rows[0][0].date = new Date(_rows[0][0].date);
-                              return (_day >= _rows[0][0].date && _day <= _lastday);
-                          });
-                      }
-                  }
-                  return _daysCurrent;
-              }
-
-              function _getDayListBasedOnEvent(_daysN, _pday, _stday) {
-                  var _result;
-                  var diff = getDaysBetweenDates(_pday, _stday);
-                  if (_pday.getMonth() == _stday.getMonth())
-                      _result = _daysN.splice(diff.length - 1).length;
-                  else {
-                      _result = _daysN.length;
-                  }
-                  return _result;
-              }
-
-              function processEvents(events, rows) {
-                  var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
-                  var _sortedEvents = _events.sort(function (a, b) {
-                      if (a._startDt == b._startDt) {
-                          return dtCompare(a._endDt, b._endDt);
-                      }
-                      else
-                          return dtCompare(a._startDt, b._startDt);
-                  });
-                  var _dayEventDetails = {};
-                  var _monthEventDetails = {};
-                  var _step = 1;
-                  _.each(_sortedEvents, function (_event) {
-                      var _days = getDaysBetweenDates(_event._startDt, _event._endDt);
-                      var _eventDetail = {};
-                      angular.extend(_eventDetail, _event);
-                      _eventDetail.order = null;
-                      _eventDetail.first = null;
-                      _.each(_days, function (_day, _iter) {
-                          var _proceedFurther = _dayInCurrentMonth(_day, rows);
-                          if (_proceedFurther == true) {
-                              var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
-                              if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
-                                  _dayEventDetails[key] = [];
-                              var _evKey = _eventDetail.id + '_' + _day.getMonth();
-                              if (_monthEventDetails[_evKey] != true) {
-                                  var _oldOrder = _eventDetail.order;
-                                  _eventDetail.order = getOrder(_dayEventDetails[key]);
-                                  var _newOrder = _eventDetail.order;
-                                  if (_oldOrder != _newOrder && _newOrder <= 2) {
-                                      _eventDetail.startPaintForMonth = true;
-                                      var _availableDaysToMark = _getDayListExistingInCurrentMOnth(_days, rows);
-                                      var _r = _getDayListBasedOnEvent(_availableDaysToMark, _day, new Date(_event._startDt));
-                                      _eventDetail.paintBoxLengthForMonth = _r;
-                                      _monthEventDetails[_evKey] = true;
-                                  }
-                                  else {
-                                      _eventDetail.startPaintForMonth = false;
-                                  }
-                              } else {
-                                  _eventDetail.startPaintForMonth = false;
-                              }
-                              var _newEventDetail = _.clone(_eventDetail);
-                              _dayEventDetails[key].push(_newEventDetail);
-                          }
-                      });
-                  });
-                  return _dayEventDetails;
-              }
-              var _input = JSON.parse(input);
-              var result = processEvents(_input.evts, _input.rws);
-              output.resolve(JSON.stringify(result));
-          }]);
-    }
 
     this.step = { months: 1 };
     this.element = $element;
@@ -724,7 +562,7 @@
 
     scope.popUpTriggerYearView = function (events) {
         try {
-            var eventPopupSettings = scope.$parent.eventPopupSettings;
+            var eventPopupSettings = scope.parent.eventPopupSettings;
             if (typeof eventPopupSettings !== 'undefined' && typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty != true) {
                 if (typeof events === 'undefined' || events == null || events == {})
                     return 'none';
@@ -739,7 +577,7 @@
         } catch (e) {
             return 'none';
         }
-
+       
     }
 
     scope.popUpLeftHandler = function (dt, events) {
@@ -1158,8 +996,6 @@
     };
 
     this._refreshMonthView = function (isHeatMap) {
-        var _timerStart = new Date();
-        console.log(_timerStart.getTime());
         if (isHeatMap == true)
             this.activeMonthViewDate.setDate(15);
         var year = this.activeMonthViewDate.getFullYear(),
@@ -1208,14 +1044,14 @@
         }
         if (typeof scope.monthWiseEventMarkers !== 'undefined')
             scope.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()] = this.labels;
-        else if (typeof scope.$parent.monthWiseEventMarkers !== 'undefined')
-            scope.$parent.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()] = this.labels;
+        else if (typeof scope.parent.monthWiseEventMarkers !== 'undefined')
+            scope.parent.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()] = this.labels;
         scope.title = dateFilter(this.activeMonthViewDate, this.formatDayTitle);
         scope.rows = this.split(days, 7);
         if (typeof scope.monthViewData !== 'undefined')
             scope.monthViewData[this.activeMonthViewDate.getMonth()] = { 'dt': this._actMonViewDate, 'rows': scope.rows };
-        else if (typeof scope.$parent.monthViewData !== 'undefined')
-            scope.$parent.monthViewData[this.activeMonthViewDate.getMonth()] = { 'dt': this._actMonViewDate, 'rows': scope.rows };
+        else if (typeof scope.parent.monthViewData !== 'undefined')
+            scope.parent.monthViewData[this.activeMonthViewDate.getMonth()] = { 'dt': this._actMonViewDate, 'rows': scope.rows };
         if (scope.showWeeks) {
             scope.weekNumbers = [];
             var thursdayIndex = (4 + 7 - this.startingDay) % 7,
@@ -1225,56 +1061,18 @@
                   getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
             }
         }
-
-        var _indexMonth = this.activeMonthViewDate.getMonth();
-
-        var _evts = this._events;
-
-        if (_enableWebWorkers) {
-            workerPromise.then(function success(angularWorker) {
-                var inputObject = { 'evts': _evts, 'rws': scope.rows };
-                return angularWorker.run(JSON.stringify(inputObject));
-            }, function error(reason) {
-                console.log('error' + _indexMonth);
-                console.log(reason);
-            }).then(function success(result) {
-                var _result = JSON.parse(result);
-                console.log(_result);
-                if (this.yearMapHeat) {
-                    if (typeof scope.monthViewData !== 'undefined')
-                        scope.monthWiseEventDetails[_indexMonth] = _result;
-                    else if (typeof scope.$parent.monthViewData !== 'undefined')
-                        scope.$parent.monthWiseEventDetails[_indexMonth] = _result;
-                }
-                else {
-                    if (typeof scope.monthViewData !== 'undefined')
-                        scope.monthWiseEventDetails[_indexMonth] = _result;
-                    else if (typeof scope.$parent.monthViewData !== 'undefined')
-                        scope.$parent.monthWiseEventDetails[_indexMonth] = _result;
-                }
-                //handle result  
-            }, function error(reason) {
-                //handle error  
-            }, function notify(update) {
-                //handle update  
-            });
+        if (this.yearMapHeat) {
+            if (typeof scope.monthViewData !== 'undefined')
+                scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
+            else if (typeof scope.parent.monthViewData !== 'undefined')
+                scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
         }
         else {
-            if (this.yearMapHeat) {
-                if (typeof scope.monthViewData !== 'undefined')
-                    scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
-                else if (typeof scope.parent.monthViewData !== 'undefined')
-                    scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
-            }
-            else {
-                if (typeof scope.monthViewData !== 'undefined')
-                    scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEventsForMonthEventViewer(this._events, scope.rows);
-                else if (typeof scope.parent.monthViewData !== 'undefined')
-                    scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEventsForMonthEventViewer(this._events, scope.rows);
-            }
+            if (typeof scope.monthViewData !== 'undefined')
+                scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEventsForMonthEventViewer(this._events, scope.rows);
+            else if (typeof scope.parent.monthViewData !== 'undefined')
+                scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEventsForMonthEventViewer(this._events, scope.rows);
         }
-
-
         scope.light = this.light;
         scope.yearMapHeat = this.yearMapHeat
         scope.eventPopupHide = this.eventPopupHide;
@@ -1282,10 +1080,6 @@
         scope.preventModeToggle = this.preventModeToggle;
         scope.monthPopUpTmpl = this.monthPopUpTmpl;
         scope.dayPopUpTmpl = this.dayPopUpTmpl;
-
-        var _timerEnd = new Date();
-        console.log(_timerEnd.getTime() - _timerStart.getTime());
-
     };
 
 
