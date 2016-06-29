@@ -596,6 +596,14 @@
             scope.$parent.eventPopupRightCallback({ 'data': data });
     }
 
+    scope.popUpEventClickHandler = function (dt, event) {
+        var data = { 'dt': dt, 'event': event };
+        if (typeof scope.eventClickCallback === 'function')
+            scope.eventClickCallback({ 'data': data });
+        else if (typeof scope.$parent.eventClickCallback === 'function')
+            scope.$parent.eventClickCallback({ 'data': data });
+    }
+
     this.getDates = function (startDate, n) {
         var dates = new Array(n), current = new Date(startDate), i = 0, date;
         while (i < n) {
@@ -1223,6 +1231,7 @@
             daySelectCallback: '&',
             eventPopupLeftCallback: '&',
             eventPopupRightCallback: '&',
+            eventClickCallback:'&',
             eventPopupSettings: '='
         },
         require: ['richccDatepicker', '^ngModel'],
