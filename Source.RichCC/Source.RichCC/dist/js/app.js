@@ -1,7 +1,14 @@
 ﻿angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
 .controller('richCCController', ["$scope", "$timeout", function ($scope, $timeout) {
     var self = this;
-    self.sampleEvents = sampleEvents(100);
+    //self.sampleEvents = sampleEvents(20);
+    self.sampleEvents = [
+        { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' },
+        { 'id': '2', 'initial': 'B', 'name': 'Event B', 'startDt': '01-02-2016', 'endDt': '01-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        { 'id': '5', 'initial': 'E', 'name': 'Event E', 'startDt': '01-10-2016', 'endDt': '02-10-2016', 'bgcolor': '#ffc310', 'color': '#000000', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        { 'id': '3', 'initial': 'C', 'name': 'Event C', 'startDt': '01-07-2016', 'endDt': '01-08-2016', 'bgcolor': '#e67e22', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        { 'id': '4', 'initial': 'D', 'name': 'Event D', 'startDt': '01-06-2016', 'endDt': '01-09-2016', 'bgcolor': '#e74c3c', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' }
+    ];
 
     function sampleEvents(iter) {
         var _evts = [];
@@ -12,10 +19,10 @@
             evt.initial = evt.initial + i;
             var dt = new Date(evt.startDt);
             dt.setDate(dt.getDate() + (i * 5));
-            evt.startDt = dt.getDate() + '-' + (dt.getMonth() + 1) + '-' + dt.getFullYear();
+            evt.startDt = (dt.getMonth() + 1) + '-' + (dt.getDate()) + '-' + dt.getFullYear();
             var edt = dt;
-            edt.setDate(edt.getDate() + (i * 10));
-            evt.endDt = edt.getDate() + '-' + (edt.getMonth() + 1) + '-' + edt.getFullYear();
+            edt.setDate(edt.getDate() + (i * 30));
+            evt.endDt = (edt.getMonth() + 1) + '-' + (edt.getDate()) + '-' + edt.getFullYear();
             _evts.push(evt);
         });
         return _evts;
