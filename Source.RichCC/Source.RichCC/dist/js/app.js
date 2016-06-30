@@ -7,13 +7,32 @@
 //})])
 .controller('richCCController', ["$scope", "$timeout", "WorkerService", function ($scope, $timeout, WorkerService) {
     var self = this;
+    //self.sampleEvents = sampleEvents(20);
     self.sampleEvents = [
-        { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true,   'highlightBorderColor' : '#000000' },
-        { 'id': '2', 'initial': 'B', 'name': 'Event B', 'startDt': '01-02-2016', 'endDt': '01-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false , 'highlightBorderColor' : '#000000'},
-        { 'id': '5', 'initial': 'E', 'name': 'Event E', 'startDt': '01-10-2016', 'endDt': '02-10-2016', 'bgcolor': '#ffc310', 'color': '#000000', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false , 'highlightBorderColor' : '#000000'},
-        { 'id': '3', 'initial': 'C', 'name': 'Event C', 'startDt': '01-07-2016', 'endDt': '01-08-2016', 'bgcolor': '#e67e22', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false , 'highlightBorderColor' : '#000000'},
-        { 'id': '4', 'initial': 'D', 'name': 'Event D', 'startDt': '01-06-2016', 'endDt': '01-09-2016', 'bgcolor': '#e74c3c', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false , 'highlightBorderColor' : '#000000'}
+        { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' },
+        { 'id': '2', 'initial': 'B', 'name': 'Event B', 'startDt': '01-02-2016', 'endDt': '01-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        { 'id': '5', 'initial': 'E', 'name': 'Event E', 'startDt': '01-10-2016', 'endDt': '02-10-2016', 'bgcolor': '#ffc310', 'color': '#000000', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        { 'id': '3', 'initial': 'C', 'name': 'Event C', 'startDt': '01-07-2016', 'endDt': '01-08-2016', 'bgcolor': '#e67e22', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        { 'id': '4', 'initial': 'D', 'name': 'Event D', 'startDt': '01-06-2016', 'endDt': '01-09-2016', 'bgcolor': '#e74c3c', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' }
     ];
+
+    function sampleEvents(iter) {
+        var _evts = [];
+        _.each(_.range(iter), function (i) {
+            var evt = { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' };
+            evt.id = i + 1;
+            evt.name = evt.name + i;
+            evt.initial = evt.initial + i;
+            var dt = new Date(evt.startDt);
+            dt.setDate(dt.getDate() + (i * 5));
+            evt.startDt = (dt.getMonth() + 1) + '-' + (dt.getDate()) + '-' + dt.getFullYear();
+            var edt = dt;
+            edt.setDate(edt.getDate() + (i * 30));
+            evt.endDt = (edt.getMonth() + 1) + '-' + (edt.getDate()) + '-' + edt.getFullYear();
+            _evts.push(evt);
+        });
+        return _evts;
+    }
 
     self.insertSampleEvent = function () {
         self.sampleEvents = [
@@ -28,12 +47,12 @@
     }
 
     self.labelData = [
-        {'dt': '01-02-2016','label': '09:00'},
-        {'dt': '01-04-2016','label': '05:45'},
-        {'dt': '01-08-2016','label': '12:00'},
-        {'dt': '01-07-2016','label': '03:30'},
-        {'dt': '01-06-2016','label': '01:00'},
-        {'dt': '01-16-2016','label': '10:00'}
+        { 'dt': '01-02-2016', 'label': '09:00' },
+        { 'dt': '01-04-2016', 'label': '05:45' },
+        { 'dt': '01-08-2016', 'label': '12:00' },
+        { 'dt': '01-07-2016', 'label': '03:30' },
+        { 'dt': '01-06-2016', 'label': '01:00' },
+        { 'dt': '01-16-2016', 'label': '10:00' }
     ];
 
     self.dtPickerOptions = {
@@ -52,7 +71,7 @@
 
     self.dtPickerOptions1 = {
         customClass: getDayClass,
-        customIconClass:getIconClass,
+        customIconClass: getIconClass,
         showWeeks: false,
         datepickerMode: 'day',
         'yearMapHeat': true,
@@ -87,7 +106,7 @@
         'preventModeToggle': false,
         'preventCalNav': false,
         'showMarkerForMoreEvents': false,
-        'hideCalNav' : true
+        'hideCalNav': true
     };
 
     self.dtPickerOptionsMonth = {
@@ -101,8 +120,8 @@
 
     self.popupSettings = {
         'hidden': false,
-        'showLeft': true,
-        'showRight': true,
+        'showLeft': false,
+        'showRight': false,
         'leftLabel': 'Add Events',
         'rightLabel': 'Edit Details',
         'showWhenEventsEmpty': true
@@ -134,6 +153,11 @@
 
     self.rightCallback = function (data) {
         console.log('rightCallback');
+        console.log(data);
+    }
+
+    self.eventClickCallback = function (data) {
+        console.log('eventClickCallback');
         console.log(data);
     }
 
@@ -221,62 +245,4 @@
         }
         return result;
     }
-
-    //var workerPromise = WorkerService.createAngularWorker(['input', 'output' /*additional optional deps*/,
-    //function (input, output /*additional optional deps*/) {
-    //    // This contains the worker body.
-    //    // The function must be self contained. The function body will be 
-    //    // converted to source and passed to the worker.  
-    //    // The input parameter is what will be passed to the worker when
-    //    // it is executed. It must be a serializable object.
-    //    // The output parameter is a promise and is what the 
-    //    // worker will return to the main thread.  
-    //    // All communication from the worker to the main thread is performed
-    //    // by resolving, rejecting or notifying the output promise.
-    //    // We may optionally depend on other angular services. 
-    //    // These services can be used just as in the main thread. 
-    //    // But be aware that no state changes in the angular services in the
-    //    // worker are propagates to the main thread. Workers run in fully isolated
-    //    // contexts. All communication must be performed through the output parameter.
-    //    console.log(input);
-    //    output.resolve('hgouyuigu');
-    //    console.log(output);
-    //}]);
-
-    //workerPromise.then(function success(angularWorker) {
-    //    //The input must be serializable  
-    //    return angularWorker.run('hello');
-    //}, function error(reason) {
-    //    console.log('error');
-    //    console.log(reason);
-    //    //for some reason the worker failed to initialize  
-    //    //not all browsers support the HTML5 tech that is required, see below.  
-    //}).then(function success(result) {
-    //    console.log('result');
-    //    console.log(result);
-    //    //handle result  
-    //}, function error(reason) {
-    //    //handle error  
-    //}, function notify(update) {
-    //    //handle update  
-    //});
-
-    //workerPromise.then(function success(angularWorker) {
-    //    //The input must be serializable  
-    //    return angularWorker.run('hello2');
-    //}, function error(reason) {
-    //    console.log('error2');
-    //    console.log(reason);
-    //    //for some reason the worker failed to initialize  
-    //    //not all browsers support the HTML5 tech that is required, see below.  
-    //}).then(function success(result) {
-    //    console.log('result2');
-    //    console.log(result);
-    //    //handle result  
-    //}, function error(reason) {
-    //    //handle error  
-    //}, function notify(update) {
-    //    //handle update  
-    //});
-
 }]);
