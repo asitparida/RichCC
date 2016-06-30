@@ -40,11 +40,11 @@
                 <tr class="header-action-holder">
                     <th colspan="1" ng-if="light != true"></th>
                     <th colspan="{{light == true ? 8 : 5}}">
-                        <div class="header-actions" ng-class="::{'calNavHidden' : hideCalNav == true}">
+                        <div class="header-actions" ng-class="{'calNavHidden' : hideCalNav == true}">
                             <div class="richcc-icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true" ng-hide="hideCalNav == true">
                                 <i class="richcc-icon icon-ScrollChevronLeftLegacy"></i>
                             </div>
-                            <div class="richcc-icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
+                            <div class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
                                 <label class="title">{{title}}</label>
                             </div>
                             <div class="richcc-icon-container nav-right" cc-key="move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true" ng-hide="hideCalNav == true">
@@ -55,14 +55,14 @@
                     <th colspan="1" ng-if="light != true"></th>
                 </tr>
                 <tr class="header-dayname-row">
-                    <th ng-if="::showWeeks && false" class="text-center"></th>
+                    <th ng-if="showWeeks && false" class="text-center"></th>
                     <th colspan="1" ng-repeat="label in ::labels track by $index" class="text-center dayTitle"><span aria-label="{{::label.full}}">{{::label.abbr | limitTo:1}}</span></th>
-                    <th colspan="1" ng-if="::light == true"></th>
+                    <th colspan="1" ng-if="light == true"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="uib-weeks richcc-row" ng-repeat="row in rows track by $index" ng-init="rowindex = $index">
-                    <td ng-if="showWeeks && false" class="text-center h6"><em>{{::weekNumbers[$index] }}</em></td>
+                    <td ng-if="showWeeks && false" class="text-center h6"><em>{{weekNumbers[$index] }}</em></td>
                     <td ng-repeat="dt in row track by $index" class="uib-day text-center richcc-td" role="gridcell"
                         id="{{::dt.uid}}"
                         ng-class="::dt.customClass"
@@ -80,26 +80,26 @@
                              'cc-info' for selectedDt,
                              'cc-active' for activeDt
                              on dt"
-                             ng-class="::{'cc-current': dt.current, 'cc-muted': dt.secondary}"
+                             ng-class="{'cc-current': dt.current, 'cc-muted': dt.secondary}"
                              tabindex="0"
                              ng-if="light != true">
                             <div class="richcc-day">
-                                <span>{{::dt.label}}</span>
+                                <span>{{dt.label}}</span>
                             </div>
                         </div>
-                        <div class="richcc-time-label" ng-show="::showDataLabel == true && light != true">
-                            <span ng-show="::dataLabels[dt.key]">{{::dataLabels[dt.key]}}</span>
-                            <span ng-hide="::dataLabels[dt.key]">{{::defaultDataLabel}}</span>
-                            <span class="customIconClass" ng-class="::dt.customIconClass"></span>
+                        <div class="richcc-time-label" ng-show="showDataLabel == true && light != true">
+                            <span ng-show="dataLabels[dt.key]">{{dataLabels[dt.key]}}</span>
+                            <span ng-hide="dataLabels[dt.key]">{{defaultDataLabel}}</span>
+                            <span class="customIconClass" ng-class="dt.customIconClass"></span>
                         </div>
-                        <div class="markHolder" style="position:relative;" ng-show="::eventDetails[dt.key].length > 0">
+                        <div class="markHolder" style="position:relative;" ng-show="eventDetails[dt.key].length > 0">
                             <div class="mark step-{{event.step}}"
                                  ng-class="{'top': event.order == 1, 'bottom': event.order == 2}"
                                  ng-style="{'color': event.color, 'width': light != true ?  'calc(' + 100 * event.paintBoxLength + '% - 8px)' : 'calc(' + 100 * event.paintBoxLength + '% - 20px)'}"
                                  ng-repeat="event in eventDetails[dt.key] track by $index"
                                  ng-if="event.startPaint == true"
                                  style="color:#fff;">
-                                <div class="mark-text-initial" ng-if="::light == true" ng-style="::{'color': event.bgcolor}">{{event.initial | limitTo: 1}}</div>
+                                <div class="mark-text-initial" ng-if="light == true" ng-style="{'color': event.bgcolor}">{{event.initial | limitTo: 1}}</div>
                                 <div class="mark-stripe" ng-style="{'border-color': light == false && event.highlightBorder == true ? event.highlightBorderColor : 'transparent'}" ng-class="{'highlightBorder': light == false ? event.highlightBorder : ''}">
                                     <div class="mark-stripe-color" ng-style="{'background-color': event.bgcolor}">
                                         <span class="text">{{event.name}}</span>
@@ -114,7 +114,7 @@
                         </div>
                     </td>
                     <td colspan="1" ng-if="light == true" class="richcc-td richcc-light-lastdaymark">
-                        <span>{{::row[6].label}}</span>
+                        <span>{{row[6].label}}</span>
                     </td>
                 </tr>
             </tbody>
@@ -138,7 +138,7 @@
                         class="uib-day text-center richcc-td richcc-td-space{{weekindex}}"
                         ng-init="weekindex = $index">
                         <div class="richcc-month-eventbox" ng-repeat="column in row track by $index" ng-if="(weekindex != 5) || (weekindex == 5 && $index < 3)">
-                            <div class="richcc-eventbox-content {{::column.customClass}}"
+                            <div class="richcc-eventbox-content {{column.customClass}}"
                                  ng-class="{'notInPresentMonth' : column.monthIndex != monthIndex, 'showingDates': parent.eventPopupSettings.showDateInYearView == true}"
                                  ng-init="popitem = column;mEvents = parent.monthWiseEventDetails[monthIndex][popitem.key]"                                 
                                  uib-popover-template="monthPopUpTmpl"
@@ -154,11 +154,11 @@
                                          ng-class="{'top': event.order == 1, 'bottom': event.order == 2, 'webWorkers': enableWebWorkers}"
                                          ng-style="{'color': event.color, 'width': 'calc(' + 100 * event.paintBoxLengthForMonth + '% - 18px)'}"
                                          ng-repeat="event in parent.monthWiseEventDetails[monthIndex][column.key] track by $index"
-                                         ng-if="::event.startPaintForMonth == true"
+                                         ng-if="event.startPaintForMonth == true"
                                          style="color:#fff;">
-                                        <div class="mark-text-initial" ng-style="{'color': event.bgcolor}">{{::event.initial | limitTo: 1}}</div>
+                                        <div class="mark-text-initial" ng-style="{'color': event.bgcolor}">{{event.initial | limitTo: 1}}</div>
                                         <div class="mark-stripe light">
-                                            <div class="mark-stripe-color" ng-style="::{'background-color': event.bgcolor}"></div>
+                                            <div class="mark-stripe-color" ng-style="{'background-color': event.bgcolor}"></div>
                                         </div>
                                     </div>
                                 </div>                                
