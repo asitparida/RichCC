@@ -1,4 +1,4 @@
-﻿angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dateparser', 'ui.bootstrap.isClass', 'ui.bootstrap.position', 'FredrikSandell.worker-pool'])
+﻿angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dateparser', 'ui.bootstrap.isClass', 'ui.bootstrap.position'])
 
 .value('$datepickerSuppressError', false)
 
@@ -28,12 +28,11 @@
     showDataLabel: false,
     defaultDataLabel: '00:00',
     monthPopUpTmpl: 'template/richcc/richccMonthPopup.html',
-    dayPopUpTmpl: 'template/richcc/richccDayPopup.html',
-    enableWebWorkers: false
+    dayPopUpTmpl: 'template/richcc/richccDayPopup.html'
 })
 
-.controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser', 'WorkerService',
-  function ($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser, WorkerService) {
+.controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser',
+  function ($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser) {
       var self = this,
           ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl;
           ngModelOptions = {},
@@ -72,13 +71,11 @@
             'shortcutPropagation',
             'startingDay',
             'yearColumns',
-            'yearRows',
-            'enableWebWorkers'
+            'yearRows'
           ], function (key) {
               switch (key) {
                   case 'light':
                   case 'yearMapHeat':
-                  case 'enableWebWorkers':
                   case 'preventModeToggle':
                   case 'preventCalNav':
                   case 'hideCalNav':
@@ -248,13 +245,6 @@
               }));
           }
 
-          if ($attrs['enableWebWorkers']) {
-              watchListeners.push($scope.$parent.$watch($attrs['enableWebWorkers'], function (value) {
-                  self['enableWebWorkers'] = $scope['enableWebWorkers'] = angular.isDefined(value) ? value : $attrs['enableWebWorkers'];
-                  self.refreshView();
-              }));
-          }
-
           if ($attrs['preventCalNav']) {
               watchListeners.push($scope.$parent.$watch($attrs['preventCalNav'], function (value) {
                   self['preventCalNav'] = $scope['preventCalNav'] = angular.isDefined(value) ? value : $attrs['preventCalNav'];
@@ -289,21 +279,21 @@
               $scope['monthViewData'] = {};
               $scope['monthWiseEventDetails'] = {};
               $scope['monthWiseEventMarkers'] = {};
-                self.refreshView();
+              self.refreshView();
           }));
       }
 
       //Events Variable Watch Added
       if ($attrs['dayLabels']) {
           watchListeners.push($scope.$parent.$watch($attrs['dayLabels'], function (value) {
-              self['_dayLabels']= $scope['dayLabels']= angular.isDefined(value) ? value : $attrs['dayLabels'];
+              self['_dayLabels'] = $scope['dayLabels'] = angular.isDefined(value) ? value : $attrs['dayLabels'];
               self.refreshView();
           }));
       }
 
       if ($attrs['eventPopupHide']) {
           watchListeners.push($scope.$parent.$watch($attrs['eventPopupHide'], function (value) {
-              self['eventPopupHide']= $scope['eventPopupHide']= angular.isDefined(value) ? value : $attrs['eventPopupHide'];
+              self['eventPopupHide'] = $scope['eventPopupHide'] = angular.isDefined(value) ? value : $attrs['eventPopupHide'];
               self.refreshView();
           }));
       }
@@ -320,7 +310,7 @@
       }
 
       $scope.isActive = function (dateObject) {
-          if(self.compare(dateObject.date, self.activeDate) === 0) {
+          if (self.compare(dateObject.date, self.activeDate) === 0) {
               $scope.activeDateId = dateObject.uid;
               return true;
           }
@@ -341,7 +331,7 @@
       };
 
       this.render = function () {
-          if(ngModelCtrl.$viewValue) {
+          if (ngModelCtrl.$viewValue) {
               var date = new Date(ngModelCtrl.$viewValue),
                   isValid = !isNaN(date);
 
@@ -355,14 +345,14 @@
       };
 
       this.refreshView = function () {
-          if(this.element) {
+          if (this.element) {
               $scope.selectedDt = null;
               this._refreshView();
               if ($scope.activeDt) {
                   $scope.activeDateId = $scope.activeDt.uid;
               }
 
-              var date = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue): null;
+              var date = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
               date = dateParser.fromTimezone(date, ngModelOptions.timezone);
               ngModelCtrl.$setValidity('dateDisabled', !date ||
                 this.element && !this.isDisabled(date));
@@ -373,7 +363,7 @@
 
 
       this.createDateObject = function (date, format) {
-          var model = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue): null;
+          var model = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
           model = dateParser.fromTimezone(model, ngModelOptions.timezone);
           var dt = {
               date: date,
@@ -421,8 +411,8 @@
       };
 
       $scope.select = function (date) {
-          if($scope.datepickerMode === self.minMode) {
-              var dt = ngModelCtrl.$viewValue ? dateParser.fromTimezone(new Date(ngModelCtrl.$viewValue), ngModelOptions.timezone): new Date(0, 0, 0, 0, 0, 0, 0);
+          if ($scope.datepickerMode === self.minMode) {
+              var dt = ngModelCtrl.$viewValue ? dateParser.fromTimezone(new Date(ngModelCtrl.$viewValue), ngModelOptions.timezone) : new Date(0, 0, 0, 0, 0, 0, 0);
               dt.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
               dt = dateParser.toTimezone(dt, ngModelOptions.timezone);
               ngModelCtrl.$setViewValue(dt);
@@ -465,7 +455,7 @@
           direction = direction || 1;
 
           if ($scope.datepickerMode === self.maxMode && direction === 1 ||
-            $scope.datepickerMode === self.minMode && direction === - 1) {
+            $scope.datepickerMode === self.minMode && direction === -1) {
               return;
           }
 
@@ -500,7 +490,7 @@
               }
               $scope.select(self.activeDate);
           } else if (evt.ctrlKey && (key === 'up' || key === 'down')) {
-              $scope.toggleMode(key === 'up' ? 1 : - 1);
+              $scope.toggleMode(key === 'up' ? 1 : -1);
           } else {
               self.handleKeyDown(key, evt);
               self.refreshView();
@@ -509,11 +499,10 @@
 
       $scope.$on("$destroy", function () {
           //Clear all watch listeners on destroy
-          while(watchListeners.length) {
+          while (watchListeners.length) {
               watchListeners.shift()();
           }
       });
-
   }])
 
 .controller('RichccDaypickerController', ['$scope', '$element', 'dateFilter', 'WorkerService', function (scope, $element, dateFilter, WorkerService) {
@@ -529,7 +518,7 @@
               importScripts('https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js');
 
               function dtCompare(dta, dtb) {
-                  if(dta < dtb)
+                  if (dta < dtb)
                       return -1;
                   else if (dta == dtb)
                       return 0;
@@ -646,18 +635,18 @@
               function processEvents(events, rows) {
                   var _weekFirsts = _.map(rows, function (row) { var _first = row[0]; _first.date = new Date(_first.date); _first._date = _first.date.setHours(0, 0, 0, 0); return _first });
                   var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
-                  var _sortedEvents = _events.sort(function(a, b) {
-                      if(a._startDt == b._startDt) {
+                  var _sortedEvents = _events.sort(function (a, b) {
+                      if (a._startDt == b._startDt) {
                           return dtCompare(a._endDt, b._endDt);
                       }
                       else
                           return dtCompare(a._startDt, b._startDt);
                   });
-                  var _dayEventDetails = { };
+                  var _dayEventDetails = {};
                   var _step = 1;
                   _.each(_sortedEvents, function (_event) {
                       var _days = getDaysBetweenDates(_event._startDt, _event._endDt);
-                      var _eventDetail = { };
+                      var _eventDetail = {};
                       angular.extend(_eventDetail, _event);
                       _eventDetail.order = null;
                       _eventDetail.first = null;
@@ -666,7 +655,7 @@
                           if (_proceedFurther == true) {
                               var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
                               if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
-                                  _dayEventDetails[key]= [];
+                                  _dayEventDetails[key] = [];
                               var _oldOrder = _eventDetail.order;
                               if (_iter == 0) {
                                   _eventDetail.order = getOrder(_dayEventDetails[key]);
@@ -697,19 +686,19 @@
 
               function processEventsForMonthEventViewer(events, rows) {
                   var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
-                  var _sortedEvents = _events.sort(function(a, b) {
-                      if(a._startDt == b._startDt) {
+                  var _sortedEvents = _events.sort(function (a, b) {
+                      if (a._startDt == b._startDt) {
                           return dtCompare(a._endDt, b._endDt);
                       }
                       else
                           return dtCompare(a._startDt, b._startDt);
                   });
-                  var _dayEventDetails = { };
-                  var _monthEventDetails = { };
+                  var _dayEventDetails = {};
+                  var _monthEventDetails = {};
                   var _step = 1;
                   _.each(_sortedEvents, function (_event) {
                       var _days = getDaysBetweenDates(_event._startDt, _event._endDt);
-                      var _eventDetail = { };
+                      var _eventDetail = {};
                       angular.extend(_eventDetail, _event);
                       _eventDetail.order = null;
                       _eventDetail.first = null;
@@ -718,7 +707,7 @@
                           if (_proceedFurther == true) {
                               var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
                               if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
-                                  _dayEventDetails[key]= [];
+                                  _dayEventDetails[key] = [];
                               var _evKey = _eventDetail.id + '_' + _day.getMonth();
                               if (_monthEventDetails[_evKey] != true) {
                                   var _oldOrder = _eventDetail.order;
@@ -729,7 +718,7 @@
                                       var _availableDaysToMark = _getDayListExistingInCurrentMOnth(_days, rows);
                                       var _r = _getDayListBasedOnEvent(_availableDaysToMark, _day, new Date(_event._startDt));
                                       _eventDetail.paintBoxLengthForMonth = _r;
-                                      _monthEventDetails[_evKey]= true;
+                                      _monthEventDetails[_evKey] = true;
                                   }
                                   else {
                                       _eventDetail.startPaintForMonth = false;
@@ -801,7 +790,7 @@
         try {
             var eventPopupSettings = scope.eventPopupSettings;
             if (typeof eventPopupSettings !== 'undefined' && typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty != true) {
-                if (typeof events === 'undefined' || events == null || events == { })
+                if (typeof events === 'undefined' || events == null || events == {})
                     return 'none';
                 else if (events.length > 0 && eventPopupSettings.hidden != true)
                     return 'outsideClick';
@@ -818,9 +807,9 @@
 
     scope.popUpTriggerYearView = function (events) {
         try {
-            var eventPopupSettings = scope.$parent.eventPopupSettings;
+            var eventPopupSettings = scope.parent.eventPopupSettings;
             if (typeof eventPopupSettings !== 'undefined' && typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty != true) {
-                if (typeof events === 'undefined' || events == null || events == { })
+                if (typeof events === 'undefined' || events == null || events == {})
                     return 'none';
                 else if (events.length > 0 && eventPopupSettings.hidden != true)
                     return 'outsideClick';
@@ -852,11 +841,19 @@
             scope.$parent.eventPopupRightCallback({ 'data': data });
     }
 
+    scope.popUpEventClickHandler = function (dt, event) {
+        var data = { 'dt': dt, 'event': event };
+        if (typeof scope.eventClickCallback === 'function')
+            scope.eventClickCallback({ 'data': data });
+        else if (typeof scope.$parent.eventClickCallback === 'function')
+            scope.$parent.eventClickCallback({ 'data': data });
+    }
+
     this.getDates = function (startDate, n) {
         var dates = new Array(n), current = new Date(startDate), i = 0, date;
         while (i < n) {
             date = new Date(current);
-            dates[i++]= date;
+            dates[i++] = date;
             current.setDate(current.getDate() + 1);
         }
         return dates;
@@ -874,7 +871,7 @@
 
         var difference = this.startingDay - firstDayOfMonth.getDay(),
           numDisplayedFromPreviousMonth = difference > 0 ?
-            7 - difference : - difference,
+            7 - difference : -difference,
           firstDate = new Date(firstDayOfMonth);
 
         if (numDisplayedFromPreviousMonth > 0) {
@@ -884,7 +881,7 @@
         // 42 is the number of days on a six-week calendar
         var days = this.getDates(firstDate, 42);
         for (var i = 0; i < 42; i++) {
-            days[i]= angular.extend(this.createDateObject(days[i], this.formatDay), {
+            days[i] = angular.extend(this.createDateObject(days[i], this.formatDay), {
                 secondary: days[i].getMonth() !== month,
                 uid: scope.uniqueId + '-' + i,
                 key: days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate()
@@ -893,7 +890,7 @@
 
         scope.labels = new Array(7);
         for (var j = 0; j < 7; j++) {
-            scope.labels[j]= {
+            scope.labels[j] = {
                 abbr: dateFilter(days[j].date, this.formatDayHeader),
                 full: dateFilter(days[j].date, 'EEEE')
             };
@@ -981,7 +978,7 @@
         } else if (key === 'down') {
             date = date + 7;
         } else if (key === 'pageup' || key === 'pagedown') {
-            var month = this.activeDate.getMonth() + (key === 'pageup' ? - 1 : 1);
+            var month = this.activeDate.getMonth() + (key === 'pageup' ? -1 : 1);
             this.activeDate.setMonth(month, 1);
             date = Math.min(getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth()), date);
         } else if (key === 'home') {
@@ -994,7 +991,7 @@
 
     /* EVENTS LOGIC */
     function dtCompare(dta, dtb) {
-        if(dta < dtb)
+        if (dta < dtb)
             return -1;
         else if (dta == dtb)
             return 0;
@@ -1076,14 +1073,14 @@
     function _getDayListExistingInCurrentMOnth(_days, _rows) {
         var _daysCurrent = [];
         if (_rows.length > 0) {
-            //new Date(2008, month + 1, 0);
             var _totalNumberOfRows = _rows.length
             if (_rows[0].length > 0) {
                 var _midDate = _rows[2][3];
                 var _lastday = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth() + 1, 0)).setHours(0, 0, 0, 0);
+                var sdt = _rows[0][0].date;
                 _daysCurrent = _.filter(_days, function (_day) {
                     var _totalNumberOfColumns = _rows[_totalNumberOfRows - 1].length;
-                    return (_day >= _rows[0][0].date && _day <= _lastday);
+                    return (_day >= _rows[0][0].date && _day <= _lastday && (new Date(_day).getMonth() == new Date(_lastday).getMonth()));
                 });
             }
         }
@@ -1091,29 +1088,33 @@
     }
 
     function _getDayListBasedOnEvent(_days, _pday, _stday) {
-        var diff = getDaysBetweenDates(_pday, _stday);
-        if (_pday.getMonth() == _stday.getMonth())
-            return _days.splice(diff.length - 1).length;
-        else {
-            return _days.length;
-        }
+        var diff = getDaysBetweenDates(_stday, _pday);
+        var _stDays = _.filter(_days, function (_d) {
+            return _d >= _pday
+        });
+        return _stDays.length;
+        //if (_pday.getMonth() == _stday.getMonth())
+        //    return _days.splice(diff.length - 1).length;
+        //else {
+        //    return _days.length;
+        //}
     }
 
     this.processEvents = function (events, rows) {
         var _weekFirsts = _.map(rows, function (row) { var _first = row[0]; _first._date = _first.date.setHours(0, 0, 0, 0); return _first });
         var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
-        var _sortedEvents = _events.sort(function(a, b) {
-            if(a._startDt == b._startDt) {
+        var _sortedEvents = _events.sort(function (a, b) {
+            if (a._startDt == b._startDt) {
                 return dtCompare(a._endDt, b._endDt);
             }
             else
                 return dtCompare(a._startDt, b._startDt);
         });
-        var _dayEventDetails = { };
+        var _dayEventDetails = {};
         var _step = 1;
         _.each(_sortedEvents, function (_event) {
             var _days = getDaysBetweenDates(_event._startDt, _event._endDt);
-            var _eventDetail = { };
+            var _eventDetail = {};
             angular.extend(_eventDetail, _event);
             _eventDetail.order = null;
             _eventDetail.first = null;
@@ -1122,7 +1123,7 @@
                 if (_proceedFurther == true) {
                     var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
                     if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
-                        _dayEventDetails[key]= [];
+                        _dayEventDetails[key] = [];
                     var _oldOrder = _eventDetail.order;
                     if (_iter == 0) {
                         _eventDetail.order = getOrder(_dayEventDetails[key]);
@@ -1153,19 +1154,19 @@
 
     this.processEventsForMonthEventViewer = function (events, rows) {
         var _events = _.map(events, function (e) { e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e; });
-        var _sortedEvents = _events.sort(function(a, b) {
-            if(a._startDt == b._startDt) {
+        var _sortedEvents = _events.sort(function (a, b) {
+            if (a._startDt == b._startDt) {
                 return dtCompare(a._endDt, b._endDt);
             }
             else
                 return dtCompare(a._startDt, b._startDt);
         });
-        var _dayEventDetails = { };
-        var _monthEventDetails = { };
+        var _dayEventDetails = {};
+        var _monthEventDetails = {};
         var _step = 1;
         _.each(_sortedEvents, function (_event) {
             var _days = getDaysBetweenDates(_event._startDt, _event._endDt);
-            var _eventDetail = { };
+            var _eventDetail = {};
             angular.extend(_eventDetail, _event);
             _eventDetail.order = null;
             _eventDetail.first = null;
@@ -1174,7 +1175,7 @@
                 if (_proceedFurther == true) {
                     var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
                     if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
-                        _dayEventDetails[key]= [];
+                        _dayEventDetails[key] = [];
                     var _evKey = _eventDetail.id + '_' + _day.getMonth();
                     if (_monthEventDetails[_evKey] != true) {
                         var _oldOrder = _eventDetail.order;
@@ -1184,7 +1185,7 @@
                             _eventDetail.startPaintForMonth = true;
                             var _availableDaysToMark = _getDayListExistingInCurrentMOnth(_days, rows);
                             _eventDetail.paintBoxLengthForMonth = _getDayListBasedOnEvent(_availableDaysToMark, _day, new Date(_event._startDt));
-                            _monthEventDetails[_evKey]= true;
+                            _monthEventDetails[_evKey] = true;
                         }
                         else {
                             _eventDetail.startPaintForMonth = false;
@@ -1201,11 +1202,11 @@
     }
 
     this.processLabels = function (labelData) {
-        var _modLabels = { };
+        var _modLabels = {};
         _.each(labelData, function (item) {
             var _dt = new Date(item.dt);
             var key = _dt.getFullYear() + '_' + _dt.getMonth() + '_' + _dt.getDate();
-            _modLabels[key]= item.label;
+            _modLabels[key] = item.label;
         });
         return _modLabels;
     }
@@ -1242,7 +1243,7 @@
             case 2:
             case 3:
             default: position = 'bottom'; break;
-            }
+        }
         return position;
     }
 
@@ -1258,7 +1259,7 @@
             case 5:
             case 6: position = position + '-right'; break;
             default: position = position; break;
-            }
+        }
         return position;
     }
 
@@ -1285,7 +1286,7 @@
 
         var difference = this.startingDay - firstDayOfMonth.getDay(),
           numDisplayedFromPreviousMonth = difference > 0 ?
-            7 - difference : - difference,
+            7 - difference : -difference,
           firstDate = new Date(firstDayOfMonth);
 
         if (numDisplayedFromPreviousMonth > 0) {
@@ -1295,7 +1296,7 @@
         // 42 is the number of days on a six-week calendar
         var days = this.getDates(firstDate, 42);
         for (var i = 0; i < 42; i++) {
-            days[i]= angular.extend(_dupCreateDateObject(days[i], this.formatDay), {
+            days[i] = angular.extend(_dupCreateDateObject(days[i], this.formatDay), {
                 secondary: days[i].getMonth() !== month,
                 uid: scope.uniqueId + '-' + i,
                 key: days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate(),
@@ -1317,18 +1318,18 @@
                 full: dateFilter(days[j].date, 'EEEE')
             };
             this.labels.push(label);
-            scope.labels[j]= label;
+            scope.labels[j] = label;
         }
         if (typeof scope.monthWiseEventMarkers !== 'undefined')
-            scope.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()]= this.labels;
+            scope.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()] = this.labels;
         else if (typeof scope.$parent.monthWiseEventMarkers !== 'undefined')
-            scope.$parent.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()]= this.labels;
+            scope.$parent.monthWiseEventMarkers[this.activeMonthViewDate.getMonth()] = this.labels;
         scope.title = dateFilter(this.activeMonthViewDate, this.formatDayTitle);
         scope.rows = this.split(days, 7);
         if (typeof scope.monthViewData !== 'undefined')
-            scope.monthViewData[this.activeMonthViewDate.getMonth()]= { 'dt': this._actMonViewDate, 'rows': scope.rows };
+            scope.monthViewData[this.activeMonthViewDate.getMonth()] = { 'dt': this._actMonViewDate, 'rows': scope.rows };
         else if (typeof scope.$parent.monthViewData !== 'undefined')
-            scope.$parent.monthViewData[this.activeMonthViewDate.getMonth()]= { 'dt': this._actMonViewDate, 'rows': scope.rows };
+            scope.$parent.monthViewData[this.activeMonthViewDate.getMonth()] = { 'dt': this._actMonViewDate, 'rows': scope.rows };
         if (scope.showWeeks) {
             scope.weekNumbers = [];
             var thursdayIndex = (4 + 7 - this.startingDay) % 7,
@@ -1355,36 +1356,36 @@
                 console.log(_result);
                 if (this.yearMapHeat) {
                     if (typeof scope.monthViewData !== 'undefined')
-                        scope.monthWiseEventDetails[_indexMonth]= _result;
+                        scope.monthWiseEventDetails[_indexMonth] = _result;
                     else if (typeof scope.$parent.monthViewData !== 'undefined')
-                        scope.$parent.monthWiseEventDetails[_indexMonth]= _result;
+                        scope.$parent.monthWiseEventDetails[_indexMonth] = _result;
                 }
                 else {
                     if (typeof scope.monthViewData !== 'undefined')
-                        scope.monthWiseEventDetails[_indexMonth]= _result;
+                        scope.monthWiseEventDetails[_indexMonth] = _result;
                     else if (typeof scope.$parent.monthViewData !== 'undefined')
-                        scope.$parent.monthWiseEventDetails[_indexMonth]= _result;
+                        scope.$parent.monthWiseEventDetails[_indexMonth] = _result;
                 }
             });
         }
         else {
             if (this.yearMapHeat) {
                 if (typeof scope.monthViewData !== 'undefined')
-                    scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()]= this.processEvents(this._events, scope.rows);
+                    scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
                 else if (typeof scope.parent.monthViewData !== 'undefined')
-                    scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()]= this.processEvents(this._events, scope.rows);
+                    scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEvents(this._events, scope.rows);
             }
             else {
                 if (typeof scope.monthViewData !== 'undefined')
-                    scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()]= this.processEventsForMonthEventViewer(this._events, scope.rows);
+                    scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEventsForMonthEventViewer(this._events, scope.rows);
                 else if (typeof scope.parent.monthViewData !== 'undefined')
-                    scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()]= this.processEventsForMonthEventViewer(this._events, scope.rows);
+                    scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEventsForMonthEventViewer(this._events, scope.rows);
             }
         }
 
 
         scope.light = this.light;
-        scope.yearMapHeat = this.yearMapHeat
+        scope.yearMapHeat = this.yearMapHeat;
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
         scope.preventModeToggle = this.preventModeToggle;
@@ -1413,7 +1414,7 @@
         for (var i = 0; i < 12; i++) {
             date = new Date(this.activeDate);
             date.setFullYear(year, i, 1);
-            months[i]= angular.extend(this.createDateObject(date, this.formatMonth), {
+            months[i] = angular.extend(this.createDateObject(date, this.formatMonth), {
                 uid: scope.uniqueId + '-' + i,
                 monthIndex: date.getMonth()
             });
@@ -1444,7 +1445,7 @@
         } else if (key === 'down') {
             date = date + 3;
         } else if (key === 'pageup' || key === 'pagedown') {
-            var year = this.activeDate.getFullYear() + (key === 'pageup' ? - 1 : 1);
+            var year = this.activeDate.getFullYear() + (key === 'pageup' ? -1 : 1);
             this.activeDate.setFullYear(year);
         } else if (key === 'home') {
             date = 0;
@@ -1472,10 +1473,10 @@
     this._refreshView = function () {
         var years = new Array(range), date;
 
-        for (var i = 0, start = getStartingYear(this.activeDate.getFullYear()); i < range; i++) {
+        for (var i = 0, start = getStartingYear(this.activeDate.getFullYear()) ; i < range; i++) {
             date = new Date(this.activeDate);
             date.setFullYear(start + i, 0, 1);
-            years[i]= angular.extend(this.createDateObject(date, this.formatYear), {
+            years[i] = angular.extend(this.createDateObject(date, this.formatYear), {
                 uid: scope.uniqueId + '-' + i
             });
         }
@@ -1501,7 +1502,7 @@
         } else if (key === 'down') {
             date = date + columns;
         } else if (key === 'pageup' || key === 'pagedown') {
-            date += (key === 'pageup' ? - 1 : 1) * range;
+            date += (key === 'pageup' ? -1 : 1) * range;
         } else if (key === 'home') {
             date = getStartingYear(this.activeDate.getFullYear());
         } else if (key === 'end') {
@@ -1534,6 +1535,7 @@
             daySelectCallback: '&',
             eventPopupLeftCallback: '&',
             eventPopupRightCallback: '&',
+            eventClickCallback: '&',
             eventPopupSettings: '='
         },
         require: ['richccDatepicker', '^ngModel'],
@@ -1692,25 +1694,25 @@
 
 .controller('RichccDatepickerPopupController', ['$scope', '$element', '$attrs', '$compile', '$parse', '$document', '$rootScope', '$uibPosition', 'dateFilter', 'uibDateParser', 'richccDatepickerPopupConfig', '$timeout', 'richccDatepickerConfig',
 function (scope, element, attrs, $compile, $parse, $document, $rootScope, $position, dateFilter, dateParser, datepickerPopupConfig, $timeout, datepickerConfig) {
-    var cache = { },
+    var cache = {},
       isHtml5DateInput = false;
     var dateFormat, closeOnDateSelection, appendToBody, onOpenFocus,
       datepickerPopupTemplateUrl, datepickerTemplateUrl, popupEl, datepickerEl,
       ngModel, ngModelOptions, $popup, altInputFormats, watchListeners = [];
 
-    scope.watchData = { };
+    scope.watchData = {};
 
     this.init = function (_ngModel_) {
         ngModel = _ngModel_;
         ngModelOptions = _ngModel_.$options || datepickerConfig.ngModelOptions;
-        closeOnDateSelection = angular.isDefined(attrs.closeOnDateSelection) ? scope.$parent.$eval(attrs.closeOnDateSelection): datepickerPopupConfig.closeOnDateSelection;
-        appendToBody = angular.isDefined(attrs.datepickerAppendToBody) ? scope.$parent.$eval(attrs.datepickerAppendToBody): datepickerPopupConfig.appendToBody;
-        onOpenFocus = angular.isDefined(attrs.onOpenFocus) ? scope.$parent.$eval(attrs.onOpenFocus): datepickerPopupConfig.onOpenFocus;
-        datepickerPopupTemplateUrl = angular.isDefined(attrs.datepickerPopupTemplateUrl) ? attrs.datepickerPopupTemplateUrl: datepickerPopupConfig.datepickerPopupTemplateUrl;
-        datepickerTemplateUrl = angular.isDefined(attrs.datepickerTemplateUrl) ? attrs.datepickerTemplateUrl: datepickerPopupConfig.datepickerTemplateUrl;
-        altInputFormats = angular.isDefined(attrs.altInputFormats) ? scope.$parent.$eval(attrs.altInputFormats): datepickerPopupConfig.altInputFormats;
+        closeOnDateSelection = angular.isDefined(attrs.closeOnDateSelection) ? scope.$parent.$eval(attrs.closeOnDateSelection) : datepickerPopupConfig.closeOnDateSelection;
+        appendToBody = angular.isDefined(attrs.datepickerAppendToBody) ? scope.$parent.$eval(attrs.datepickerAppendToBody) : datepickerPopupConfig.appendToBody;
+        onOpenFocus = angular.isDefined(attrs.onOpenFocus) ? scope.$parent.$eval(attrs.onOpenFocus) : datepickerPopupConfig.onOpenFocus;
+        datepickerPopupTemplateUrl = angular.isDefined(attrs.datepickerPopupTemplateUrl) ? attrs.datepickerPopupTemplateUrl : datepickerPopupConfig.datepickerPopupTemplateUrl;
+        datepickerTemplateUrl = angular.isDefined(attrs.datepickerTemplateUrl) ? attrs.datepickerTemplateUrl : datepickerPopupConfig.datepickerTemplateUrl;
+        altInputFormats = angular.isDefined(attrs.altInputFormats) ? scope.$parent.$eval(attrs.altInputFormats) : datepickerPopupConfig.altInputFormats;
 
-        scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar): datepickerPopupConfig.showButtonBar;
+        scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar) : datepickerPopupConfig.showButtonBar;
 
         if (datepickerPopupConfig.html5Types[attrs.type]) {
             dateFormat = datepickerPopupConfig.html5Types[attrs.type];
@@ -1765,7 +1767,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
         if (scope.datepickerOptions) {
             angular.forEach(scope.datepickerOptions, function (value, option) {
                 // Ignore this options, will be managed later
-                if(['minDate', 'maxDate', 'minMode', 'maxMode', 'initDate', 'datepickerMode'].indexOf(option) === - 1) {
+                if (['minDate', 'maxDate', 'minMode', 'maxMode', 'initDate', 'datepickerMode'].indexOf(option) === -1) {
                     datepickerEl.attr(cameltoDash(option), value);
                 } else {
                     datepickerEl.attr(cameltoDash(option), 'datepickerOptions.' + option);
@@ -1774,7 +1776,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
         }
 
         angular.forEach(['minMode', 'maxMode', 'datepickerMode', 'shortcutPropagation'], function (key) {
-            if(attrs[key]) {
+            if (attrs[key]) {
                 var getAttribute = $parse(attrs[key]);
                 var propConfig = {
                     get: function () {
@@ -1797,22 +1799,22 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
         });
 
         angular.forEach(['minDate', 'maxDate', 'initDate'], function (key) {
-            if(attrs[key]) {
+            if (attrs[key]) {
                 var getAttribute = $parse(attrs[key]);
 
                 watchListeners.push(scope.$parent.$watch(getAttribute, function (value) {
-                    if(key === 'minDate' || key === 'maxDate') {
+                    if (key === 'minDate' || key === 'maxDate') {
                         if (value === null) {
-                            cache[key]= null;
+                            cache[key] = null;
                         } else if (angular.isDate(value)) {
-                            cache[key]= dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
+                            cache[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
                         } else {
-                            cache[key]= new Date(dateFilter(value, 'medium'));
+                            cache[key] = new Date(dateFilter(value, 'medium'));
                         }
 
-                        scope.watchData[key]= value === null ? null : cache[key];
+                        scope.watchData[key] = value === null ? null : cache[key];
                     } else {
-                        scope.watchData[key]= dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
+                        scope.watchData[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
                     }
                 }));
 
@@ -1825,7 +1827,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
         }
 
         angular.forEach(['formatDay', 'formatMonth', 'formatYear', 'formatDayHeader', 'formatDayTitle', 'formatMonthTitle', 'showWeeks', 'startingDay', 'yearRows', 'yearColumns'], function (key) {
-            if(angular.isDefined(attrs[key])) {
+            if (angular.isDefined(attrs[key])) {
                 datepickerEl.attr(cameltoDash(key), attrs[key]);
             }
         });
@@ -1843,8 +1845,8 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             ngModel.$$parserName = 'date';
             ngModel.$validators.date = validator;
             ngModel.$parsers.unshift(parseDate);
-            ngModel.$formatters.push(function(value) {
-                if(ngModel.$isEmpty(value)) {
+            ngModel.$formatters.push(function (value) {
+                if (ngModel.$isEmpty(value)) {
                     scope.date = value;
                     return value;
                 }
@@ -1855,20 +1857,20 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 return dateFilter(scope.date, dateFormat);
             });
         } else {
-            ngModel.$formatters.push(function(value) {
+            ngModel.$formatters.push(function (value) {
                 scope.date = dateParser.fromTimezone(value, ngModelOptions.timezone);
                 return value;
             });
         }
 
         // Detect changes in the view from the text box
-        ngModel.$viewChangeListeners.push(function() {
+        ngModel.$viewChangeListeners.push(function () {
             scope.date = parseDateString(ngModel.$viewValue);
         });
 
         element.on('keydown', inputKeydownBind);
 
-        $popup = $compile(popupEl) (scope);
+        $popup = $compile(popupEl)(scope);
         // Prevent jQuery cache memory leak (template is now redundant after linking)
         popupEl.remove();
 
@@ -1879,9 +1881,9 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
         }
 
         scope.$on('$destroy', function () {
-            if(scope.isOpen === true) {
+            if (scope.isOpen === true) {
                 if (!$rootScope.$$phase) {
-                    scope.$apply(function() {
+                    scope.$apply(function () {
                         scope.isOpen = false;
                     });
                 }
@@ -1903,7 +1905,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     };
 
     scope.isDisabled = function (date) {
-        if(date === 'today') {
+        if (date === 'today') {
             date = new Date();
         }
 
@@ -1917,10 +1919,10 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
 
     // Inner change
     scope.dateSelection = function (dt) {
-        if(angular.isDefined(dt)) {
+        if (angular.isDefined(dt)) {
             scope.date = dt;
         }
-        var date = scope.date ? dateFilter(scope.date, dateFormat): null; // Setting to NULL is necessary for form validators to function
+        var date = scope.date ? dateFilter(scope.date, dateFormat) : null; // Setting to NULL is necessary for form validators to function
         element.val(date);
         ngModel.$setViewValue(date);
 
@@ -1931,7 +1933,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     };
 
     scope.keydown = function (evt) {
-        if(evt.which === 27) {
+        if (evt.which === 27) {
             evt.stopPropagation();
             scope.isOpen = false;
             element[0].focus();
@@ -1939,7 +1941,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     };
 
     scope.select = function (date) {
-        if(date === 'today') {
+        if (date === 'today') {
             var today = new Date();
             if (angular.isDate(scope.date)) {
                 date = new Date(scope.date);
@@ -1964,13 +1966,13 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     }
 
     scope.$watch('isOpen', function (value) {
-        if(value) {
+        if (value) {
             if (!scope.disabled) {
-                scope.position = appendToBody ? $position.offset(element): $position.position(element);
+                scope.position = appendToBody ? $position.offset(element) : $position.position(element);
                 scope.position.top = scope.position.top + element.prop('offsetHeight');
 
-                $timeout(function() {
-                    if(onOpenFocus) {
+                $timeout(function () {
+                    if (onOpenFocus) {
                         scope.$broadcast('uib:datepicker.focus');
                     }
                     $document.on('click', documentClickBind);
@@ -2001,7 +2003,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     }
 
     function parseDate(viewValue) {
-        if(angular.isNumber(viewValue)) {
+        if (angular.isNumber(viewValue)) {
             // presumably timestamp to date object
             viewValue = new Date(viewValue);
         }
@@ -2051,7 +2053,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     }
 
     function documentClickBind(event) {
-        if(!scope.isOpen && scope.disabled) {
+        if (!scope.isOpen && scope.disabled) {
             return;
         }
 
@@ -2061,24 +2063,24 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
         // In some browsers (IE) only element nodes have the 'contains' function
         var popupContainsTarget = popup.contains !== undefined && popup.contains(event.target);
         if (scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
-            scope.$apply(function() {
+            scope.$apply(function () {
                 scope.isOpen = false;
             });
         }
     }
 
     function inputKeydownBind(evt) {
-        if(evt.which === 27 && scope.isOpen) {
+        if (evt.which === 27 && scope.isOpen) {
             evt.preventDefault();
             evt.stopPropagation();
-            scope.$apply(function() {
+            scope.$apply(function () {
                 scope.isOpen = false;
             });
             element[0].focus();
         } else if (evt.which === 40 && !scope.isOpen) {
             evt.preventDefault();
             evt.stopPropagation();
-            scope.$apply(function() {
+            scope.$apply(function () {
                 scope.isOpen = true;
             });
         }
@@ -2123,11 +2125,11 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
         restrict: 'AEC',
         link: function ($scope, elem, attr) {
             elem.on('click', function (e) {
-                if(attr.ngDisabled != true)
+                if (attr.ngDisabled != true)
                     $scope.$apply(attr.ccKey);
             });
             elem.on('keyup', function (e) {
-                if((e.keyCode == 13 || e.keyCode == 32) && attr.ngDisabled != true)
+                if ((e.keyCode == 13 || e.keyCode == 32) && attr.ngDisabled != true)
                     $scope.$apply(attr.ccKey);
             });
         }
