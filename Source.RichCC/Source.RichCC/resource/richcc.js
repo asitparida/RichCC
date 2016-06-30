@@ -361,7 +361,6 @@
           }
       };
 
-
       this.createDateObject = function (date, format) {
           var model = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
           model = dateParser.fromTimezone(model, ngModelOptions.timezone);
@@ -860,9 +859,6 @@
     };
 
     this._refreshView = function () {
-
-        console.log('refreshView');
-
         var year = this.activeDate.getFullYear(),
           month = this.activeDate.getMonth(),
           firstDayOfMonth = new Date(this.activeDate);
@@ -913,22 +909,23 @@
             scope.dataLabels = this.processLabels(this._dayLabels);
         }
 
-        if (_enableWebWorkers) {
+         if (_enableWebWorkers) {
             var _evts = this._events;
             workerPromise.then(function success(angularWorker) {
-                var inputObject = { 'evts': _evts, 'rws': scope.rows, 'process': 'day' };
+                var inputObject = { 'evts': _evts, 'rws' : scope.rows, 'process': 'day'
+        };
                 return angularWorker.run(JSON.stringify(inputObject));
-            }, function error(reason) {
-                console.log('error' + _indexMonth);
-                console.log(reason);
+        }, function error(reason) {
+            console.log('error' +_indexMonth);
+            console.log(reason);
             }).then(function success(result) {
                 var _result = JSON.parse(result);
                 scope.eventDetails = _result;
             });
-        }
-        else {
+            }
+            else {
             scope.eventDetails = this.processEvents(this._events, scope.rows);
-        }
+            }
 
         scope.light = this.light;
         scope.yearMapHeat = this.yearMapHeat;
@@ -1272,7 +1269,6 @@
     };
 
     this._refreshMonthView = function (isHeatMap) {
-        console.log('_refreshMonthView');
         this._events = scope.$parent.events;
         if (isHeatMap == true)
             this.activeMonthViewDate.setDate(15);
@@ -1339,7 +1335,6 @@
                   getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
             }
         }
-
         var _indexMonth = this.activeMonthViewDate.getMonth();
 
         if (_enableWebWorkers) {
