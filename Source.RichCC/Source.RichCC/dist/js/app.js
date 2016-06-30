@@ -1,10 +1,10 @@
 ﻿angular.module('richCCSample', ['richcc.bootstrap.datepicker', 'FredrikSandell.worker-pool'])
-.run(['WorkerService',(function (WorkerService) {
-    //WorkerService.setAngularUrl('/lib/angular.min.js');
-    console.log(WorkerService);
-    WorkerService.setAngularUrl('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js');
-    //WorkerService.addDependency('', 'richCCSample', '');
-})])
+//.run(['WorkerService',(function (WorkerService) {
+//    //WorkerService.setAngularUrl('/lib/angular.min.js');
+//    console.log(WorkerService);
+//    WorkerService.setAngularUrl('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js');
+//    //WorkerService.addDependency('', 'richCCSample', '');
+//})])
 .controller('richCCController', ["$scope", "$timeout", "WorkerService", function ($scope, $timeout, WorkerService) {
     var self = this;
     self.sampleEvents = [
@@ -96,7 +96,7 @@
         datepickerMode: 'month',
         'yearMapHeat': false,
         'preventModeToggle': true,
-        enableWebWorkers: true
+        enableWebWorkers: false
     };
 
     self.popupSettings = {
@@ -145,6 +145,8 @@
     self.clear = function () {
         self.dt = null;
     };
+
+    self.showMode = true;
 
     // Disable weekend selection
     self.disabled = function (date, mode) {
