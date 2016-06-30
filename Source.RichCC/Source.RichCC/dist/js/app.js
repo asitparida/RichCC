@@ -2,7 +2,7 @@
 angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
 .controller('richCCController', ["$scope", "$timeout", function ($scope, $timeout) {
     var self = this;
-    self.sampleEvents = sampleEvents(20);
+    self.sampleEvents = sampleEvents(50);
     //self.sampleEvents = [
     //    { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' },
     //    { 'id': '2', 'initial': 'B', 'name': 'Event B', 'startDt': '01-02-2016', 'endDt': '01-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
@@ -20,7 +20,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
             evt.initial = evt.initial + i;
             evt.bgcolor = _.sample(['#2ecc71', '#47a1de', '#ffc310', '#e67e22', '#e74c3c']);
             var dt = new Date(evt.startDt);
-            dt.setDate(dt.getDate() + (i * 1));
+            dt.setDate(dt.getDate() + (i * 2));
             evt.startDt = (dt.getMonth() + 1) + '-' + (dt.getDate()) + '-' + dt.getFullYear();
             var edt = dt;
             edt.setDate(edt.getDate() + (i * 2));
