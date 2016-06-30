@@ -356,6 +356,8 @@
               date = dateParser.fromTimezone(date, ngModelOptions.timezone);
               ngModelCtrl.$setValidity('dateDisabled', !date ||
                 this.element && !this.isDisabled(date));
+              if ($scope.datepickerMode == 'month')
+                  $scope.$broadcast('refreshMonth');
           }
       };
 
@@ -533,6 +535,12 @@
         self._refreshMonthView(false);
     }
 
+    scope.$on('refreshMonth', function (e) {
+        self._actMonViewDate = scope.monthDate;
+        self.activeMonthViewDate = scope.monthDate.date;
+        self._refreshMonthView(false);
+    });
+
     scope.richccDaySelected = function (dt, events) {
         var data = { 'dt': dt, 'events': events };
         if (typeof scope.daySelectCallback === 'function')
@@ -577,7 +585,7 @@
         } catch (e) {
             return 'none';
         }
-       
+
     }
 
     scope.popUpLeftHandler = function (dt, events) {
@@ -809,14 +817,14 @@
     function _getDayListExistingInCurrentMOnth(_days, _rows) {
         var _daysCurrent = [];
         if (_rows.length > 0) {
-            //new Date(2008, month + 1, 0);
             var _totalNumberOfRows = _rows.length
             if (_rows[0].length > 0) {
                 var _midDate = _rows[2][3];
                 var _lastday = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth() + 1, 0)).setHours(0, 0, 0, 0);
+                var sdt = _rows[0][0].date;
                 _daysCurrent = _.filter(_days, function (_day) {
                     var _totalNumberOfColumns = _rows[_totalNumberOfRows - 1].length;
-                    return (_day >= _rows[0][0].date && _day <= _lastday);
+                    return (_day >= _rows[0][0].date && _day <= _lastday && (new Date(_day).getMonth() == new Date(_lastday).getMonth()));
                 });
             }
         }
@@ -824,12 +832,16 @@
     }
 
     function _getDayListBasedOnEvent(_days, _pday, _stday) {
-        var diff = getDaysBetweenDates(_pday, _stday);
-        if (_pday.getMonth() == _stday.getMonth())
-            return _days.splice(diff.length - 1).length;
-        else {
-            return _days.length;
-        }
+        var diff = getDaysBetweenDates(_stday, _pday);
+        var _stDays = _.filter(_days, function (_d) {
+            return _d >= _pday
+        });
+        return _stDays.length;
+        //if (_pday.getMonth() == _stday.getMonth())
+        //    return _days.splice(diff.length - 1).length;
+        //else {
+        //    return _days.length;
+        //}
     }
 
     this.processEvents = function (events, rows) {
@@ -1004,6 +1016,7 @@
     };
 
     this._refreshMonthView = function (isHeatMap) {
+        this._events = scope.$parent.events;
         if (isHeatMap == true)
             this.activeMonthViewDate.setDate(15);
         var year = this.activeMonthViewDate.getFullYear(),
@@ -1082,7 +1095,7 @@
                 scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEventsForMonthEventViewer(this._events, scope.rows);
         }
         scope.light = this.light;
-        scope.yearMapHeat = this.yearMapHeat
+        scope.yearMapHeat = this.yearMapHeat;
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
         scope.preventModeToggle = this.preventModeToggle;
@@ -1231,7 +1244,7 @@
             daySelectCallback: '&',
             eventPopupLeftCallback: '&',
             eventPopupRightCallback: '&',
-            eventClickCallback:'&',
+            eventClickCallback: '&',
             eventPopupSettings: '='
         },
         require: ['richccDatepicker', '^ngModel'],

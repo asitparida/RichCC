@@ -1,13 +1,32 @@
 ﻿angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
 .controller('richCCController', ["$scope", "$timeout", function ($scope, $timeout) {
     var self = this;
+    //self.sampleEvents = sampleEvents(20);
     self.sampleEvents = [
-        { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true,   'highlightBorderColor' : '#000000' },
-        { 'id': '2', 'initial': 'B', 'name': 'Event B', 'startDt': '01-02-2016', 'endDt': '01-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false , 'highlightBorderColor' : '#000000'},
-        { 'id': '5', 'initial': 'E', 'name': 'Event E', 'startDt': '01-10-2016', 'endDt': '02-10-2016', 'bgcolor': '#ffc310', 'color': '#000000', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false , 'highlightBorderColor' : '#000000'},
-        { 'id': '3', 'initial': 'C', 'name': 'Event C', 'startDt': '01-07-2016', 'endDt': '01-08-2016', 'bgcolor': '#e67e22', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false , 'highlightBorderColor' : '#000000'},
-        { 'id': '4', 'initial': 'D', 'name': 'Event D', 'startDt': '01-06-2016', 'endDt': '01-09-2016', 'bgcolor': '#e74c3c', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false , 'highlightBorderColor' : '#000000'}
+        { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' },
+        { 'id': '2', 'initial': 'B', 'name': 'Event B', 'startDt': '01-02-2016', 'endDt': '01-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        { 'id': '5', 'initial': 'E', 'name': 'Event E', 'startDt': '01-10-2016', 'endDt': '02-10-2016', 'bgcolor': '#ffc310', 'color': '#000000', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        { 'id': '3', 'initial': 'C', 'name': 'Event C', 'startDt': '01-07-2016', 'endDt': '01-08-2016', 'bgcolor': '#e67e22', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        { 'id': '4', 'initial': 'D', 'name': 'Event D', 'startDt': '01-06-2016', 'endDt': '01-09-2016', 'bgcolor': '#e74c3c', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' }
     ];
+
+    function sampleEvents(iter) {
+        var _evts = [];
+        _.each(_.range(iter), function (i) {
+            var evt = { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' };
+            evt.id = i + 1;
+            evt.name = evt.name + i;
+            evt.initial = evt.initial + i;
+            var dt = new Date(evt.startDt);
+            dt.setDate(dt.getDate() + (i * 5));
+            evt.startDt = (dt.getMonth() + 1) + '-' + (dt.getDate()) + '-' + dt.getFullYear();
+            var edt = dt;
+            edt.setDate(edt.getDate() + (i * 30));
+            evt.endDt = (edt.getMonth() + 1) + '-' + (edt.getDate()) + '-' + edt.getFullYear();
+            _evts.push(evt);
+        });
+        return _evts;
+    }
 
     self.insertSampleEvent = function () {
         self.sampleEvents = [
@@ -22,12 +41,12 @@
     }
 
     self.labelData = [
-        {'dt': '01-02-2016','label': '09:00'},
-        {'dt': '01-04-2016','label': '05:45'},
-        {'dt': '01-08-2016','label': '12:00'},
-        {'dt': '01-07-2016','label': '03:30'},
-        {'dt': '01-06-2016','label': '01:00'},
-        {'dt': '01-16-2016','label': '10:00'}
+        { 'dt': '01-02-2016', 'label': '09:00' },
+        { 'dt': '01-04-2016', 'label': '05:45' },
+        { 'dt': '01-08-2016', 'label': '12:00' },
+        { 'dt': '01-07-2016', 'label': '03:30' },
+        { 'dt': '01-06-2016', 'label': '01:00' },
+        { 'dt': '01-16-2016', 'label': '10:00' }
     ];
 
     self.dtPickerOptions = {
@@ -46,7 +65,7 @@
 
     self.dtPickerOptions1 = {
         customClass: getDayClass,
-        customIconClass:getIconClass,
+        customIconClass: getIconClass,
         showWeeks: false,
         datepickerMode: 'day',
         'yearMapHeat': true,
@@ -80,7 +99,7 @@
         'preventModeToggle': false,
         'preventCalNav': false,
         'showMarkerForMoreEvents': false,
-        'hideCalNav' : true
+        'hideCalNav': true
     };
 
     self.dtPickerOptionsMonth = {
@@ -129,7 +148,7 @@
         console.log(data);
     }
 
-    self.eventClickCallback = function(data) {
+    self.eventClickCallback = function (data) {
         console.log('eventClickCallback');
         console.log(data);
     }
