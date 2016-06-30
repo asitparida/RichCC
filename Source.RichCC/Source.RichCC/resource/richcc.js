@@ -356,6 +356,8 @@
               date = dateParser.fromTimezone(date, ngModelOptions.timezone);
               ngModelCtrl.$setValidity('dateDisabled', !date ||
                 this.element && !this.isDisabled(date));
+              if ($scope.datepickerMode == 'month')
+                  $scope.$broadcast('refreshMonth');
           }
       };
 
@@ -533,6 +535,12 @@
         self._refreshMonthView(false);
     }
 
+    scope.$on('refreshMonth', function (e) {
+        self._actMonViewDate = scope.monthDate;
+        self.activeMonthViewDate = scope.monthDate.date;
+        self._refreshMonthView(false);
+    });
+
     scope.richccDaySelected = function (dt, events) {
         var data = { 'dt': dt, 'events': events };
         if (typeof scope.daySelectCallback === 'function')
@@ -577,7 +585,7 @@
         } catch (e) {
             return 'none';
         }
-       
+
     }
 
     scope.popUpLeftHandler = function (dt, events) {
@@ -665,7 +673,7 @@
             scope.dataLabels = this.processLabels(this._dayLabels);
         }
 
-        scope.eventDetails = this.processEvents(this._events, scope.rows);
+        scope.eventDetails = this.processEvents(this._events, scope.rows);        
         scope.light = this.light;
         scope.yearMapHeat = this.yearMapHeat;
         scope.eventPopupHide = this.eventPopupHide;
@@ -1004,6 +1012,7 @@
     };
 
     this._refreshMonthView = function (isHeatMap) {
+        this._events = scope.$parent.events;
         if (isHeatMap == true)
             this.activeMonthViewDate.setDate(15);
         var year = this.activeMonthViewDate.getFullYear(),
@@ -1082,7 +1091,7 @@
                 scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = this.processEventsForMonthEventViewer(this._events, scope.rows);
         }
         scope.light = this.light;
-        scope.yearMapHeat = this.yearMapHeat
+        scope.yearMapHeat = this.yearMapHeat;
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
         scope.preventModeToggle = this.preventModeToggle;
@@ -1231,7 +1240,7 @@
             daySelectCallback: '&',
             eventPopupLeftCallback: '&',
             eventPopupRightCallback: '&',
-            eventClickCallback:'&',
+            eventClickCallback: '&',
             eventPopupSettings: '='
         },
         require: ['richccDatepicker', '^ngModel'],
