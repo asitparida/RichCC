@@ -2,7 +2,7 @@
 angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
 .controller('richCCController', ["$scope", "$timeout", function ($scope, $timeout) {
     var self = this;
-    self.sampleEvents = sampleEvents(50);
+    self.sampleEvents = sampleEvents(100);
     //self.sampleEvents = [
     //    { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' },
     //    { 'id': '2', 'initial': 'B', 'name': 'Event B', 'startDt': '01-02-2016', 'endDt': '01-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
@@ -110,8 +110,8 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         showWeeks: false,
         datepickerMode: 'month',
         'yearMapHeat': false,
-        'preventModeToggle': true,
-        enableWebWorkers: true
+        'preventModeToggle': true//,
+        //enableWebWorkers: false
     };
 
     self.popupSettings = {
@@ -166,7 +166,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         self.dt = null;
     };
 
-    self.showMode = true;
+    self.showMode = false;
 
     // Disable weekend selection
     self.disabled = function (date, mode) {

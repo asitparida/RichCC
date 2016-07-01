@@ -943,6 +943,7 @@
     };
 
     this._refreshView = function () {
+        scope.eventDetails = {};
         var year = this.activeDate.getFullYear(),
           month = this.activeDate.getMonth(),
           firstDayOfMonth = new Date(this.activeDate);
@@ -1369,6 +1370,11 @@
         var year = this.activeMonthViewDate.getFullYear(),
           month = this.activeMonthViewDate.getMonth(),
           firstDayOfMonth = new Date(this.activeMonthViewDate);
+
+        if (typeof scope.monthViewData !== 'undefined')
+            scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = {};
+        else if (typeof scope.parent.monthViewData !== 'undefined')
+            scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = {};
 
         firstDayOfMonth.setFullYear(year, month, 1);
 
