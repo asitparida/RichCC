@@ -147,7 +147,7 @@
                                  popover-append-to-body="true"
                                  popover-placement="{{getPopUpPositionForMonthEventMap(monthIndex, weekindex)}}"
                                  popover-class="richcc-popup-container">
-                                <div class="markHolder" style="position:relative;" ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length > 0">
+                                <div class="markHolder" style="position:relative;">
                                     <div class="month-date" ng-show="column.monthIndex == monthIndex && parent.eventPopupSettings.showDateInYearView == true">{{popitem.date | date:'dd'}}</div>
                                     <div class="mark step-{{event.step}}"
                                          ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length > 0"
