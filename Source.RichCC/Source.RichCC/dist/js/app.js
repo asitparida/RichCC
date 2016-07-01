@@ -2,7 +2,7 @@
 angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
 .controller('richCCController', ["$scope", "$timeout", function ($scope, $timeout) {
     var self = this;
-    self.sampleEvents = sampleEvents(100);
+    self.sampleEvents = sampleEvents(3);
     //self.sampleEvents = [
     //    { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' },
     //    { 'id': '2', 'initial': 'B', 'name': 'Event B', 'startDt': '01-02-2016', 'endDt': '01-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
@@ -15,7 +15,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         var _evts = [];
         _.each(_.range(iter), function (i) {
             var evt = { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' };
-            evt.id = i + 1;
+            evt.id = 0;
             evt.name = evt.name + i;
             evt.initial = evt.initial + i;
             evt.bgcolor = _.sample(['#2ecc71', '#47a1de', '#ffc310', '#e67e22', '#e74c3c']);
@@ -27,6 +27,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
             evt.endDt = (edt.getMonth() + 1) + '-' + (edt.getDate()) + '-' + edt.getFullYear();
             _evts.push(evt);
         });
+        console.log(_evts);
         return _evts;
     }
 
@@ -120,7 +121,8 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'showRight': false,
         'leftLabel': 'Add Events',
         'rightLabel': 'Edit Details',
-        'showWhenEventsEmpty': true
+        'showWhenEventsEmpty': true,
+        'dateFilter': 'MM/dd/yy'
     };
 
     self.popupSettings2 = {
@@ -130,7 +132,8 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'leftLabel': 'Add Events',
         'rightLabel': 'Edit Details',
         'showWhenEventsEmpty': true,
-        'showDateInYearView': true
+        'showDateInYearView': true,
+        'dateFilter': 'EEE MMM dd yyyy'
     };
 
     self.popupSettingsHidden = {
