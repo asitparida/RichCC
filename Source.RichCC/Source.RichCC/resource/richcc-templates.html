@@ -35,7 +35,7 @@
     </div>
     <!--day.html-->
     <div id="richccTmplDay">
-        <table class="uib-daypicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}">
+        <table class="uib-daypicker richcc-daypicker" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}">
             <thead>
                 <tr class="header-action-holder">
                     <th colspan="1" ng-if="light != true"></th>
@@ -56,7 +56,7 @@
                 </tr>
                 <tr class="header-dayname-row">
                     <th ng-if="showWeeks && false" class="text-center"></th>
-                    <th colspan="1" ng-repeat="label in ::labels track by $index" class="text-center dayTitle"><span aria-label="{{::label.full}}">{{::label.abbr | limitTo:1}}</span></th>
+                    <th colspan="1" ng-repeat="label in labels track by $index" class="text-center dayTitle"><span aria-label="{{label.full}}">{{label.abbr | limitTo:1}}</span></th>
                     <th colspan="1" ng-if="light == true"></th>
                 </tr>
             </thead>
@@ -64,16 +64,16 @@
                 <tr class="uib-weeks richcc-row" ng-repeat="row in rows track by $index" ng-init="rowindex = $index">
                     <td ng-if="showWeeks && false" class="text-center h6"><em>{{weekNumbers[$index] }}</em></td>
                     <td ng-repeat="dt in row track by $index" class="uib-day text-center richcc-td" role="gridcell"
-                        id="{{::dt.uid}}"
-                        ng-class="::dt.customClass"
+                        id="{{dt.uid}}"
+                        ng-class="dt.customClass"
                         colspan="1"
-                        ng-disabled="::dt.disabled"
+                        ng-disabled="dt.disabled"
                         ng-init="columnindex = $index"
                         ng-click="richccDaySelected(dt, eventDetails[dt.key])"
                         uib-popover-template="dayPopUpTmpl"
-                        popover-trigger="{{::popUpTrigger(eventDetails[dt.key])}}"
+                        popover-trigger="{{popUpTrigger(eventDetails[dt.key])}}"
                         popover-append-to-body="true"
-                        popover-placement="{{::getPopUpPositionForDayMap(rowindex, columnindex)}}"
+                        popover-placement="{{getPopUpPositionForDayMap(rowindex, columnindex)}}"
                         popover-class="richcc-popup-container">
                         <div class="richcc-icon-container dayHolder"
                              uib-is-class="
@@ -123,7 +123,7 @@
     </div>
     <!--monthEventViewer.html-->
     <div id="richccTmplMonthEventViewer">
-        <table class="uib-daypicker richcc-monthviewer" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}" ng-init="parent = $parent">
+        <table class="uib-daypicker richcc-monthviewer" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}" ng-init="parent = $parent">
             <thead style="height:0 !important; margin:0;padding:0;line-height:0;">
                 <tr class="header-action-holder" style="height:0 !important; margin:0;padding:0;line-height:0;">
                     <th colspan="1" class="w48" style="height:0 !important; margin:0;padding:0;line-height:0;"></th>
@@ -140,15 +140,15 @@
                         <div class="richcc-month-eventbox" ng-repeat="column in row track by $index" ng-if="(weekindex != 5) || (weekindex == 5 && $index < 3)">
                             <div class="richcc-eventbox-content {{column.customClass}}"
                                  ng-class="{'notInPresentMonth' : column.monthIndex != monthIndex, 'showingDates': parent.eventPopupSettings.showDateInYearView == true}"
-                                 ng-init="popitem = column;mEvents = parent.monthWiseEventDetails[monthIndex][popitem.key]"
+                                 ng-init="mEvents = parent.monthWiseEventDetails[monthIndex][column.key]"
                                  uib-popover-template="monthPopUpTmpl"
-                                 ng-click="richccDaySelected(column, parent.monthWiseEventDetails[monthIndex][popitem.key])"
+                                 ng-click="richccDaySelected(column, parent.monthWiseEventDetails[monthIndex][column.key])"
                                  popover-trigger="{{popUpTriggerYearView(mEvents)}}"
                                  popover-append-to-body="true"
                                  popover-placement="{{getPopUpPositionForMonthEventMap(monthIndex, weekindex)}}"
                                  popover-class="richcc-popup-container">
                                 <div class="markHolder" style="position:relative;">
-                                    <div class="month-date" ng-show="column.monthIndex == monthIndex && parent.eventPopupSettings.showDateInYearView == true">{{popitem.date | date:'dd'}}</div>
+                                    <div class="month-date" ng-show="column.monthIndex == monthIndex && parent.eventPopupSettings.showDateInYearView == true">{{column.date | date:'dd'}}</div>
                                     <div class="mark step-{{event.step}}"
                                          ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length > 0"
                                          ng-class="{'top': event.order == 1, 'bottom': event.order == 2, 'webWorkers': enableWebWorkers}"
@@ -172,7 +172,7 @@
     </div>
     <!--monthEventWrap.html-->
     <div id="richccTmplMonthEventWrap">
-        <table class="uib-monthpicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+        <table class="uib-monthpicker richcc-daypicker" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
             <thead>
                 <tr class="header-action-holder">
                     <th colspan="1"></th>
@@ -181,7 +181,7 @@
                             <div class="richcc-icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                                 <i class="richcc-icon icon-ScrollChevronLeftLegacy"></i>
                             </div>
-                            <div class="richcc-icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
+                            <div class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
                                 <label class="title">{{title}}</label>
                             </div>
                             <div class="richcc-icon-container nav-right" cc-key="move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
@@ -200,8 +200,8 @@
                 </tr>
                 <tr class="uib-months" ng-repeat="row in rows track by $index">
                     <td ng-repeat="dt in row track by $index" class="uib-month text-center richcc-month-event-box-holder" role="gridcell"
-                        id="{{::dt.uid}}"
-                        ng-class="::dt.customClass"
+                        id="{{dt.uid}}"
+                        ng-class="dt.customClass"
                         colspan="6">
                         <rich-months-event-viewer month-date="dt" month-index="dt.monthIndex" month-select-callback="select(dt.date)"></rich-months-event-viewer>
                     </td>
@@ -211,7 +211,7 @@
     </div>
     <!--monthHeatViewer.html-->
     <div id="richccTmplMonthHeatViewer">
-        <table class="uib-daypicker richcc-monthviewer" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}" ng-init="parent = $parent">
+        <table class="uib-daypicker richcc-monthviewer" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}" ng-init="parent = $parent">
             <thead>
                 <tr class="header-action-holder">
                     <th colspan="7" cc-key="monthSelectCallback()">{{parent.monthViewData[monthIndex].dt.label | limitTo:3}}</th>
@@ -220,7 +220,7 @@
             <tbody>
                 <tr class="uib-weeks richcc-row" ng-repeat="row in [0,1,2,3,4,5,6] track by $index">
                     <td ng-repeat="column in parent.monthViewData[monthIndex].rows track by $index" class="uib-day text-center richcc-td" role="gridcell"
-                        id="{{::mdt.key}}"
+                        id="{{mdt.key}}"
                         colspan="1"
                         ng-style="{'opacity': column[row].monthIndex != monthIndex ? 0 : 1}"
                         ng-init="mdt = column[row]; popitem = column[row]"
@@ -242,7 +242,7 @@
     </div>
     <!--monthHeatWrap.html-->
     <div id="richccTmplMonthHeatWrap">
-        <table class="uib-monthpicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+        <table class="uib-monthpicker richcc-daypicker" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
             <thead>
                 <tr class="header-action-holder">
                     <th colspan="1" class="w48"></th>
@@ -252,7 +252,7 @@
                             <div class="richcc-icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                                 <i class="richcc-icon icon-ScrollChevronLeftLegacy"></i>
                             </div>
-                            <div class="richcc-icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
+                            <div class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
                                 <label class="title">{{title}}</label>
                             </div>
                             <div class="richcc-icon-container nav-right" cc-key="move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
@@ -270,8 +270,8 @@
                         <rich-months-day-marker></rich-months-day-marker>
                     </td>
                     <td ng-repeat="dt in row track by $index" class="uib-month text-center" role="gridcell"
-                        id="{{::dt.uid}}"
-                        ng-class="::dt.customClass"
+                        id="{{dt.uid}}"
+                        ng-class="dt.customClass"
                         colspan="1">
                         <rich-months-heat-viewer month-date="dt" month-index="dt.monthIndex" month-select-callback="select(dt.date)"></rich-months-heat-viewer>
                     </td>
@@ -282,7 +282,7 @@
     </div>
     <!--monthViewerDayMarker.html-->
     <div id="richccTmplMonthViewerDayMarker">
-        <table class="uib-daypicker richcc-monthviewer" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}" ng-init="parent = $parent">
+        <table class="uib-daypicker richcc-monthviewer" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}" ng-init="parent = $parent">
             <thead ng-if="yearMapHeat == true">
                 <tr class="header-action-holder">
                     <th colspan="1">&nbsp;</th>
@@ -359,11 +359,11 @@
     </div>
     <!--richccMonthPopup.html-->
     <div id="richccTmplRichccMonthPopup">
-        <div class="richcc-day-popup">
+        <div class="richcc-day-popup" ng-init="">
             <div class="event-container" ng-class="{'noActions': !(parent.eventPopupSettings.showLeft || parent.eventPopupSettings.showRight)}">
-                <div class="event-container-label">{{popitem.date | date: parent.eventPopupSettings.dateFilter}} <span ng-show="parent.monthWiseEventDetails[monthIndex][popitem.key].length > 0 ">({{parent.monthWiseEventDetails[monthIndex][popitem.key].length}} Events)</span></div>
+                <div class="event-container-label">{{column.date | date: parent.eventPopupSettings.dateFilter}} <span ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length > 0 ">({{parent.monthWiseEventDetails[monthIndex][column.key].length}} Events)</span></div>
                 <div class="event-details-container">
-                    <div class="event-detail" ng-repeat="event in parent.monthWiseEventDetails[monthIndex][popitem.key] track by $index" ng-click="popUpEventClickHandler(popitem, event)">
+                    <div class="event-detail" ng-repeat="event in parent.monthWiseEventDetails[monthIndex][column.key] track by $index" ng-click="popUpEventClickHandler(column, event)">
                         <div class="event-marker"></div>
                         <div class="event-title-holder" ng-style="{'border-left-color': event.bgcolor}">
                             <span class="event-title">{{event.name}}</span> : <span class="event-subject">{{event.subject}}</span>
@@ -377,15 +377,15 @@
             <div class="event-action-container"
                  ng-class="{'singleButtonOnly' : (parent.eventPopupSettings.showLeft != false && parent.eventPopupSettings.showRight == false) || (parent.eventPopupSettings.showLeft == false && parent.eventPopupSettings.showRight != false)}"
                  ng-show="parent.eventPopupSettings.showLeft || parent.eventPopupSettings.showRight">
-                <button class="event-action" ng-if="parent.eventPopupSettings.showLeft != false" ng-click="popUpLeftHandler(popitem, parent.monthWiseEventDetails[monthIndex][popitem.key])">{{parent.eventPopupSettings.leftLabel || 'Add Events'}}</button>
-                <button class="event-action" ng-if="parent.eventPopupSettings.showRight != false" ng-click="popUpRightHandler(popitem, parent.monthWiseEventDetails[monthIndex][popitem.key])">{{parent.eventPopupSettings.rightLabel || 'Edit Events'}}</button>
+                <button class="event-action" ng-if="parent.eventPopupSettings.showLeft != false" ng-click="popUpLeftHandler(column, parent.monthWiseEventDetails[monthIndex][column.key])">{{parent.eventPopupSettings.leftLabel || 'Add Events'}}</button>
+                <button class="event-action" ng-if="parent.eventPopupSettings.showRight != false" ng-click="popUpRightHandler(column, parent.monthWiseEventDetails[monthIndex][column.key])">{{parent.eventPopupSettings.rightLabel || 'Edit Events'}}</button>
                 <div class="event-separator"></div>
             </div>
         </div>
     </div>
     <!--year.html-->
     <div id="richccTmplYear">
-        <table class="uib-yearpicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+        <table class="uib-yearpicker richcc-daypicker" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
             <thead>
                 <tr class="header-action-holder">
                     <th colspan="1"></th>
@@ -394,7 +394,7 @@
                             <div class="richcc-icon-container nav-left" cc-key="move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                                 <i class="richcc-icon icon-ScrollChevronLeftLegacy"></i>
                             </div>
-                            <div class="richcc-icon-container labelHolder" id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
+                            <div class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
                                 <label class="title">{{title}}</label>
                             </div>
                             <div class="richcc-icon-container nav-right" cc-key="move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
@@ -410,17 +410,17 @@
             <tbody>
                 <tr class="uib-years" ng-repeat="row in rows track by $index">
                     <td ng-repeat="dt in row track by $index" class="uib-year text-center" role="gridcell"
-                        id="{{::dt.uid}}"
-                        ng-class="::dt.customClass">
+                        id="{{dt.uid}}"
+                        ng-class="dt.customClass">
                         <button type="button" class="btn btn-default"
                                 uib-is-class="
                                 'btn-info' for selectedDt,
                                 'active' for activeDt
                                 on dt"
                                 ng-click="select(dt.date)"
-                                ng-disabled="::dt.disabled"
+                                ng-disabled="dt.disabled"
                                 tabindex="-1">
-                            <span ng-class="::{'text-info': dt.current}">{{::dt.label}}</span>
+                            <span ng-class="{'text-info': dt.current}">{{dt.label}}</span>
                         </button>
                     </td>
                 </tr>

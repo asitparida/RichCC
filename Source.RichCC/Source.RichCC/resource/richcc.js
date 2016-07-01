@@ -96,6 +96,8 @@
                       }
                       break;
                   case 'yearMapHeat':
+                      self[key] = $scope[key] = false;
+                      break;
                   case 'light':
                   case 'preventModeToggle':
                   case 'preventCalNav':
@@ -395,8 +397,9 @@
               date = dateParser.fromTimezone(date, ngModelOptions.timezone);
               ngModelCtrl.$setValidity('dateDisabled', !date ||
                 this.element && !this.isDisabled(date));
-              if ($scope.datepickerMode == 'month')
-                  $scope.$broadcast('refreshMonth');
+              if ($scope.datepickerMode == 'month') {
+                  $scope.$broadcast('refreshMonth', $scope.activeDt);                  
+              }
           }
       };
 
@@ -829,9 +832,12 @@
         self._refreshMonthView(false);
     }
 
-    scope.$on('refreshMonth', function (e) {
+    scope.$on('refreshMonth', function (e, data) {
+        console.log('refreshMonth');
+        scope.monthDate.date.setFullYear(data.date.getFullYear());
         self._actMonViewDate = scope.monthDate;
         self.activeMonthViewDate = scope.monthDate.date;
+        console.log(self.activeMonthViewDate);
         self._refreshMonthView(false);
     });
 
@@ -1364,6 +1370,7 @@
     };
 
     this._refreshMonthView = function (isHeatMap) {
+        console.log('_refreshMonthView');
         this._events = scope.$parent.events;
         if (isHeatMap == true)
             this.activeMonthViewDate.setDate(15);
@@ -1371,9 +1378,9 @@
           month = this.activeMonthViewDate.getMonth(),
           firstDayOfMonth = new Date(this.activeMonthViewDate);
 
-        if (typeof scope.monthViewData !== 'undefined')
+        if (typeof scope.monthWiseEventDetails !== 'undefined')
             scope.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = {};
-        else if (typeof scope.parent.monthViewData !== 'undefined')
+        else if (typeof scope.parent.monthWiseEventDetails !== 'undefined')
             scope.parent.monthWiseEventDetails[this.activeMonthViewDate.getMonth()] = {};
 
         firstDayOfMonth.setFullYear(year, month, 1);
