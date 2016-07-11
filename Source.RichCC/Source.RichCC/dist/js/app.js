@@ -2,21 +2,21 @@
 angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
 .controller('richCCController', ["$scope", "$timeout", function ($scope, $timeout) {
     var self = this;
-    //self.sampleEvents = sampleEvents(50);
-    self.sampleEvents = [
-        { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-15-2016', 'endDt': '06-06-2017', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' },
-        { 'id': '2', 'initial': 'B', 'name': 'Event B', 'startDt': '02-02-2016', 'endDt': '03-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
-        { 'id': '3', 'initial': 'E', 'name': 'Event E', 'startDt': '04-10-2016', 'endDt': '04-10-2016', 'bgcolor': '#ffc310', 'color': '#000000', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
-        { 'id': '4', 'initial': 'C', 'name': 'Event C', 'startDt': '04-17-2016', 'endDt': '04-18-2016', 'bgcolor': '#e67e22', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
-        { 'id': '5', 'initial': 'D', 'name': 'Event D', 'startDt': '05-06-2016', 'endDt': '05-09-2016', 'bgcolor': '#e74c3c', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
-        { 'id': '6', 'initial': 'F', 'name': 'Event F', 'startDt': '06-13-2016', 'endDt': '06-17-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
-        { 'id': '7', 'initial': 'G', 'name': 'Event G', 'startDt': '06-12-2016', 'endDt': '06-12-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' }
-    ];
+    self.sampleEvents = sampleEvents(100);
+    //self.sampleEvents = [
+    //    { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-15-2016', 'endDt': '06-06-2017', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' },
+    //    { 'id': '2', 'initial': 'B', 'name': 'Event B', 'startDt': '02-02-2016', 'endDt': '03-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+    //    { 'id': '3', 'initial': 'E', 'name': 'Event E', 'startDt': '04-10-2016', 'endDt': '04-10-2016', 'bgcolor': '#ffc310', 'color': '#000000', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+    //    { 'id': '4', 'initial': 'C', 'name': 'Event C', 'startDt': '04-17-2016', 'endDt': '04-18-2016', 'bgcolor': '#e67e22', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+    //    { 'id': '5', 'initial': 'D', 'name': 'Event D', 'startDt': '05-06-2016', 'endDt': '05-09-2016', 'bgcolor': '#e74c3c', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+    //    { 'id': '6', 'initial': 'F', 'name': 'Event F', 'startDt': '06-13-2016', 'endDt': '06-17-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+    //    { 'id': '7', 'initial': 'G', 'name': 'Event G', 'startDt': '06-12-2016', 'endDt': '06-12-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' }
+    //];
 
     function sampleEvents(iter) {
         var _evts = [];
         _.each(_.range(iter), function (i) {
-            var evt = { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' };
+            var evt = { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-02-2016', 'endDt': '01-06-2016', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': _.sample([true, false]), 'highlightBorderColor': '#000000' };
             evt.id = i;
             evt.name = evt.name + i;
             evt.initial = evt.initial + i;

@@ -1185,12 +1185,26 @@
                                 }
 
                                 &.morePresent {
-                                    bottom: 0;
+                                    bottom: 3px;
                                     background: none;
                                     width: 30px;
                                     opacity: 1;
                                     pointer-events: none;
                                     height: 10px;
+
+                                    .circle-marker {
+                                        height: 10px;
+                                        width: 30px;
+
+                                        .circle {
+                                            height: 4px;
+                                            width: 4px;
+                                            border-radius: 50%;
+                                            display: inline-block;
+                                            background-color: #505050;
+                                            margin-right: 3px;
+                                        }
+                                    }
 
                                     .richcc-icon-container {
                                         height: 10px;

@@ -2993,12 +2993,22 @@
           .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark.bottom {
             top: 30px; }
           .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark.morePresent {
-            bottom: 0;
+            bottom: 3px;
             background: none;
             width: 30px;
             opacity: 1;
             pointer-events: none;
             height: 10px; }
+            .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark.morePresent .circle-marker {
+              height: 10px;
+              width: 30px; }
+              .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark.morePresent .circle-marker .circle {
+                height: 4px;
+                width: 4px;
+                border-radius: 50%;
+                display: inline-block;
+                background-color: #505050;
+                margin-right: 3px; }
             .richcc-datepicker .richcc-daypicker tbody tr td.richcc-td .markHolder .mark.morePresent .richcc-icon-container {
               height: 10px;
               width: 25px; }
