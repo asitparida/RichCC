@@ -160,7 +160,7 @@
                                          ng-if="event.startPaintForMonth == true"
                                          style="color:#fff;">
                                         <div class="mark-text-initial" ng-style="{'color': event.bgcolor}">{{event.initial | limitTo: 1}}</div>
-                                        <div class="mark-stripe light">
+                                        <div class="mark-stripe light" ng-style="{'border-color': event.highlightBorder == true ? event.highlightBorderColor : 'transparent'}" ng-class="{'highlightBorder': event.highlightBorder}">
                                             <div class="mark-stripe-color" ng-style="{'background-color': event.bgcolor}"></div>
                                         </div>
                                     </div>
