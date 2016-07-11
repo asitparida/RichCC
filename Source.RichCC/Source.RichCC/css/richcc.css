@@ -61,6 +61,8 @@
           width: 100%;
           padding-left: 10px;
           display: inline-block; }
+          .richcc-popup-container .richcc-day-popup .event-container .event-details-container .event-title-holder.highlightBorder {
+            outline: 2px dashed #000000; }
           .richcc-popup-container .richcc-day-popup .event-container .event-details-container .event-title-holder .event-title {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: small;

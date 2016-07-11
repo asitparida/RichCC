@@ -98,7 +98,7 @@
                                  ng-style="{'color': event.color, 'width': light != true ?  'calc(' + 100 * event.paintBoxLength + '% - 8px)' : 'calc(' + 100 * event.paintBoxLength + '% - 20px)'}"
                                  ng-repeat="event in eventDetails[dt.key] track by $index"
                                  ng-if="event.startPaint == true"
-                                 style="color:#fff;" >
+                                 style="color:#fff;">
                                 <div class="mark-text-initial" ng-if="light == true" ng-style="{'color': event.bgcolor}">{{event.initial | limitTo: 1}}</div>
                                 <div class="mark-stripe" ng-style="{'border-color': light == false && event.highlightBorder == true ? event.highlightBorderColor : 'transparent'}" ng-class="{'highlightBorder': light == false ? event.highlightBorder : ''}">
                                     <div class="mark-stripe-color" ng-style="{'background-color': event.bgcolor}">
@@ -342,7 +342,7 @@
                 <div class="event-details-container">
                     <div class="event-detail" ng-repeat="event in eventDetails[dt.key] track by $index" ng-click="popUpEventClickHandler(dt, event)">
                         <div class="event-marker"></div>
-                        <div class="event-title-holder" ng-style="{'border-left-color': event.bgcolor}">
+                        <div class="event-title-holder" ng-style="{'border-left-color': event.bgcolor}" ng-class="{ 'highlightBorder': event.highlightBorder}">
                             <span class="event-title">{{event.name}}</span> : <span class="event-subject">{{event.subject}}</span>
                             <div class="event-timing-holder">
                                 <span class="event-time">{{event._startDt | date:eventPopupSettings.dateFilter}}</span><span style="padding: 0 15px;">-</span><span class="event-time">{{event._endDt | date: eventPopupSettings.dateFilter}}</span>
@@ -368,7 +368,7 @@
                 <div class="event-details-container">
                     <div class="event-detail" ng-repeat="event in parent.monthWiseEventDetails[monthIndex][column.key] track by $index" ng-click="popUpEventClickHandler(column, event)">
                         <div class="event-marker"></div>
-                        <div class="event-title-holder" ng-style="{'border-left-color': event.bgcolor}">
+                        <div class="event-title-holder" ng-style="{'border-left-color': event.bgcolor}" ng-class="{ 'highlightBorder': event.highlightBorder}">
                             <span class="event-title">{{event.name}}</span> : <span class="event-subject">{{event.subject}}</span>
                             <div class="event-timing-holder">
                                 <span class="event-time">{{event._startDt | date: parent.eventPopupSettings.dateFilter}}</span><span style="padding: 0 15px;">-</span><span class="event-time">{{event._endDt | date: parent.eventPopupSettings.dateFilter}}</span>

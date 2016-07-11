@@ -98,6 +98,10 @@
                     padding-left: 10px;
                     display: inline-block;
 
+                    &.highlightBorder {
+                        outline:2px dashed #000000;
+                    }
+
                     .event-title {
                         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                         font-size: small;
