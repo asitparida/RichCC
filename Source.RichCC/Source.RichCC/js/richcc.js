@@ -32,12 +32,14 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
     enableWebWorkers: false,
     webWorkerAngularPath: 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js'
 })
+
 .service('richCCShared', function () {
     var self = this;
     self.enableWebWorkers = false;
     self.webWorkerAngularPath = 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js';
     return self;
 })
+
 .controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser', 'richCCShared',
   function ($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser, richCCShared) {
       var self = this,
@@ -1767,7 +1769,6 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
     };
 })
 
-
 .directive('richccYearpicker', function () {
     return {
         replace: true,
@@ -2250,4 +2251,595 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             });
         }
     };
-});
+})
+
+.service('RichCCService', ['dateFilter', function (dateFilter) {
+    var self = this;
+    self.datepickerMode = 'day';
+    self.formatDay = 'dd';
+    self.formatMonth = 'MMMM';
+    self.formatYear = 'yyyy';
+    self.formatDayHeader = 'EEE';
+    self.formatDayTitle = 'MMMM yyyy';
+    self.formatMonthTitle = 'yyyy';
+    self.maxDate = null;
+    self.maxMode = 'year';
+    self.minDate = null;
+    self.minMode = 'day';
+    self.ngModelOptions = {};
+    self.shortcutPropagation = false;
+    self.yearColumns = 5;
+    self.yearRows = 4;
+    self.light = false;
+    self.yearMapHeat = false;
+    self.preventModeToggle = false;
+    self.preventCalNav = false;
+    self.hideCalNav = false;
+    self.showMarkerForMoreEvents = true;
+    self.showDataLabel = false;
+    self.defaultDataLabel = '00=00';
+    self.monthPopUpTmpl = 'template/richcc/richccMonthPopup.html';
+    self.dayPopUpTmpl = 'template/richcc/richccDayPopup.html';
+    self.enableWebWorkers = false;
+    self.webWorkerAngularPath = 'https=//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js';
+
+    String.prototype.replaceAll = function (find, replaceWith) {
+        var regex = new RegExp(find, 'g');
+        return this.replace(regex, replaceWith);
+    }
+
+    /* EVENTS LOGIC */
+    function dtCompare(dta, dtb) {
+        if (dta < dtb)
+            return -1;
+        else if (dta == dtb)
+            return 0;
+        else if (dta > dtb)
+            return 1;
+    }
+
+    function getDaysBetweenDates(dt1, dt2) {
+        var _days = [];
+        var _timeDiff = Math.abs((new Date(dt1)).getTime() - (new Date(dt2)).getTime());
+        var _diffDays = Math.ceil(_timeDiff / (1000 * 3600 * 24)) + 1;
+        _.each(_.range(_diffDays), function (i) {
+            var _day = new Date(dt1);
+            _day = _day.setDate(_day.getDate() + i);
+            _days.push(new Date(_day));
+        });
+        return _days;
+    }
+
+    function isSameDay(d1, d2) {
+        d1.setHours(0, 0, 0, 0);
+        d2.setHours(0, 0, 0, 0);
+        return d1.getTime() === d2.getTime();
+
+    }
+
+    function getOrder(days) {
+        var _proceed = true;
+        var i = 1;
+        while (_proceed) {
+            var _found = _.find(days, function (day) {
+                return day.order == i;
+            });
+            if (typeof _found === 'undefined') {
+                _proceed = false;
+            }
+            else
+                i = i + 1;
+        }
+        return i;
+    }
+
+    function dayIsWeekFirst(_day, _weekFirsts) {
+        var _found = _.find(_weekFirsts, function (d) {
+            return d.date.getDate() == _day.getDate() && d.date.getMonth() == _day.getMonth() && d.date.getFullYear() == _day.getFullYear();
+        });
+        if (typeof _found === 'undefined')
+            return false;
+        else
+            return true;
+    }
+
+    function _dayInCurrentRows(_day, rows) {
+        var result = false;
+        if (rows.length > 0) {
+            var _totalNumberOfRows = rows.length
+            if (rows[0].length > 0) {
+                var _totalNumberOfColumns = rows[_totalNumberOfRows - 1].length;
+                if (_day >= rows[0][0].date && _day <= rows[_totalNumberOfRows - 1][_totalNumberOfColumns - 1].date)
+                    result = true;
+            }
+        }
+        return result;
+    }
+
+    function _dayInCurrentMonth(_day, _rows) {
+        var result = false;
+        if (_rows.length > 0) {
+            var _totalNumberOfRows = _rows.length;
+            if (_rows[0].length > 0) {
+                var _midDate = _rows[2][3];
+                var _firstDay = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth(), 1)).setHours(0, 0, 0, 0);
+                var _lastDay = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth() + 1, 0)).setHours(0, 0, 0, 0);
+                if (_day >= _firstDay && _day <= _lastDay)
+                    result = true;
+            }
+        }
+        return result;
+    }
+
+    function _getDayListExistingInCurrentMOnth(_days, _rows) {
+        var _daysCurrent = [];
+        if (_rows.length > 0) {
+            var _totalNumberOfRows = _rows.length;
+            if (_rows[0].length > 0) {
+                var _midDate = _rows[2][3];
+                var _lastday = (new Date(_midDate.date.getFullYear(), _midDate.date.getMonth() + 1, 0)).setHours(0, 0, 0, 0);
+                _daysCurrent = _.filter(_days, function (_day) {
+                    var _totalNumberOfColumns = _rows[_totalNumberOfRows - 1].length;
+                    return (_day >= _rows[0][0].date && _day <= _lastday && (new Date(_day).getMonth() == new Date(_lastday).getMonth()));
+                });
+            }
+        }
+        return _daysCurrent;
+    }
+
+    function _getDayListBasedOnEvent(_days, _pday, _stday) {
+        var diff = getDaysBetweenDates(_stday, _pday);
+        var _stDays = _.filter(_days, function (_d) {
+            return _d >= _pday
+        });
+        return _stDays.length;
+    }
+
+    self.processEventsForMonthEventViewer = function (events, rows) {
+        var _events = _.map(events, function (e) {
+            e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e;
+        });
+        var _sortedEvents = _events.sort(function (a, b) {
+            if (a._startDt == b._startDt) {
+                return dtCompare(a._endDt, b._endDt);
+            }
+            else
+                return dtCompare(a._startDt, b._startDt);
+        });
+        var _dayEventDetails = {
+        };
+        var _monthEventDetails = {
+        };
+        var _step = 1;
+        _.each(_sortedEvents, function (_event) {
+            var _days = getDaysBetweenDates(_event._startDt, _event._endDt);
+            var _eventDetail = {
+            };
+            angular.extend(_eventDetail, _event);
+            _eventDetail.order = null;
+            _eventDetail.first = null;
+            _.each(_days, function (_day, _iter) {
+                var _proceedFurther = _dayInCurrentMonth(_day, rows);
+                if (_proceedFurther == true) {
+                    var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
+                    if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
+                        _dayEventDetails[key] = [];
+                    var _evKey = _eventDetail.id + '_' + _day.getMonth();
+                    if (_monthEventDetails[_evKey] != true) {
+                        var _oldOrder = _eventDetail.order;
+                        _eventDetail.order = getOrder(_dayEventDetails[key]);
+                        var _newOrder = _eventDetail.order;
+                        if (_oldOrder != _newOrder && _newOrder <= 2) {
+                            _eventDetail.startPaintForMonth = true;
+                            var _availableDaysToMark = _getDayListExistingInCurrentMOnth(_days, rows);
+                            _eventDetail.paintBoxLengthForMonth = _getDayListBasedOnEvent(_availableDaysToMark, _day, new Date(_event._startDt));
+                            _monthEventDetails[_evKey] = true;
+                        }
+                        else {
+                            _eventDetail.startPaintForMonth = false;
+                        }
+                    } else {
+                        _eventDetail.startPaintForMonth = false;
+                    }
+                    var _newEventDetail = _.clone(_eventDetail);
+                    _dayEventDetails[key].push(_newEventDetail);
+                }
+            });
+        });
+        return _dayEventDetails;
+    }
+
+    self.processLabels = function (labelData) {
+        var _modLabels = {
+        };
+        _.each(labelData, function (item) {
+            var _dt = new Date(item.dt);
+            var key = _dt.getFullYear() + '_' + _dt.getMonth() + '_' + _dt.getDate();
+            _modLabels[key] = item.label;
+        });
+        return _modLabels;
+    }
+
+    self.getDates = function (startDate, n) {
+        var dates = new Array(n), current = new Date(startDate), i = 0, date;
+        while (i < n) {
+            date = new Date(current);
+            dates[i++] = date;
+            current.setDate(current.getDate() + 1);
+        }
+        return dates;
+    };
+    self.split = function (arr, size) {
+        var arrays = [];
+        while (arr.length > 0) {
+            arrays.push(arr.splice(0, size));
+        }
+        return arrays;
+    };
+    self._dupCreateDateObject = function (date, format) {
+        var dt = {
+            date: date,
+            label: dateFilter(date, format.replace(/d!/, 'dd')).replace(/M!/, 'MM')
+        };
+        return dt;
+    };
+    self.processForRows = function (_dt, options) {
+        var activeMonthViewDate = new Date(_dt);
+        var year = activeMonthViewDate.getFullYear(), month = activeMonthViewDate.getMonth(), firstDayOfMonth = new Date(activeMonthViewDate);
+        var startingDay = 0;
+
+        firstDayOfMonth.setFullYear(year, month, 1);
+        var difference = startingDay - firstDayOfMonth.getDay(), numDisplayedFromPreviousMonth = difference > 0 ? 7 - difference : -difference, firstDate = new Date(firstDayOfMonth);
+        if (numDisplayedFromPreviousMonth > 0) {
+            firstDate.setDate(-numDisplayedFromPreviousMonth + 1);
+        }
+
+        // 42 is the number of days on a six-week calendar
+        var days = self.getDates(firstDate, 42);
+        for (var i = 0; i < 42; i++) {
+            days[i] = angular.extend(self._dupCreateDateObject(days[i], self.formatDay), {
+                secondary: days[i].getMonth() !== month,
+                //uid: scope.uniqueId + '-' + i,
+                key: days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate(),
+                monthIndex: days[i].getMonth(),
+                IsCurrMonth: days[i].getMonth() == activeMonthViewDate.getMonth()
+            });
+            if (typeof options.customClass === 'function') {
+                days[i].customClass = options.customClass({ date: days[i].date, mode: 'year' }) || null;
+            }
+        }
+
+        var labels = new Array(7);
+        self.labels = [];
+        for (var j = 0; j < 7; j++) {
+            var label = {
+                abbr: dateFilter(days[j].date, self.formatDayHeader),
+                full: dateFilter(days[j].date, 'EEEE')
+            };
+            self.labels.push(label);
+            labels[j] = label;
+        }
+        var monthWiseEventMarkers = self.labels;
+        var title = dateFilter(activeMonthViewDate, self.formatDayTitle);
+        var rows = self.split(days, 7);
+        var _indexMonth = activeMonthViewDate.getMonth();
+
+        return { 'index': _indexMonth, 'rows': rows, 'eventMarkers': monthWiseEventMarkers };
+    }
+    return self;
+}])
+.directive('richccYear', ['RichCCService', '$parse', function (RichCCService, $parse) {
+    return {
+        replace: true,
+        templateUrl: function (element, attrs) { return attrs.templateUrl || 'template/richcc/richcc-year-tmpl.html'; },
+        scope: {
+            datepickerOptions: '=?',
+            ngModel: '=',
+            events: '=',
+            light: '=',  //deprecate
+            eventPopupHide: "=",
+            preventCalNav: "=", //deprecate
+            preventModeToggle: "=", //deprecate
+            yearMapHeat: "=", //deprecate
+            daySelectCallback: '&',
+            eventPopupLeftCallback: '&',
+            eventPopupRightCallback: '&',
+            eventClickCallback: '&',
+            eventPopupSettings: '='
+        },
+        controller: ['RichCCService', '$timeout', '$filter', '$scope', '$compile', function (service, $timeout, $filter, $scope, $compile) {
+            var self = this;
+            self.rid = _.uniqueId('richcc');
+            self.months = [];
+            self.weekDayMarkers = [];
+            self.popUpState = {};
+
+            self.popUpTriggerYearView = function (events) {
+                try {
+                    var eventPopupSettings = $scope.eventPopupSettings;
+                    if (typeof eventPopupSettings !== 'undefined' && typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty != true) {
+                        if (typeof events === 'undefined' || events == null || events == {
+                        })
+                            return 'none';
+                        else if (events.length > 0 && eventPopupSettings.hidden != true)
+                            return 'outsideClick';
+                    }
+                    else if (typeof eventPopupSettings !== 'undefined' && typeof eventPopupSettings.showWhenEventsEmpty !== 'undefined' && eventPopupSettings.showWhenEventsEmpty == true) {
+                        return 'outsideClick';
+                    }
+                    else
+                        return 'none';
+                } catch (e) {
+                    return 'none';
+                }
+            }
+
+            self.getPopUpPositionForMonthEventMap = function (monthindex, weekindex) {
+                var position = '';
+                if (monthindex < 6)
+                    position = 'bottom';
+                else
+                    position = 'top';
+                return position;
+            }
+
+            self.move = function (dir) {
+                self.reset();
+                var _dt = angular.copy(self.dt);
+                _dt.setFullYear(_dt.getFullYear() + dir);
+                self.processDt(_dt);
+            }
+            self.reset = function () {
+                var _cells = angular.element(document.getElementsByClassName('richcc-year-row'));
+                _.each(_cells, function (cell) {
+                    var id = cell.getAttribute('id');
+                    angular.element(document.getElementById(id)).empty();
+                });
+                self.months = [];
+            }
+
+            self.processDt = function (dt) {
+                self.dt = dt;
+                self.title = dt.getFullYear();
+                _.each(_.range(12), function (iter) {
+                    dt.setMonth(iter);
+                    dt.setDate(15);
+                    var monthData = service.processForRows(dt, $scope.datepickerOptions);
+                    if (iter == 0)
+                        self.weekDayMarkers = monthData.eventMarkers;
+                    monthData.eventDetails = service.processEventsForMonthEventViewer($scope.events, monthData.rows);
+                    self.months.push(monthData);
+                });
+                $timeout(function () {
+                    _.each(self.months, function (month, mIndex) {
+                        _.each(month.rows, function (week, wIndex) {
+                            var _rowElm = angular.element(document.getElementById('row_' + mIndex + '_' + wIndex));
+                            _.each(week, function (column, cIndex) {
+                                var _cellTmpl = '<td role="gridcell" class="uib-day text-center richcc-td" id="CELLID"></td>'
+                                var _cid = _.uniqueId('richcc_cell_');
+                                _cellTmpl = _cellTmpl.replace('CELLID', _cid);
+                                _rowElm.append(_cellTmpl);
+                                if (column.IsCurrMonth == true) {
+                                    var _cellElm = angular.element(document.getElementById(_cid));
+                                    var _cellElmContent = '<div class="richcc-month-eventbox"><div class="richcc-eventbox-content CUSTOM_CLASS "><div class="markHolder" style="position:relative;" id="CELL_ELM_ID"><div class="month-date"> COLUMN_DT_INITIAL </div><div class="richcc-yearly-event-popupoverlay" id="event_pop_trig_EVENTPOPTRIGGERID" key="COLUMN_KEY" mindex="MINDEX" windex="WINDEX" ></div></div></div></div>';
+                                    _cellElmContent = _cellElmContent.replaceAll('MINDEX', mIndex);
+                                    _cellElmContent = _cellElmContent.replaceAll('WINDEX', wIndex);
+                                    _cellElmContent = _cellElmContent.replaceAll('EVENTPOPTRIGGERID', column.key);
+                                    _cellElmContent = _cellElmContent.replaceAll('COLUMN_KEY', column.key);
+                                    _cellElmContent = _cellElmContent.replaceAll('COLUMN_DT_INITIAL', $filter('date')(column.date, 'dd'));
+                                    var _markID = 'mh_' + column.key;
+                                    _cellElmContent = _cellElmContent.replaceAll('CELL_ELM_ID', _markID);
+                                    _cellElmContent = _cellElmContent.replaceAll('CUSTOM_CLASS', column.customClass);
+                                    _cellElm.append(_cellElmContent);
+                                    var eventDetails = month.eventDetails[column.key];
+                                    if (typeof eventDetails !== 'undefined' && eventDetails.length > 0) {
+                                        _.each(eventDetails, function (evt) {
+                                            if (evt.startPaintForMonth == true) {
+                                                var elmHtml = '<div class="mark notrans step-EVENT_STEP  EVENT_ORDER " style=\'color:EVENT_COLOR; width:EVENT_WIDTH\' > <div class="mark-text-initial" style=\'color:EVENT_COLOR;\' > EVENT_INTIAL </div> <div class="mark-stripe notrans light EVENT_HIGHLIGHT_CLASS"  style=\'border-color:EVENT_HIGHLIGHT_BORDER\'> <div class="mark-stripe-color" style=\'background-color:EVENT_BGCOLOR\'></div> </div>';
+                                                if (evt.order == 1)
+                                                    elmHtml = elmHtml.replace('EVENT_ORDER', 'top');
+                                                else if (evt.order == 2)
+                                                    elmHtml = elmHtml.replace('EVENT_ORDER', 'bottom');
+                                                elmHtml = elmHtml.replaceAll('EVENT_COLOR', evt.bgcolor);
+                                                var width = 'calc(' + 100 * evt.paintBoxLengthForMonth + '% - 18px)';
+                                                elmHtml = elmHtml.replace('EVENT_WIDTH', width);
+                                                elmHtml = elmHtml.replace('EVENT_INTIAL', $filter('limitTo')(evt.initial, 1));
+                                                if (evt.highlightBorder == true)
+                                                    elmHtml = elmHtml.replace('EVENT_HIGHLIGHT_CLASS', 'highlightBorder');
+                                                elmHtml = elmHtml.replace('EVENT_HIGHLIGHT_BORDER', evt.highlightBorder == true ? evt.highlightBorderColor : 'transparent');
+                                                elmHtml = elmHtml.replace('EVENT_BGCOLOR', evt.bgcolor);
+                                                var _markElm = angular.element(document.getElementById(_markID));
+                                                _markElm.append(elmHtml);
+                                            }
+                                        });
+                                    }
+                                    var _element = angular.element(document.getElementById('event_pop_trig_' + column.key));
+                                    _element.on('click', function (e) {
+                                        var _column = column;
+                                        var _key = $(e.currentTarget).attr('key');
+                                        var _mIndex = parseInt($(e.currentTarget).attr('mindex')) || 0;
+                                        var _wIndex = parseInt($(e.currentTarget).attr('windex')) || 0;
+                                        for (var key in self.popUpState) {
+                                            if (key != _key && self.popUpState[key] == true) {
+                                                self.popUpState[key] = false;
+                                                var _element = angular.element(document.getElementById('event_pop_trig_' + key));
+                                                $(_element).popover('hide');
+                                            }
+                                        }
+                                        if (self.popUpState[_key] != true) {
+                                            var _eventDetails = self.months[_mIndex].eventDetails[_key];
+                                            var _popUpTmpl = '<div class="popover richcc-popup-container yearly-only fade in "><div class="arrow"></div><div class="popover-inner"><div class="popover-content"></div></div></div>';
+                                            var _popUpContentTmpl = '<div class="richcc-day-popup "><div class="event-container NOACTIONS "><div class="event-container-label">POPUPDATE<span>POPUPEVENTCOUNT</span></div><div class="event-details-container">POPUPEVENTDETAILSTMPL</div></div><div class="event-action-container POPOVERSINGLEBUTTONLYCLASS "> POPUPLEFTBTNTMPL POPUPRIGHTBTNTMPL <div class="event-separator"></div></div></div>';
+                                            _popUpContentTmpl = _popUpContentTmpl.replace('POPUPDATE', $filter('date')(_column.date, $scope.eventPopupSettings.dateFilter));
+                                            if (!($scope.eventPopupSettings.showLeft || $scope.eventPopupSettings.showRight)) {
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('NOACTIONS', 'noActions');
+                                            }
+                                            //POPUPEVENTDETAILSTMPL
+                                            var _evtTmpls = '';
+                                            _.each(eventDetails, function (evt, iter) {
+                                                var _evTmpl = '<div class="event-detail" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" id="EVENTDETAILID" iter="ITERATOR"><div class="event-marker"></div><div class="event-title-holder POPUPHIGHLIGHTBORDERCLASS" style="border-left-color: POPOVERBGCOLOR"><span class="event-title ng-binding">EVENTTITLE</span> : <span class="event-subject">EVENTSUBJECT</span><div class="event-timing-holder"><span class="event-time ng-binding">EVENTSTARTIME</span><span style="padding: 0px 15px;">-</span><span class="event-time ng-binding">EVENTENDTIME</span></div></div></div>';
+                                                if (evt.highlightBorder)
+                                                    _evTmpl = _evTmpl.replace('POPUPHIGHLIGHTBORDERCLASS', 'highlightBorder');
+                                                _evTmpl = _evTmpl.replace('POPOVERBGCOLOR', evt.bgcolor);
+                                                _evTmpl = _evTmpl.replace('EVENTTITLE', evt.name);
+                                                _evTmpl = _evTmpl.replace('EVENTSUBJECT', evt.subject);
+                                                var _id = column.key + '_evtdet_' + iter;
+                                                _evTmpl = _evTmpl.replace('EVENTDETAILID', _id);
+                                                _evTmpl = _evTmpl.replace('MINDEX', _mIndex);
+                                                _evTmpl = _evTmpl.replace('ITERATOR', iter);
+                                                _evTmpl = _evTmpl.replace('COLUMNKEY', column.key);
+                                                _evTmpl = _evTmpl.replace('COLUMNDATE', (column.date.getMonth() + 1) + '/' + column.date.getDate() + '/' + column.date.getFullYear());
+                                                //EVENTSTARTIME
+                                                _evTmpl = _evTmpl.replace('EVENTSTARTIME', $filter('date')(evt._startDt, $scope.eventPopupSettings.dateFilter));
+                                                //EVENTENDTIME
+                                                _evTmpl = _evTmpl.replace('EVENTENDTIME', $filter('date')(evt._endDt, $scope.eventPopupSettings.dateFilter));
+                                                _evtTmpls = _evtTmpls + _evTmpl;
+                                            });
+                                            if (typeof _eventDetails !== 'undefined' && _eventDetails != null && _eventDetails.length > 0) {
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTCOUNT', ' (' + _eventDetails.length + ' Events)');
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTDETAILSTMPL', _evtTmpls);
+                                            }
+                                            else {
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTCOUNT', ' (0 Events)');
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTDETAILSTMPL', '');
+                                            }
+                                            //POPOVERSINGLEBUTTONLYCLASS
+                                            if (($scope.eventPopupSettings.showLeft != false && $scope.eventPopupSettings.showRight == false) || ($scope.eventPopupSettings.showLeft == false && $scope.eventPopupSettings.showRight != false)) {
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPOVERSINGLEBUTTONLYCLASS', 'singleButtonOnly');
+                                            }
+                                            //POPUPLEFTBTNTMPL
+                                            if ($scope.eventPopupSettings.showLeft != false) {
+                                                var _btnTmpl = '<button class="event-action" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" pos="BUTTONPOS" >POPOVERBUTTONTITLE</button>';
+                                                _btnTmpl = _btnTmpl.replace('BUTTONPOS', 'LEFT');
+                                                _btnTmpl = _btnTmpl.replace('MINDEX', _mIndex);
+                                                _btnTmpl = _btnTmpl.replace('COLUMNKEY', column.key);
+                                                _btnTmpl = _btnTmpl.replace('COLUMNDATE', (column.date.getMonth() + 1) + '/' + column.date.getDate() + '/' + column.date.getFullYear());
+                                                _btnTmpl = _btnTmpl.replace('POPOVERBUTTONTITLE', $scope.eventPopupSettings.leftLabel || 'Add Events');
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPLEFTBTNTMPL', _btnTmpl);
+                                            }
+                                            else
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPLEFTBTNTMPL', '');
+                                            //POPUPRIGHTBTNTMPL
+                                            if ($scope.eventPopupSettings.showRight != false) {
+                                                var _btnTmpl = '<button class="event-action" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" pos="BUTTONPOS" >POPOVERBUTTONTITLE</button>';
+                                                _btnTmpl = _btnTmpl.replace('BUTTONPOS', 'RIGHT');
+                                                _btnTmpl = _btnTmpl.replace('MINDEX', _mIndex);
+                                                _btnTmpl = _btnTmpl.replace('COLUMNKEY', column.key);
+                                                _btnTmpl = _btnTmpl.replace('COLUMNDATE', (column.date.getMonth() + 1) + '/' + column.date.getDate() + '/' + column.date.getFullYear());
+                                                _btnTmpl = _btnTmpl.replace('POPOVERBUTTONTITLE', $scope.eventPopupSettings.rightLabel || 'Add Events');
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPRIGHTBTNTMPL', _btnTmpl);
+                                            }
+                                            else
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPRIGHTBTNTMPL', '');
+                                            var _popUpPosition = self.getPopUpPositionForMonthEventMap(_mIndex, _wIndex);
+                                            var _popUpOptions = { html: true, content: _popUpContentTmpl, show: false, container: 'body', trigger: 'click', placement: _popUpPosition, template: _popUpTmpl };
+                                            $(e.target).popover(_popUpOptions);
+                                            $(e.target).popover('show');
+                                            self.popUpState[_key] = true;
+
+                                        }
+                                        else {
+                                            self.popUpState[_key] = false;
+                                            $(e.target).popover('hide');
+                                        }
+                                    });
+
+                                    _element.on('shown.bs.popover', function (e) {
+                                        $('.event-detail').click(function (e) {
+                                            var _key = $(e.currentTarget).attr('key');
+                                            var _dt = new Date($(e.currentTarget).attr('dt')) || null;
+                                            var _itr = parseInt($(e.currentTarget).attr('iter')) || 0;
+                                            var _mIndex = parseInt($(e.currentTarget).attr('mindex')) || 0;
+                                            var _evt = null;
+                                            var _eventDetails = self.months[_mIndex].eventDetails[_key];
+                                            if (_eventDetails.length > 0) {
+                                                _evt = _eventDetails[_itr];
+                                            }
+                                            var data = {
+                                                'dt': _dt, 'event': _evt
+                                            };
+                                            if (typeof $scope.eventClickCallback === 'function')
+                                                $scope.eventClickCallback({ 'data': data });
+                                        });
+                                        $('.event-action').click(function (e) {
+                                            var _key = $(e.currentTarget).attr('key');
+                                            var _dt = new Date($(e.currentTarget).attr('dt')) || null;
+                                            var _mIndex = parseInt($(e.currentTarget).attr('mindex')) || 0;
+                                            var _pos = $(e.currentTarget).attr('pos') || '';
+                                            var _evt = null;
+                                            var _eventDetails = self.months[_mIndex].eventDetails[_key];
+                                            var data = {
+                                                'dt': _dt, 'events': _eventDetails
+                                            };
+                                            if (_pos == 'LEFT') {
+                                                if (typeof $scope.eventPopupLeftCallback === 'function')
+                                                    $scope.eventPopupLeftCallback({ 'data': data });
+                                            }
+                                            else if (_pos == 'RIGHT') {
+                                                if (typeof $scope.eventPopupRightCallback === 'function')
+                                                    $scope.eventPopupRightCallback({ 'data': data });
+                                            }
+                                        });
+                                    });
+
+                                    _element.on('hidden.bs.popover', function (e) {
+                                        var _key = $(e.target).attr('key');
+                                        self.popUpState[_key] = false;
+                                    });
+                                }
+                            });
+                        });
+                    });
+                    $scope.initialized = true;
+                }, 300);
+            }
+
+            $scope.processEventsChange = function (e) {
+                console.log('processEventsChange');
+                self.reset();
+                self.processDt(self.dt);
+            }
+
+            $scope.init = function (dt) {
+                self.reset();
+                self.processDt(dt);
+            }
+
+            self.numOfWeeks = _.range(6);
+            self.popUpTmpl = 'richCCYearPopUp.html';
+            self.monthLabels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            self.keyup = function (e) {
+                if (e.keyCode == 27) {
+                    //ESC KEY
+                    for (var key in self.popUpState) {
+                        if (self.popUpState[key] == true) {
+                            self.popUpState[key] = false;
+                            var _element = angular.element(document.getElementById('event_pop_trig_' + key));
+                            $(_element).popover('hide');
+                        }
+                    }
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }
+
+        }],
+        controllerAs: 'ricchYear',
+        link: function (scope, elem, attrs) {
+            scope.initialized = false;
+            console.log(scope);
+            scope.$watch('ngModel', function (n, o) {
+                if (typeof n !== 'undefined' && n != null && n != {}) {
+                    scope.init(new Date(n));
+                }
+            }, true);
+            scope.$watch('events', function (n, o) {
+                if (typeof n !== 'undefined' && n != null && n != {}) {
+                    if (scope.initialized == true)
+                        scope.processEventsChange(n);
+                }
+            }, false);
+        }
+    };
+}]);

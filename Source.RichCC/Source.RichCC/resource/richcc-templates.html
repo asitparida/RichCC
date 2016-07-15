@@ -17,6 +17,7 @@
              $templateCache.put("template/richcc/richccDayPopup.html", richccTemplates.richccTmplDayPopup);
              $templateCache.put("template/richcc/richccMonthPopup.html", richccTemplates.richccTmplRichccMonthPopup);
              $templateCache.put("template/richcc/year.html", richccTemplates.richccTmplYear);
+             $templateCache.put("template/richcc/richcc-year-tmpl.html", richccTemplates.richccTmplYearHybridOne);
          }])
     })();
 </script>
@@ -430,5 +431,65 @@
             </tbody>
         </table>
 
+    </div>
+    <div id="richccTmplYearHybridOne">
+        <div class="uib-datepicker richcc-datepicker fixedWidth" role="application" ng-keydown="keydown($event)" ng-attr-id="{{::ricchYear.rid}}" ng-keyup="ricchYear.keyup($event)">
+            <div class="richcc-cal-holder">
+                <table class="uib-monthpicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{::activeDateId}}" style="width:100%;height:100%;">
+                    <thead>
+                        <tr class="header-action-holder">
+                            <th colspan="43">
+                                <div class="header-actions">
+                                    <div class="richcc-icon-container nav-left" ng-click="ricchYear.move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
+                                        <i class="richcc-icon icon-ScrollChevronLeftLegacy"></i>
+                                    </div>
+                                    <div class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
+                                        <label class="title">{{ricchYear.title}}</label>
+                                    </div>
+                                    <div class="richcc-icon-container nav-right" ng-click="ricchYear.move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
+                                        <i class="richcc-icon icon-ScrollChevronRightLegacy"></i>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="uib-months h40" style="height: 24px;">
+                            <td class="w48" colspan="1"></td>
+                            <td colspan="7" ng-repeat="rindex in ::ricchYear.numOfWeeks track by $index">
+                                <table class="uib-daypicker richcc-year-top-head" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{::activeDateId}}" ng-class="{'richcc-light': light}">
+                                    <thead style="height:0 !important; margin:0;padding:0;line-height:0;">
+                                        <tr class="header-action-holder" style="height:0 !important; margin:0;padding:0;line-height:0;">
+                                            <th colspan="1" class="w48" style="height:0 !important; margin:0;padding:0;line-height:0;"></th>
+                                            <th colspan="38" style="height:0 !important; margin:0;padding:0;line-height:0;">&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="uib-weeks richcc-row">
+                                            <td role="gridcell"
+                                                class="uib-day text-center richcc-td header-token eventMonthMarker" ng-repeat="token in ::ricchYear.weekDayMarkers track by $index">
+                                                <span>{{::token.abbr | limitTo:1}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class="uib-months h40" ng-repeat="month in ricchYear.months track by $index" ng-init="mIndex = $index;">
+                            <td class="w48 eventMonthMarker" colspan="1">{{::ricchYear.monthLabels[$index] | limitTo:3}}</td>
+                            <td ng-repeat="week in month.rows track by $index" class="uib-month text-center richcc-month-event-box-holder" role="gridcell"
+                                id="{{week.uid}}"
+                                ng-class="week.customClass" colspan="7" ng-init="wIndex = $index;">
+                                <table class="uib-daypicker richcc-monthviewer" role="grid" ng-class="{'richcc-light': light}">
+                                    <tbody>
+                                        <tr class="uib-weeks richcc-row richcc-year-row" ng-attr-id="row_{{::mIndex}}_{{::wIndex}}"></tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
