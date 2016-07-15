@@ -75,7 +75,7 @@
                         popover-trigger="{{popUpTrigger(eventDetails[dt.key])}}"
                         popover-append-to-body="true"
                         popover-placement="{{getPopUpPositionForDayMap(rowindex, columnindex)}}"
-                        popover-class="richcc-popup-container">
+                        popover-class="richcc-popup-container {{eventDetails[dt.key][0].isHoliday == true ? 'hasHoliday': '' }}">
                         <div class="richcc-icon-container dayHolder"
                              uib-is-class="
                              'cc-info' for selectedDt,
@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mark morePresent" ng-show="eventDetails[dt.key].length > 2 && showMarkerForMoreEvents != false">
+                            <div class="mark morePresent" ng-show="eventDetails[dt.key].length > 0 && showMarkerForMoreEvents != false">
                                 <!--<div class="richcc-icon-container">
                                     <i class="richcc-icon icon-more"></i>
                                 </div>-->
@@ -339,14 +339,17 @@
     <div id="richccTmplDayPopup">
         <div class="richcc-day-popup">
             <div class="event-container" ng-class="{'noActions': !(eventPopupSettings.showLeft || eventPopupSettings.showRight)}">
-                <div class="event-container-label">{{dt.date | date:eventPopupSettings.dateFilter}} <span ng-show="eventDetails[dt.key].length > 0 ">({{eventDetails[dt.key].length}} Events)</span></div>
+                <div class="event-container-label"  ng-if="eventDetails[dt.key][0].isHoliday != true">{{dt.date | date:eventPopupSettings.dateFilter}} <span ng-show="eventDetails[dt.key].length > 0 ">({{eventDetails[dt.key].length}} Events)</span></div>
                 <div class="event-details-container">
-                    <div class="event-detail" ng-repeat="event in eventDetails[dt.key] track by $index" ng-click="popUpEventClickHandler(dt, event)">
+                    <div class="event-detail" ng-repeat="event in eventDetails[dt.key] track by $index" ng-click="popUpEventClickHandler(dt, event)" ng-class="{'event-holiday' : event.isHoliday}">
                         <div class="event-marker"></div>
                         <div class="event-title-holder" ng-style="{'border-left-color': event.bgcolor}" ng-class="{ 'highlightBorder': event.highlightBorder}">
-                            <span class="event-title">{{event.name}}</span> : <span class="event-subject">{{event.subject}}</span>
-                            <div class="event-timing-holder">
+                            <span class="event-title">{{event.name}}</span><span ng-if="event.isHoliday != true"> : </span><span class="event-subject" ng-if="event.isHoliday != true">{{event.subject}}</span>
+                            <div class="event-timing-holder" ng-if="event.isHoliday != true">
                                 <span class="event-time">{{event._startDt | date:eventPopupSettings.dateFilter}}</span><span style="padding: 0 15px;">-</span><span class="event-time">{{event._endDt | date: eventPopupSettings.dateFilter}}</span>
+                            </div>
+                            <div class="event-timing-holder" ng-if="event.isHoliday == true">
+                                <span class="event-time holiday">{{event.holidayType}}</span>
                             </div>
                         </div>
                     </div>

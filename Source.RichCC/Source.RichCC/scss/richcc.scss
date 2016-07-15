@@ -8,6 +8,31 @@
     background: #fff;
     margin-top: 0;
 
+    &.hasHoliday {
+        height: 82px;
+
+        .event-details-container {
+            height: 100% !important;
+        }
+
+        .popover-content {
+            border-top-color: #9b59b6;
+        }
+
+        &.bottom {
+            & > .arrow::after {
+                border-bottom-color: #9b59b6;
+            }
+        }
+
+        &.top {
+
+            & > .arrow::after {
+                border-top-color: #9b59b6;
+            }
+        }
+    }
+
     &.bottom {
         margin-top: 0;
 
@@ -24,7 +49,6 @@
         margin-top: 0;
 
         &.yearly-only {
-
             margin-top: -15px;
         }
 
@@ -132,6 +156,11 @@
                         color: rgba(0, 0, 0, 0.50);
                         text-transform: uppercase;
                         font-weight: 600;
+
+                        &.holiday {
+                            text-transform: capitalize;
+                            font-weight: 500;
+                        }
                     }
                 }
             }
@@ -142,6 +171,11 @@
                 padding: 15px;
                 border-bottom: 1px solid #F0F0F0;
                 cursor: pointer;
+
+                &.event-holiday {
+                    margin-top: 15px;
+                    min-height: 58px;
+                }
 
                 &:active {
                     -moz-transform: scale(0.98, 0.98);
@@ -508,6 +542,7 @@
                                         -webkit-animation-delay: 0;
                                         animation-delay: 0;
                                         transition: none;
+
                                         &[transparent='1'] {
                                             -moz-animation-name: richcc-opacity33-animation;
                                             -o-animation-name: richcc-opacity33-animation;
@@ -534,6 +569,7 @@
                                             opacity: 0;
                                             background-color: #003860;
                                         }
+
                                         @-webkit-keyframes richcc-opacity33-animation {
                                             0% {
                                                 opacity: 0;
@@ -968,6 +1004,7 @@
                 }
             }
         }
+
         thead {
             tr {
 

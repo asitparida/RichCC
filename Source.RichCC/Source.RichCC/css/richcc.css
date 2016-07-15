@@ -7,6 +7,16 @@
   border-radius: 0;
   background: #fff;
   margin-top: 0; }
+  .richcc-popup-container.hasHoliday {
+    height: 82px; }
+    .richcc-popup-container.hasHoliday .event-details-container {
+      height: 100% !important; }
+    .richcc-popup-container.hasHoliday .popover-content {
+      border-top-color: #9b59b6; }
+    .richcc-popup-container.hasHoliday.bottom > .arrow::after {
+      border-bottom-color: #9b59b6; }
+    .richcc-popup-container.hasHoliday.top > .arrow::after {
+      border-top-color: #9b59b6; }
   .richcc-popup-container.bottom {
     margin-top: 0; }
     .richcc-popup-container.bottom.yearly-only {
@@ -84,12 +94,18 @@
             color: rgba(0, 0, 0, 0.5);
             text-transform: uppercase;
             font-weight: 600; }
+            .richcc-popup-container .richcc-day-popup .event-container .event-details-container .event-title-holder .event-time.holiday {
+              text-transform: capitalize;
+              font-weight: 500; }
       .richcc-popup-container .richcc-day-popup .event-container .event-detail {
         height: auto;
         min-height: 75px;
         padding: 15px;
         border-bottom: 1px solid #F0F0F0;
         cursor: pointer; }
+        .richcc-popup-container .richcc-day-popup .event-container .event-detail.event-holiday {
+          margin-top: 15px;
+          min-height: 58px; }
         .richcc-popup-container .richcc-day-popup .event-container .event-detail:active {
           -moz-transform: scale(0.98, 0.98);
           -ms-transform: scale(0.98, 0.98);
