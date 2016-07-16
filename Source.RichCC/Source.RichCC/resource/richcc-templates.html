@@ -485,7 +485,7 @@
                                 ng-class="week.customClass" colspan="7" ng-init="wIndex = $index;">
                                 <table class="uib-daypicker richcc-monthviewer" role="grid" ng-class="{'richcc-light': light}">
                                     <tbody>
-                                        <tr class="uib-weeks richcc-row richcc-year-row" ng-attr-id="row_{{::mIndex}}_{{::wIndex}}"></tr>
+                                        <tr class="uib-weeks richcc-row richcc-year-row" ng-attr-id="row_{{::mIndex}}_{{::wIndex}}" ng-class="{'noInitials' : datepickerOptions.noInitials != false}"></tr>
                                     </tbody>
                                 </table>
                             </td>

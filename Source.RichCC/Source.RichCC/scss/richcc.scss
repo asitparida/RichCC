@@ -244,7 +244,7 @@
     position: relative;
 
     &.fixedWidth {
-        width: 1367px;
+        width: 100%;
         height: 595px;
         display: block;
         margin: 0 auto;
@@ -808,6 +808,25 @@
 
                     tbody {
                         tr.richcc-row {
+
+                            &.noInitials {
+
+                                td.richcc-td {
+                                    .richcc-month-eventbox {
+
+                                        .markHolder {
+                                            .mark {
+                                                .mark-stripe {
+                                                    &.light {
+                                                        margin-left: 5px !important;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
                             td.richcc-td {
                                 height: 30px;
                                 width: 14.27%;

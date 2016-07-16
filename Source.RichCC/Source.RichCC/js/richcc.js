@@ -2626,24 +2626,33 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                     _cellElmContent = _cellElmContent.replaceAll('WINDEX', wIndex);
                                     _cellElmContent = _cellElmContent.replaceAll('EVENTPOPTRIGGERID', column.key);
                                     _cellElmContent = _cellElmContent.replaceAll('COLUMN_KEY', column.key);
-                                    _cellElmContent = _cellElmContent.replaceAll('COLUMN_DT_INITIAL', $filter('date')(column.date, 'dd'));
+                                    _cellElmContent = _cellElmContent.replaceAll('COLUMN_DT_INITIAL', $filter('date')(column.date, 'dd') || '');
                                     var _markID = 'mh_' + column.key;
                                     _cellElmContent = _cellElmContent.replaceAll('CELL_ELM_ID', _markID);
-                                    _cellElmContent = _cellElmContent.replaceAll('CUSTOM_CLASS', column.customClass);
+                                    _cellElmContent = _cellElmContent.replaceAll('CUSTOM_CLASS', column.customClass || '');
                                     _cellElm.append(_cellElmContent);
                                     var eventDetails = month.eventDetails[column.key];
                                     if (typeof eventDetails !== 'undefined' && eventDetails.length > 0) {
                                         _.each(eventDetails, function (evt) {
                                             if (evt.startPaintForMonth == true) {
-                                                var elmHtml = '<div class="mark notrans step-EVENT_STEP  EVENT_ORDER " style=\'color:EVENT_COLOR; width:EVENT_WIDTH\' > <div class="mark-text-initial" style=\'color:EVENT_COLOR;\' > EVENT_INTIAL </div> <div class="mark-stripe notrans light EVENT_HIGHLIGHT_CLASS"  style=\'border-color:EVENT_HIGHLIGHT_BORDER\'> <div class="mark-stripe-color" style=\'background-color:EVENT_BGCOLOR\'></div> </div>';
+                                                var elmHtml = '<div class="mark notrans step-EVENT_STEP  EVENT_ORDER " style=\'color:EVENT_COLOR; width:EVENT_WIDTH\' > INITIALSTMPL <div class="mark-stripe notrans light EVENT_HIGHLIGHT_CLASS"  style=\'border-color:EVENT_HIGHLIGHT_BORDER\'> <div class="mark-stripe-color" style=\'background-color:EVENT_BGCOLOR\'></div> </div>';
                                                 if (evt.order == 1)
                                                     elmHtml = elmHtml.replace('EVENT_ORDER', 'top');
                                                 else if (evt.order == 2)
                                                     elmHtml = elmHtml.replace('EVENT_ORDER', 'bottom');
                                                 elmHtml = elmHtml.replaceAll('EVENT_COLOR', evt.bgcolor);
-                                                var width = 'calc(' + 100 * evt.paintBoxLengthForMonth + '% - 18px)';
+                                                var width = '';
+                                                if ($scope.datepickerOptions.noInitials != true) {
+                                                    var _initialsTmpl = '<div class="mark-text-initial" style=\'color:EVENT_COLOR;\' > EVENT_INTIAL </div>';
+                                                    _initialsTmpl = _initialsTmpl.replace('EVENT_INTIAL', $filter('limitTo')(evt.initial, 1) || '');
+                                                    elmHtml = elmHtml.replace('INITIALSTMPL', _initialsTmpl);
+                                                    width = 'calc(' + 100 * evt.paintBoxLengthForMonth + '% - 18px)';
+                                                }
+                                                else {
+                                                    elmHtml = elmHtml.replace('INITIALSTMPL', '');
+                                                    width = 'calc(' + 100 * evt.paintBoxLengthForMonth + '% - 13px)';
+                                                }
                                                 elmHtml = elmHtml.replace('EVENT_WIDTH', width);
-                                                elmHtml = elmHtml.replace('EVENT_INTIAL', $filter('limitTo')(evt.initial, 1));
                                                 if (evt.highlightBorder == true)
                                                     elmHtml = elmHtml.replace('EVENT_HIGHLIGHT_CLASS', 'highlightBorder');
                                                 elmHtml = elmHtml.replace('EVENT_HIGHLIGHT_BORDER', evt.highlightBorder == true ? evt.highlightBorderColor : 'transparent');
@@ -2670,7 +2679,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             var _eventDetails = self.months[_mIndex].eventDetails[_key];
                                             var _popUpTmpl = '<div class="popover richcc-popup-container yearly-only fade in "><div class="arrow"></div><div class="popover-inner"><div class="popover-content"></div></div></div>';
                                             var _popUpContentTmpl = '<div class="richcc-day-popup "><div class="event-container NOACTIONS "><div class="event-container-label">POPUPDATE<span>POPUPEVENTCOUNT</span></div><div class="event-details-container">POPUPEVENTDETAILSTMPL</div></div><div class="event-action-container POPOVERSINGLEBUTTONLYCLASS "> POPUPLEFTBTNTMPL POPUPRIGHTBTNTMPL <div class="event-separator"></div></div></div>';
-                                            _popUpContentTmpl = _popUpContentTmpl.replace('POPUPDATE', $filter('date')(_column.date, $scope.eventPopupSettings.dateFilter));
+                                            _popUpContentTmpl = _popUpContentTmpl.replace('POPUPDATE', $filter('date')(_column.date, $scope.eventPopupSettings.dateFilter) || '');
                                             if (!($scope.eventPopupSettings.showLeft || $scope.eventPopupSettings.showRight)) {
                                                 _popUpContentTmpl = _popUpContentTmpl.replace('NOACTIONS', 'noActions');
                                             }
@@ -2681,8 +2690,8 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                                 if (evt.highlightBorder)
                                                     _evTmpl = _evTmpl.replace('POPUPHIGHLIGHTBORDERCLASS', 'highlightBorder');
                                                 _evTmpl = _evTmpl.replace('POPOVERBGCOLOR', evt.bgcolor);
-                                                _evTmpl = _evTmpl.replace('EVENTTITLE', evt.name);
-                                                _evTmpl = _evTmpl.replace('EVENTSUBJECT', evt.subject);
+                                                _evTmpl = _evTmpl.replace('EVENTTITLE', evt.name || '');
+                                                _evTmpl = _evTmpl.replace('EVENTSUBJECT', evt.subject || '');
                                                 var _id = column.key + '_evtdet_' + iter;
                                                 _evTmpl = _evTmpl.replace('EVENTDETAILID', _id);
                                                 _evTmpl = _evTmpl.replace('MINDEX', _mIndex);
@@ -2690,13 +2699,13 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                                 _evTmpl = _evTmpl.replace('COLUMNKEY', column.key);
                                                 _evTmpl = _evTmpl.replace('COLUMNDATE', (column.date.getMonth() + 1) + '/' + column.date.getDate() + '/' + column.date.getFullYear());
                                                 //EVENTSTARTIME
-                                                _evTmpl = _evTmpl.replace('EVENTSTARTIME', $filter('date')(evt._startDt, $scope.eventPopupSettings.dateFilter));
+                                                _evTmpl = _evTmpl.replace('EVENTSTARTIME', $filter('date')(evt._startDt, $scope.eventPopupSettings.dateFilter) || '');
                                                 //EVENTENDTIME
-                                                _evTmpl = _evTmpl.replace('EVENTENDTIME', $filter('date')(evt._endDt, $scope.eventPopupSettings.dateFilter));
+                                                _evTmpl = _evTmpl.replace('EVENTENDTIME', $filter('date')(evt._endDt, $scope.eventPopupSettings.dateFilter) || '');
                                                 _evtTmpls = _evtTmpls + _evTmpl;
                                             });
                                             if (typeof _eventDetails !== 'undefined' && _eventDetails != null && _eventDetails.length > 0) {
-                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTCOUNT', ' (' + _eventDetails.length + ' Events)');
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTCOUNT', ' (' + _eventDetails.length || 0 + ' Events)');
                                                 _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTDETAILSTMPL', _evtTmpls);
                                             }
                                             else {
