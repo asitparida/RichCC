@@ -2804,7 +2804,6 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             }
 
             $scope.processEventsChange = function (e) {
-                console.log('processEventsChange');
                 self.reset();
                 self.processDt(self.dt);
             }
@@ -2837,7 +2836,6 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
         controllerAs: 'ricchYear',
         link: function (scope, elem, attrs) {
             scope.initialized = false;
-            console.log(scope);
             scope.$watch('ngModel', function (n, o) {
                 if (typeof n !== 'undefined' && n != null && n != {}) {
                     scope.init(new Date(n));
@@ -2849,6 +2847,13 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                         scope.processEventsChange(n);
                 }
             }, false);
+            scope.$on('$destroy', function () {
+                var elements = document.getElementsByClassName('richcc-yearly-event-popupoverlay');
+                _.each(elements, function (elem) {
+                    var _angElm = angular.element(elem);
+                    $(_angElm).popover('destroy');
+                });
+            });
         }
     };
 }]);
