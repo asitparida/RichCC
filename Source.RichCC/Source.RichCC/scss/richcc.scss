@@ -346,8 +346,8 @@
         &.disabled,
         &[disabled] {
             background: transparent;
-            opacity: 0.20;
-            filter: alpha(opacity = 20);
+            opacity: 0.80;
+            filter: alpha(opacity = 80);
             cursor: none;
 
             &:hover {
@@ -818,7 +818,7 @@
                                             .mark {
                                                 .mark-stripe {
                                                     &.light {
-                                                        margin-left: 5px !important;
+                                                        margin-left: 3px !important;
                                                     }
                                                 }
                                             }
@@ -1040,6 +1040,7 @@
                         margin: 0 auto;
                         height: 36px;
                         padding: 0 0 0 5px;
+                        width:300px;
 
                         &.calNavHidden {
                             .labelHolder {

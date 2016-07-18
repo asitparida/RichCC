@@ -2650,7 +2650,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                                 }
                                                 else {
                                                     elmHtml = elmHtml.replace('INITIALSTMPL', '');
-                                                    width = 'calc(' + 100 * evt.paintBoxLengthForMonth + '% - 13px)';
+                                                    width = 'calc(' + 100 * evt.paintBoxLengthForMonth + '% - 10px)';
                                                 }
                                                 elmHtml = elmHtml.replace('EVENT_WIDTH', width);
                                                 if (evt.highlightBorder == true)

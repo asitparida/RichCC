@@ -224,8 +224,8 @@
       background: rgba(0, 0, 0, 0.05); }
     .richcc-datepicker .richcc-icon-container.disabled, .richcc-datepicker .richcc-icon-container[disabled] {
       background: transparent;
-      opacity: 0.20;
-      filter: alpha(opacity=20);
+      opacity: 0.80;
+      filter: alpha(opacity=80);
       cursor: none; }
       .richcc-datepicker .richcc-icon-container.disabled:hover, .richcc-datepicker .richcc-icon-container[disabled]:hover {
         background: transparent; }
@@ -495,7 +495,7 @@
       .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer thead tr th {
         height: 0 !important; }
       .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer tbody tr.richcc-row.noInitials td.richcc-td .richcc-month-eventbox .markHolder .mark .mark-stripe.light {
-        margin-left: 5px !important; }
+        margin-left: 3px !important; }
       .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer tbody tr.richcc-row td.richcc-td {
         height: 30px;
         width: 14.27%;
@@ -624,7 +624,8 @@
         display: block;
         margin: 0 auto;
         height: 36px;
-        padding: 0 0 0 5px; }
+        padding: 0 0 0 5px;
+        width: 300px; }
         .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions.calNavHidden .labelHolder {
           width: 100%; }
         .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions .richcc-icon {
