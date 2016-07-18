@@ -2705,7 +2705,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                                 _evtTmpls = _evtTmpls + _evTmpl;
                                             });
                                             if (typeof _eventDetails !== 'undefined' && _eventDetails != null && _eventDetails.length > 0) {
-                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTCOUNT', ' (' + _eventDetails.length || 0 + ' Events)');
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTCOUNT', ' (' + (_eventDetails.length || 0) + ' Events)');
                                                 _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTDETAILSTMPL', _evtTmpls);
                                             }
                                             else {
