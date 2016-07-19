@@ -31,9 +31,12 @@
         }
 
         .dayDisabled {
-            background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAI0lEQVQIW2NkQAbFx9IY4fziY2kMvVazIAJQDojJiMwBCQAAOWkKpPDCzSoAAAAASUVORK5CYII=);
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAI0lEQVQIW2NkQAbFx9IY4fziY2kMvVazIAJQDojJiMwBCQAAOWkKpPDCzSoAAAAASUVORK5CYII=);
         }
 
+        .hasHoliday {
+            background-color: rgba(155,89,182,0.20);
+        }
     </style>
 </head>
 <body ng-controller="richCCController as sample" style="background:#f0f0f0;">
@@ -57,10 +60,10 @@
                 </div>
                 <div class="col-xs-6" style="padding:0;width:801px;">
                     <div class="" style="display:inline-block;width:800px;height:630px;">
-                        <richcc-datepicker datepicker-options="sample.dtPickerOptions1" ng-model="sample.dt" event-popup-settings="sample.popupSettings" day-labels="sample.labelData" events="sample.sampleEvents" class="well well-sm" event-popup-left-callback="sample.leftCallback(data)"  event-click-callback="sample.eventClickCallback(data)" ></richcc-datepicker>
+                        <richcc-datepicker datepicker-options="sample.dtPickerOptions1" ng-model="sample.dt" event-popup-settings="sample.popupSettings" day-labels="sample.labelData" events="sample.sampleEvents" class="well well-sm" event-popup-left-callback="sample.leftCallback(data)" event-click-callback="sample.eventClickCallback(data)"></richcc-datepicker>
                     </div>
                 </div>
-                <div class="col-xs-3" style="padding:0;width:300px;" >
+                <div class="col-xs-3" style="padding:0;width:300px;">
                     <div class="col-xs-12" style="padding:0;">
                         <div class="" style="display:inline-block;width:300px;height:315px">
                             <richcc-datepicker datepicker-options="sample.dtPickerOptionsLight" ng-model="sample.dtLight1" events="sample.sampleEvents" event-popup-settings="sample.popupSettings" class="well well-sm"></richcc-datepicker>
@@ -68,7 +71,7 @@
                     </div>
                     <div class="col-xs-12" style="padding:0;">
                         <div class="" style="display:inline-block;width:300px;height:315px">
-                            <richcc-datepicker datepicker-options="sample.dtPickerOptionsLight2" ng-model="sample.dtLight2" events="sample.sampleEvents" event-popup-settings="sample.popupSettingsHidden"  class="well well-sm"></richcc-datepicker>
+                            <richcc-datepicker datepicker-options="sample.dtPickerOptionsLight2" ng-model="sample.dtLight2" events="sample.sampleEvents" event-popup-settings="sample.popupSettingsHidden" class="well well-sm"></richcc-datepicker>
                         </div>
                     </div>
                 </div>

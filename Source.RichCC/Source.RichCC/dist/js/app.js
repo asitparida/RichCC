@@ -4,7 +4,8 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
     var self = this;
     var _events = [
         { 'id': '100001', 'initial': 'A', 'name': 'Independence Day', 'startDt': '12-30-2015', 'endDt': '12-30-2015', 'bgcolor': '#9b59b6', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000', isHoliday: true, holidayType: 'Public Holiday' },
-        { 'id': '100001', 'initial': 'A', 'name': 'Independence Day', 'startDt': '01-01-2016', 'endDt': '01-01-2016', 'bgcolor': '#9b59b6', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000', isHoliday: true, holidayType: 'Public Holiday' }
+        { 'id': '100002', 'initial': 'A', 'name': 'Independence Day', 'startDt': '01-01-2016', 'endDt': '01-01-2016', 'bgcolor': '#9b59b6', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000', isHoliday: true, holidayType: 'Public Holiday' },
+        { 'id': '100003', 'initial': 'A', 'name': 'Independence Day', 'startDt': '01-04-2016', 'endDt': '01-04-2016', 'bgcolor': '#9b59b6', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000', isHoliday: true, holidayType: 'Public Holiday' }
     ];
     _.each(sampleEvents(100), function (_ev) {
         _events.push(_ev);
@@ -214,7 +215,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         self.dtLight2 = null;
     };
 
-    self.showMode = false;
+    self.showMode = true;
 
     // Disable weekend selection
     self.disabled = function (date, mode) {
@@ -279,6 +280,8 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
             if (data.date.getDay() == 0 || data.date.getDay() == 6)
                 result = 'dayDisabled';
         }
+        if (data.date.getDate() == 4 && data.date.getMonth() == 0 && data.date.getFullYear() == 2016)
+            result += 'hasHoliday';
         return result;
     };
 

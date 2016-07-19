@@ -176,6 +176,13 @@
                     margin-top: 15px;
                     min-height: 58px;
                     border-bottom-color: transparent;
+                    margin-top: 0;
+                    padding-top: 15px;
+
+                    .event-title-holder .event-title,
+                    .event-timing-holder .event-time {
+                        color: #fff;
+                    }
                 }
 
                 &:active {
@@ -186,7 +193,7 @@
                     transform: scale(0.98, 0.98);
                 }
 
-                &:first-child {
+                &:first-child:not(&.event-holiday) {
                     padding-top: 0;
                 }
             }
@@ -1040,7 +1047,7 @@
                         margin: 0 auto;
                         height: 36px;
                         padding: 0 0 0 5px;
-                        width:300px;
+                        width: 300px;
 
                         &.calNavHidden {
                             .labelHolder {

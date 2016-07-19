@@ -106,14 +106,19 @@
         .richcc-popup-container .richcc-day-popup .event-container .event-detail.event-holiday {
           margin-top: 15px;
           min-height: 58px;
-          border-bottom-color: transparent; }
+          border-bottom-color: transparent;
+          margin-top: 0;
+          padding-top: 15px; }
+          .richcc-popup-container .richcc-day-popup .event-container .event-detail.event-holiday .event-title-holder .event-title,
+          .richcc-popup-container .richcc-day-popup .event-container .event-detail.event-holiday .event-timing-holder .event-time {
+            color: #fff; }
         .richcc-popup-container .richcc-day-popup .event-container .event-detail:active {
           -moz-transform: scale(0.98, 0.98);
           -ms-transform: scale(0.98, 0.98);
           -o-transform: scale(0.98, 0.98);
           -webkit-transform: scale(0.98, 0.98);
           transform: scale(0.98, 0.98); }
-        .richcc-popup-container .richcc-day-popup .event-container .event-detail:first-child {
+        .richcc-popup-container .richcc-day-popup .event-container .event-detail:first-child:not(.richcc-popup-container .richcc-day-popup .event-container .event-detail.event-holiday) {
           padding-top: 0; }
     .richcc-popup-container .richcc-day-popup .event-action-container {
       height: 48px;
