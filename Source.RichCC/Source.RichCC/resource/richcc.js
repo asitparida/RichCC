@@ -400,7 +400,7 @@
               ngModelCtrl.$setValidity('dateDisabled', !date ||
                 this.element && !this.isDisabled(date));
               if ($scope.datepickerMode == 'month') {
-                  $scope.$broadcast('refreshMonth', $scope.activeDt);                  
+                  $scope.$broadcast('refreshMonth', $scope.activeDt);
               }
           }
       };
@@ -2528,7 +2528,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     }
     return self;
 }])
-.directive('richccYear', ['RichCCService', '$parse', function (RichCCService, $parse) {
+.directive('richccYear', ['RichCCService', '$parse', '$document', function (RichCCService, $parse, $document) {
     return {
         replace: true,
         templateUrl: function (element, attrs) { return attrs.templateUrl || 'template/richcc/richcc-year-tmpl.html'; },
@@ -2547,7 +2547,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             eventClickCallback: '&',
             eventPopupSettings: '='
         },
-        controller: ['RichCCService', '$timeout', '$filter', '$scope', '$compile', function (service, $timeout, $filter, $scope, $compile) {
+        controller: ['RichCCService', '$timeout', '$filter', '$scope', '$compile', '$document', function (service, $timeout, $filter, $scope, $compile, $document) {
             var self = this;
             self.rid = _.uniqueId('richcc');
             self.months = [];
@@ -2610,6 +2610,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     monthData.eventDetails = service.processEventsForMonthEventViewer($scope.events, monthData.rows);
                     self.months.push(monthData);
                 });
+
                 $timeout(function () {
                     _.each(self.months, function (month, mIndex) {
                         _.each(month.rows, function (week, wIndex) {
@@ -2663,6 +2664,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                         });
                                     }
                                     var _element = angular.element(document.getElementById('event_pop_trig_' + column.key));
+                                    var _popUopContainerId = column.key;
                                     _element.on('click', function (e) {
                                         var _column = column;
                                         var _key = $(e.currentTarget).attr('key');
@@ -2678,7 +2680,9 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                         if (self.popUpState[_key] != true) {
                                             var _eventDetails = self.months[_mIndex].eventDetails[_key];
                                             var _popUpTmpl = '<div class="popover richcc-popup-container yearly-only fade in "><div class="arrow"></div><div class="popover-inner"><div class="popover-content"></div></div></div>';
-                                            var _popUpContentTmpl = '<div class="richcc-day-popup "><div class="event-container NOACTIONS "><div class="event-container-label">POPUPDATE<span>POPUPEVENTCOUNT</span></div><div class="event-details-container">POPUPEVENTDETAILSTMPL</div></div><div class="event-action-container POPOVERSINGLEBUTTONLYCLASS "> POPUPLEFTBTNTMPL POPUPRIGHTBTNTMPL <div class="event-separator"></div></div></div>';
+                                            var _popUpContentTmpl = '<div class="richcc-day-popup" id="POPUPCONTAINERID" key="POPUPCONTAINERKEY"><div class="event-container NOACTIONS "><div class="event-container-label">POPUPDATE<span>POPUPEVENTCOUNT</span></div><div class="event-details-container">POPUPEVENTDETAILSTMPL</div></div><div class="event-action-container POPOVERSINGLEBUTTONLYCLASS "> POPUPLEFTBTNTMPL POPUPRIGHTBTNTMPL <div class="event-separator"></div></div></div>';
+                                            _popUpContentTmpl = _popUpContentTmpl.replace('POPUPCONTAINERID', _popUopContainerId);
+                                            _popUpContentTmpl = _popUpContentTmpl.replace('POPUPCONTAINERKEY', _key);
                                             _popUpContentTmpl = _popUpContentTmpl.replace('POPUPDATE', $filter('date')(_column.date, $scope.eventPopupSettings.dateFilter) || '');
                                             if (!($scope.eventPopupSettings.showLeft || $scope.eventPopupSettings.showRight)) {
                                                 _popUpContentTmpl = _popUpContentTmpl.replace('NOACTIONS', 'noActions');
@@ -2746,6 +2750,8 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             $(e.target).popover('show');
                                             self.popUpState[_key] = true;
 
+                                            /* OUTSIDE CLICK HANDLER */
+
                                         }
                                         else {
                                             self.popUpState[_key] = false;
@@ -2754,6 +2760,23 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                     });
 
                                     _element.on('shown.bs.popover', function (e) {
+                                        var _key = $(e.currentTarget).attr('key');
+
+                                        var evtId = 'click.' + _key;
+
+                                        $document.on(evtId, function (e) {
+                                            var _elems = $(e.target).closest('.popover');
+                                            if (_elems.length == 0) {
+                                                for (var id in self.popUpState) {
+                                                    if (self.popUpState[id] == true) {
+                                                        var selector = '#event_pop_trig_' + id;
+                                                        $(selector).popover('hide');
+                                                        self.popUpState[id] = false;
+                                                    }
+                                                }
+                                            }
+                                        });
+
                                         $('.event-detail').click(function (e) {
                                             var _key = $(e.currentTarget).attr('key');
                                             var _dt = new Date($(e.currentTarget).attr('dt')) || null;
@@ -2794,6 +2817,8 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                     _element.on('hidden.bs.popover', function (e) {
                                         var _key = $(e.target).attr('key');
                                         self.popUpState[_key] = false;
+                                        var evtId = 'click.' + _key;
+                                        $document.off(evtId);
                                     });
                                 }
                             });
