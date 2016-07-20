@@ -2588,6 +2588,19 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 var _dt = angular.copy(self.dt);
                 _dt.setFullYear(_dt.getFullYear() + dir);
                 self.processDt(_dt);
+
+                var _retData = {
+                    'datepickerMode': 'year',
+                    'activeDate': _dt
+                };
+
+                console.log($scope.datepickerOptions.moveModeCallback);
+                if (typeof $scope.datepickerOptions.moveModeCallback === "function") {
+                    console.log(_retData);
+                    $scope.datepickerOptions.moveModeCallback(_retData);
+                }
+
+
             }
             self.reset = function () {
                 var _cells = angular.element(document.getElementsByClassName('richcc-year-row'));

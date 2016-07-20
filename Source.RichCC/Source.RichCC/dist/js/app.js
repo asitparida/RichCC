@@ -152,7 +152,8 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'yearMapHeat': false,
         'preventModeToggle': true,
         enableWebWorkers: false,
-        noInitials: true
+        noInitials: true,
+        moveModeCallback: self.moveModeCallback
     };
 
     self.popupSettings = {
