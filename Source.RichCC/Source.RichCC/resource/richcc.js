@@ -835,11 +835,9 @@
     }
 
     scope.$on('refreshMonth', function (e, data) {
-        console.log('refreshMonth');
         scope.monthDate.date.setFullYear(data.date.getFullYear());
         self._actMonViewDate = scope.monthDate;
         self.activeMonthViewDate = scope.monthDate.date;
-        console.log(self.activeMonthViewDate);
         self._refreshMonthView(false);
     });
 
@@ -1010,8 +1008,6 @@
                 };
                 return angularWorker.run(JSON.stringify(inputObject));
             }, function error(reason) {
-                console.log('error' + _indexMonth);
-                console.log(reason);
             }).then(function success(result) {
                 var _result = JSON.parse(result);
                 scope.eventDetails = _result;
@@ -1372,7 +1368,6 @@
     };
 
     this._refreshMonthView = function (isHeatMap) {
-        console.log('_refreshMonthView');
         this._events = scope.$parent.events;
         if (isHeatMap == true)
             this.activeMonthViewDate.setDate(15);
@@ -1458,12 +1453,8 @@
                 };
                 return angularWorker.run(JSON.stringify(inputObject));
             }, function error(reason) {
-                console.log('error' + _indexMonth);
-                console.log(reason);
             }).then(function success(result) {
                 var _result = JSON.parse(result);
-                console.log('result' + _indexMonth);
-                console.log(_result);
                 if (this.yearMapHeat) {
                     if (typeof scope.monthViewData !== 'undefined')
                         scope.monthWiseEventDetails[_indexMonth] = _result;
@@ -2594,9 +2585,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     'activeDate': _dt
                 };
 
-                console.log($scope.datepickerOptions.moveModeCallback);
                 if (typeof $scope.datepickerOptions.moveModeCallback === "function") {
-                    console.log(_retData);
                     $scope.datepickerOptions.moveModeCallback(_retData);
                 }
 
@@ -2609,7 +2598,21 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     angular.element(document.getElementById(id)).empty();
                 });
                 self.months = [];
+                for (var id in self.popUpState) {
+                    if (self.popUpState[id] == true) {
+                        self.popUpState[id] = false;
+                    }
+                }
+                var _elems = $('.popover.richcc-popup-container');
+                _.each(_elems, function (elem) {
+                    $(elem).remove();
+                });
+                _.each(self.eventIds, function (eid) {
+                    $document.off(eid);
+                });
             }
+
+            self.eventIds = [];
 
             self.processDt = function (dt) {
                 self.dt = dt;
@@ -2776,6 +2779,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                         var _key = $(e.currentTarget).attr('key');
 
                                         var evtId = 'click.' + _key;
+                                        self.eventIds.push(evtId);
 
                                         $document.on(evtId, function (e) {
                                             var _elems = $(e.target).closest('.popover');
@@ -2832,6 +2836,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                         self.popUpState[_key] = false;
                                         var evtId = 'click.' + _key;
                                         $document.off(evtId);
+                                        self.eventIds = _.reject(self.eventIds, function (eid) { return eid == evtId });
                                     });
                                 }
                             });
