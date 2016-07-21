@@ -2544,7 +2544,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             self.months = [];
             self.weekDayMarkers = [];
             self.popUpState = {};
-
+            self.inProgress = true;
             self.popUpTriggerYearView = function (events) {
                 try {
                     var eventPopupSettings = $scope.eventPopupSettings;
@@ -2575,6 +2575,8 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             }
 
             self.move = function (dir) {
+                if (self.inProgress)
+                    return;
                 self.reset();
                 var _dt = angular.copy(self.dt);
                 _dt.setFullYear(_dt.getFullYear() + dir);
@@ -2592,6 +2594,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
 
             }
             self.reset = function () {
+                self.inProgress = true;
                 var _cells = angular.element(document.getElementsByClassName('richcc-year-row'));
                 _.each(_cells, function (cell) {
                     var id = cell.getAttribute('id');
@@ -2843,6 +2846,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                         });
                     });
                     $scope.initialized = true;
+                    self.inProgress = false;
                 }, 300);
             }
 
