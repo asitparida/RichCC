@@ -2588,7 +2588,9 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 };
 
                 if (typeof $scope.datepickerOptions.moveModeCallback === "function") {
-                    $scope.datepickerOptions.moveModeCallback(_retData);
+                    $scope.$apply(function () {
+                        $scope.datepickerOptions.moveModeCallback(_retData);
+                    });
                 }
 
 
@@ -2811,7 +2813,9 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                                 'dt': _dt, 'event': _evt
                                             };
                                             if (typeof $scope.eventClickCallback === 'function')
-                                                $scope.eventClickCallback({ 'data': data });
+                                                $scope.$apply(function () {
+                                                    $scope.eventClickCallback({ 'data': data });
+                                                });
                                         });
                                         $('.event-action').click(function (e) {
                                             var _key = $(e.currentTarget).attr('key');
@@ -2825,11 +2829,15 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             };
                                             if (_pos == 'LEFT') {
                                                 if (typeof $scope.eventPopupLeftCallback === 'function')
-                                                    $scope.eventPopupLeftCallback({ 'data': data });
+                                                    $scope.$apply(function () {
+                                                        $scope.eventPopupLeftCallback({ 'data': data });
+                                                    });
                                             }
                                             else if (_pos == 'RIGHT') {
                                                 if (typeof $scope.eventPopupRightCallback === 'function')
-                                                    $scope.eventPopupRightCallback({ 'data': data });
+                                                    $scope.$apply(function () {
+                                                        $scope.eventPopupRightCallback({ 'data': data });
+                                                    });
                                             }
                                         });
                                     });
