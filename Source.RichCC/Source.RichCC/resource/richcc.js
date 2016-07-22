@@ -2710,23 +2710,38 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             }
                                             //POPUPEVENTDETAILSTMPL
                                             var _evtTmpls = '';
+                                            console.log(eventDetails);
+                                            eventDetails = _.sortBy(eventDetails, function (evt) { evt.isHoliday = evt.isHoliday || false; return evt.isHoliday == true  ? -1 : 1});
+                                            console.log(eventDetails);
                                             _.each(eventDetails, function (evt, iter) {
-                                                var _evTmpl = '<div class="event-detail" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" id="EVENTDETAILID" iter="ITERATOR"><div class="event-marker"></div><div class="event-title-holder POPUPHIGHLIGHTBORDERCLASS" style="border-left-color: POPOVERBGCOLOR"><span class="event-title ng-binding">EVENTTITLE</span> : <span class="event-subject">EVENTSUBJECT</span><div class="event-timing-holder"><span class="event-time ng-binding">EVENTSTARTIME</span><span style="padding: 0px 15px;">-</span><span class="event-time ng-binding">EVENTENDTIME</span></div></div></div>';
+                                                var _evTmpl = '<div class="event-detail EVENTHOLIDAYCLASS " style="background-color:EVENTDETAILBGCOLOR" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" id="EVENTDETAILID" iter="ITERATOR"><div class="event-marker"></div><div class="event-title-holder POPUPHIGHLIGHTBORDERCLASS" style="border-left-color: POPOVERBGCOLOR"><span class="event-title">EVENTTITLE</span> EVENDETAILSOTHERSTUFF </div></div>';
                                                 if (evt.highlightBorder)
                                                     _evTmpl = _evTmpl.replace('POPUPHIGHLIGHTBORDERCLASS', 'highlightBorder');
+                                                if (evt.isHoliday == true) {
+                                                    _evTmpl = _evTmpl.replace('EVENTHOLIDAYCLASS', 'event-holiday');
+                                                    _evTmpl = _evTmpl.replace('EVENTDETAILBGCOLOR', evt.bgcolor);
+                                                    var _otherStuffTmpl = '<div class="event-timing-holder"><span class="event-time holiday"> EVENTHOLIDAYTYPE </span></div>';
+                                                    _otherStuffTmpl = _otherStuffTmpl.replace('EVENTHOLIDAYTYPE', evt.holidayType || '');
+                                                    _evTmpl = _evTmpl.replace('EVENDETAILSOTHERSTUFF', _otherStuffTmpl);
+                                                }
+                                                else {
+                                                    _evTmpl = _evTmpl.replace('EVENTDETAILBGCOLOR', '#fff');
+                                                    var _otherStuffTmpl = ': <span class="event-subject">EVENTSUBJECT</span><div class="event-timing-holder"><span class="event-time ng-binding">EVENTSTARTIME</span><span style="padding: 0px 15px;">-</span><span class="event-time ng-binding">EVENTENDTIME</span></div>';
+                                                    _otherStuffTmpl = _otherStuffTmpl.replace('EVENTSUBJECT', evt.subject || '');
+                                                    //EVENTSTARTIME
+                                                    _otherStuffTmpl = _otherStuffTmpl.replace('EVENTSTARTIME', $filter('date')(evt._startDt, $scope.eventPopupSettings.dateFilter) || '');
+                                                    //EVENTENDTIME
+                                                    _otherStuffTmpl = _otherStuffTmpl.replace('EVENTENDTIME', $filter('date')(evt._endDt, $scope.eventPopupSettings.dateFilter) || '');
+                                                    _evTmpl = _evTmpl.replace('EVENDETAILSOTHERSTUFF', _otherStuffTmpl);
+                                                }
                                                 _evTmpl = _evTmpl.replace('POPOVERBGCOLOR', evt.bgcolor);
                                                 _evTmpl = _evTmpl.replace('EVENTTITLE', evt.name || '');
-                                                _evTmpl = _evTmpl.replace('EVENTSUBJECT', evt.subject || '');
                                                 var _id = column.key + '_evtdet_' + iter;
                                                 _evTmpl = _evTmpl.replace('EVENTDETAILID', _id);
                                                 _evTmpl = _evTmpl.replace('MINDEX', _mIndex);
                                                 _evTmpl = _evTmpl.replace('ITERATOR', iter);
                                                 _evTmpl = _evTmpl.replace('COLUMNKEY', column.key);
                                                 _evTmpl = _evTmpl.replace('COLUMNDATE', (column.date.getMonth() + 1) + '/' + column.date.getDate() + '/' + column.date.getFullYear());
-                                                //EVENTSTARTIME
-                                                _evTmpl = _evTmpl.replace('EVENTSTARTIME', $filter('date')(evt._startDt, $scope.eventPopupSettings.dateFilter) || '');
-                                                //EVENTENDTIME
-                                                _evTmpl = _evTmpl.replace('EVENTENDTIME', $filter('date')(evt._endDt, $scope.eventPopupSettings.dateFilter) || '');
                                                 _evtTmpls = _evtTmpls + _evTmpl;
                                             });
                                             if (typeof _eventDetails !== 'undefined' && _eventDetails != null && _eventDetails.length > 0) {
