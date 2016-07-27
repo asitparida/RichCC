@@ -2710,9 +2710,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             }
                                             //POPUPEVENTDETAILSTMPL
                                             var _evtTmpls = '';
-                                            console.log(eventDetails);
                                             eventDetails = _.sortBy(eventDetails, function (evt) { evt.isHoliday = evt.isHoliday || false; return evt.isHoliday == true  ? -1 : 1});
-                                            console.log(eventDetails);
                                             _.each(eventDetails, function (evt, iter) {
                                                 var _evTmpl = '<div class="event-detail EVENTHOLIDAYCLASS " style="background-color:EVENTDETAILBGCOLOR" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" id="EVENTDETAILID" iter="ITERATOR"><div class="event-marker"></div><div class="event-title-holder POPUPHIGHLIGHTBORDERCLASS" style="border-left-color: POPOVERBGCOLOR"><span class="event-title">EVENTTITLE</span> EVENDETAILSOTHERSTUFF </div></div>';
                                                 if (evt.highlightBorder)
