@@ -2712,7 +2712,8 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             var _evtTmpls = '';
                                             eventDetails = _.sortBy(eventDetails, function (evt) { evt.isHoliday = evt.isHoliday || false; return evt.isHoliday == true  ? -1 : 1});
                                             _.each(eventDetails, function (evt, iter) {
-                                                var _evTmpl = '<div class="event-detail EVENTHOLIDAYCLASS " style="background-color:EVENTDETAILBGCOLOR" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" id="EVENTDETAILID" iter="ITERATOR"><div class="event-marker"></div><div class="event-title-holder POPUPHIGHLIGHTBORDERCLASS" style="border-left-color: POPOVERBGCOLOR"><span class="event-title">EVENTTITLE</span> EVENDETAILSOTHERSTUFF </div></div>';
+                                                var _evTmpl = '<div class="event-detail EVENTHOLIDAYCLASS " style="background-color:EVENTDETAILBGCOLOR" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" evid="EVTPRIMARYIDDET" id="EVENTDETAILID" iter="ITERATOR"><div class="event-marker"></div><div class="event-title-holder POPUPHIGHLIGHTBORDERCLASS" style="border-left-color: POPOVERBGCOLOR"><span class="event-title">EVENTTITLE</span> EVENDETAILSOTHERSTUFF </div></div>';
+                                                _evTmpl = _evTmpl.replace('EVTPRIMARYIDDET', evt.id);
                                                 if (evt.highlightBorder)
                                                     _evTmpl = _evTmpl.replace('POPUPHIGHLIGHTBORDERCLASS', 'highlightBorder');
                                                 if (evt.isHoliday == true) {
@@ -2816,11 +2817,14 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             var _key = $(e.currentTarget).attr('key');
                                             var _dt = new Date($(e.currentTarget).attr('dt')) || null;
                                             var _itr = parseInt($(e.currentTarget).attr('iter')) || 0;
+                                            var _id = parseInt($(e.currentTarget).attr('evid')) || 0;
                                             var _mIndex = parseInt($(e.currentTarget).attr('mindex')) || 0;
                                             var _evt = null;
                                             var _eventDetails = self.months[_mIndex].eventDetails[_key];
                                             if (_eventDetails.length > 0) {
-                                                _evt = _eventDetails[_itr];
+                                                _evt = _.find(_eventDetails, function (event) {
+                                                    return event.id == _id
+                                                });
                                             }
                                             var data = {
                                                 'dt': _dt, 'event': _evt
