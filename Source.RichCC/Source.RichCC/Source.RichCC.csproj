@@ -66,6 +66,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="dist\min\js\richcc.min.js" />
     <Content Include="images\1.png" />
     <Content Include="images\2.png" />
     <Content Include="images\3.png" />
@@ -75,6 +76,7 @@
     <Content Include="lib\ui-bootstrap-tpls-1.1.1.min.js" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
+    <Content Include="resource\angular-workers.js" />
     <Content Include="resource\arrowImgSprite.png" />
     <Content Include="resource\datepicker\monthEventViewer.html" />
     <Content Include="resource\datepicker\monthEventWrap.html" />
@@ -104,7 +106,6 @@
     <Content Include="dist\min\css\bootstrap.min.css" />
     <Content Include="dist\min\css\richcc.min.css" />
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="dist\min\js\richcc.min.js" />
     <Content Include="gulpfile.js" />
     <Content Include="lib\angular-sanitize.min.js" />
     <Content Include="lib\angular.min.js" />
