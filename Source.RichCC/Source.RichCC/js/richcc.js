@@ -855,6 +855,13 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             });
     }
 
+    scope.richccDaySelectedKeyUp = function (e, dt, events) {
+        console.log(e.keyCode);
+        if (e.keyCode == 32 || e.keyCode == 13) {
+            scope.richccDaySelected(dt, events);
+        }
+    }
+
     scope.popUpTrigger = function (events) {
         try {
             var eventPopupSettings = scope.eventPopupSettings;
@@ -2710,7 +2717,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             }
                                             //POPUPEVENTDETAILSTMPL
                                             var _evtTmpls = '';
-                                            eventDetails = _.sortBy(eventDetails, function (evt) { evt.isHoliday = evt.isHoliday || false; return evt.isHoliday == true  ? -1 : 1});
+                                            eventDetails = _.sortBy(eventDetails, function (evt) { evt.isHoliday = evt.isHoliday || false; return evt.isHoliday == true ? -1 : 1 });
                                             _.each(eventDetails, function (evt, iter) {
                                                 var _evTmpl = '<div class="event-detail EVENTHOLIDAYCLASS " style="background-color:EVENTDETAILBGCOLOR" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" evid="EVTPRIMARYIDDET" id="EVENTDETAILID" iter="ITERATOR"><div class="event-marker"></div><div class="event-title-holder POPUPHIGHLIGHTBORDERCLASS" style="border-left-color: POPOVERBGCOLOR"><span class="event-title">EVENTTITLE</span> EVENDETAILSOTHERSTUFF </div></div>';
                                                 _evTmpl = _evTmpl.replace('EVTPRIMARYIDDET', evt.id);
