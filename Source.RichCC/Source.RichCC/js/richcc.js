@@ -856,7 +856,6 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
     }
 
     scope.richccDaySelectedKeyUp = function (e, dt, events) {
-        console.log(e.keyCode);
         if (e.keyCode == 32 || e.keyCode == 13) {
             scope.richccDaySelected(dt, events);
         }

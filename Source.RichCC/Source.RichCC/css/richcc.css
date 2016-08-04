@@ -3136,13 +3136,12 @@
       display: inline-block; }
       .richcc-datepicker .richcc-daypicker tbody tr td .richcc-icon-container.dayHolder.cc-info, .richcc-datepicker .richcc-daypicker tbody tr td .richcc-icon-container.dayHolder.cc-info.cc-current, .richcc-datepicker .richcc-daypicker tbody tr td .richcc-icon-container.dayHolder.cc-info.cc-muted {
         border-radius: 50%;
-        background: #0073c6;
-        color: #fff; }
+        color: #0073c6; }
       .richcc-datepicker .richcc-daypicker tbody tr td .richcc-icon-container.dayHolder.cc-current, .richcc-datepicker .richcc-daypicker tbody tr td .richcc-icon-container.dayHolder.cc-current.cc-muted {
         border-radius: 50%;
-        background: #fff;
+        background: #0073c6;
         border: 1px solid #0073c6;
-        color: #0073c6; }
+        color: #fff; }
       .richcc-datepicker .richcc-daypicker tbody tr td .richcc-icon-container.dayHolder.cc-muted {
         color: rgba(0, 0, 0, 0.3); }
     .richcc-datepicker .richcc-daypicker tbody tr td .richcc-icon-container .richcc-day {

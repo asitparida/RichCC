@@ -1415,16 +1415,15 @@
                             &.cc-info.cc-current,
                             &.cc-info.cc-muted {
                                 border-radius: 50%;
-                                background: #0073c6;
-                                color: #fff;
+                                color: #0073c6;
                             }
 
                             &.cc-current,
                             &.cc-current.cc-muted {
                                 border-radius: 50%;
-                                background: #fff;
+                                background: #0073c6;
                                 border: 1px solid #0073c6;
-                                color: #0073c6;
+                                color: #fff;
                             }
 
                             &.cc-muted {
