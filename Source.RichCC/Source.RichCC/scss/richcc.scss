@@ -410,7 +410,6 @@
             position: relative;
 
             table {
-                
             }
         }
     }
@@ -1076,13 +1075,11 @@
                         }
                     }
                 }
-
                 /*&.collapsed-mode {
                     th {
                         width: 14.285%;
                     }
                 }*/
-
                 th {
 
                     .nav-left,
@@ -1355,6 +1352,11 @@
                                         font-size: 12px;
                                         position: relative;
                                         top: -1px;
+                                        display: block;
+                                        width: 100%;
+                                        text-overflow: ellipsis;
+                                        overflow: hidden;
+                                        white-space: nowrap;
                                     }
 
                                     &.top {
@@ -1554,7 +1556,7 @@
                                         box-sizing: border-box;
 
                                         &.highlightBorder {
-                                            border-color: #909090;          
+                                            border-color: #909090;
                                         }
 
                                         .mark-stripe-color {
@@ -1660,6 +1662,11 @@
                                         margin: 0;
                                         font-size: 12px;
                                         position: relative;
+                                        display: block;
+                                        width: 100%;
+                                        text-overflow: ellipsis;
+                                        overflow: hidden;
+                                        white-space: nowrap;
                                     }
 
                                     &.morePresent {
