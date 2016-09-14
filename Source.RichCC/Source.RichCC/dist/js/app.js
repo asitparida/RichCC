@@ -34,6 +34,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
             evt.name = evt.name + i;
             delete evt.initial;
             evt.bgcolor = _.sample(['#2ecc71', '#47a1de', '#ffc310', '#e67e22', '#e74c3c']);
+            evt.highlightBorderColor = evt.bgcolor;
             var dt = new Date(evt.startDt);
             dt.setDate(dt.getDate() + (i * 2));
             evt.startDt = (dt.getMonth() + 1) + '-' + (dt.getDate()) + '-' + dt.getFullYear();
@@ -45,6 +46,8 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         console.log(_evts);
         return _evts;
     }
+
+    self.halfsize = true;
 
     self.insertSampleEvent = function () {
         //self.sampleEvents = [
@@ -120,7 +123,23 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'showDataLabel': true,
         'defaultDataLabel': '00:00',
         moveModeCallback: self.moveModeCallback,
-        enableWebWorkers: false
+        enableWebWorkers: false,
+        expandedMode: false
+    };
+
+    self.dtPickerOptions2 = {
+        customClass: getDayClass,
+        customIconClass: getIconClass,
+        showWeeks: false,
+        datepickerMode: 'day',
+        'yearMapHeat': true,
+        'preventModeToggle': true,
+        'showMarkerForMoreEvents': true,
+        'showDataLabel': true,
+        'defaultDataLabel': '00:00',
+        moveModeCallback: self.moveModeCallback,
+        enableWebWorkers: false,
+        expandedMode: true
     };
 
     self.dtPickerOptionsLight = {

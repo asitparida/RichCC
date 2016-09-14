@@ -24,9 +24,9 @@
 <div id="templates">
     <!--datepicker.html-->
     <div id="richccTmplDatepicker">
-        <div class="uib-datepicker richcc-datepicker" ng-switch="datepickerMode" role="application" ng-keydown="keydown($event)">
+        <div class="uib-datepicker richcc-datepicker" ng-switch="datepickerMode" role="application" ng-keydown="keydown($event)" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}">
             <div class="richcc-comp-title">Calendar</div>
-            <div class="richcc-cal-holder">
+            <div class="richcc-cal-holder" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}">
                 <richcc-daypicker ng-switch-when="day" tabindex="0"></richcc-daypicker>
                 <richcc-monthpicker-heatmap ng-switch-when="month" ng-if="yearMapHeat == true" tabindex="0"></richcc-monthpicker-heatmap>
                 <richcc-monthpicker-eventmap ng-switch-when="month" ng-if="yearMapHeat == false" tabindex="0"></richcc-monthpicker-eventmap>
@@ -36,9 +36,9 @@
     </div>
     <!--day.html-->
     <div id="richccTmplDay">
-        <table class="uib-daypicker richcc-daypicker" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light}">
+        <table class="uib-daypicker richcc-daypicker" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}">
             <thead>
-                <tr class="header-action-holder">
+                <tr class="header-action-holder" ng-if="expandedMode != true">
                     <th colspan="1" ng-if="light != true"></th>
                     <th colspan="{{light == true ? 8 : 5}}">
                         <div class="header-actions" ng-class="{'calNavHidden' : hideCalNav == true}">
@@ -62,7 +62,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="uib-weeks richcc-row" ng-repeat="row in rows track by $index" ng-init="rowindex = $index">
+                <tr class="uib-weeks richcc-row" ng-repeat="row in rows track by $index" ng-init="rowindex = $index" ng-class="{'collapsed-mode': !expandedMode, 'expanded-mode': expandedMode}">
                     <td ng-if="showWeeks && false" class="text-center h6"><em>{{weekNumbers[$index] }}</em></td>
                     <td ng-repeat="dt in row track by $index" class="uib-day text-center richcc-td" role="gridcell"
                         id="{{dt.uid}}"
@@ -94,7 +94,24 @@
                             <span ng-hide="dataLabels[dt.key]">{{defaultDataLabel}}</span>
                             <span class="customIconClass" ng-class="dt.customIconClass"></span>
                         </div>
-                        <div class="markHolder" style="position:relative;" ng-show="eventDetails[dt.key].length > 0">
+                        <div class="markHolder" ng-show="eventDetails[dt.key].length > 0" ng-if="expandedMode == true">
+                            <div class="mark step-{{event.step}}"
+                                 ng-attr-step="{{ event.step}}"
+                                 ng-attr-order="{{ event.order}}"
+                                 ng-attr-mtop="{{$index == 0 ? ((event.order - 1) * 36) + 'px' : '0'}}"
+                                 ng-class="{'top': event.order == 1, 'bottom': event.order == 2}"
+                                 ng-style="{'color': event.color, 'width': light != true ?  'calc(' + 100 * event.paintBoxLength + '% - 8px)' : 'calc(' + 100 * event.paintBoxLength + '% - 20px)'}"
+                                 ng-repeat="event in (eventDetails[dt.key] | filter:{startPaint: true}) track by $index"
+                                 style="color:#fff;">
+                                <div class="mark-text-initial" ng-if="light == true" ng-style="{'color': event.bgcolor}">{{event.initial | limitTo: 1}}</div>
+                                <div class="mark-stripe " ng-style="{'border-color': light == false && event.highlightBorder == true ? event.highlightBorderColor : 'transparent'}" ng-class="{'highlightBorder': light == false ? event.highlightBorder : ''}">
+                                    <div class="mark-stripe-color" ng-style="{'background-color': event.bgcolor}">
+                                        <span class="text">{{event.name}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="markHolder" style="position:relative;" ng-show="eventDetails[dt.key].length > 0" ng-if="expandedMode != true">
                             <div class="mark step-{{event.step}}"
                                  ng-class="{'top': event.order == 1, 'bottom': event.order == 2}"
                                  ng-style="{'color': event.color, 'width': light != true ?  'calc(' + 100 * event.paintBoxLength + '% - 8px)' : 'calc(' + 100 * event.paintBoxLength + '% - 20px)'}"
@@ -479,7 +496,7 @@
                                 </table>
                             </td>
                         </tr>
-                        <tr class="uib-months h40" ng-repeat="month in ricchYear.months track by $index" ng-init="mIndex = $index;">
+                        <tr class="uib-months h40" ng-repeat="month in ricchYear.months track by $index" ng-init="mIndex = $index;" ng-class="{'collapsed-mode': !expandedMode, 'expanded-mode': expandedMode}">
                             <td class="w48 eventMonthMarker" colspan="1">{{::ricchYear.monthLabels[$index] | limitTo:3}}</td>
                             <td ng-repeat="week in month.rows track by $index" class="uib-month text-center richcc-month-event-box-holder" role="gridcell"
                                 id="{{week.uid}}"

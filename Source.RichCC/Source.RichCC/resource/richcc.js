@@ -30,6 +30,7 @@
     monthPopUpTmpl: 'template/richcc/richccMonthPopup.html',
     dayPopUpTmpl: 'template/richcc/richccDayPopup.html',
     enableWebWorkers: false,
+    expandedMode: false,
     webWorkerAngularPath: 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js'
 })
 
@@ -53,6 +54,7 @@
       if ($attrs.datepickerOptions) {
           angular.forEach([
             'enableWebWorkers',
+            'expandedMode',
             'light',
             'yearMapHeat',
             'preventModeToggle',
@@ -85,6 +87,7 @@
           ], function (key) {
               switch (key) {
                   case 'enableWebWorkers':
+                  case 'expandedMode':
                   case 'webWorkerAngularPath':
                   case 'webWorkerUnderscorePath':
                       self[key] = richCCShared[key] = $scope[key] = angular.isDefined($scope.datepickerOptions[key]) ? $scope.datepickerOptions[key] : datepickerConfig[key];
@@ -281,6 +284,13 @@
           if ($attrs['enableWebWorkers']) {
               watchListeners.push($scope.$parent.$watch($attrs['enableWebWorkers'], function (value) {
                   self['enableWebWorkers'] = $scope['enableWebWorkers'] = angular.isDefined(value) ? value : $attrs['enableWebWorkers'];
+                  self.refreshView();
+              }));
+          }
+
+          if ($attrs['expandedMode']) {
+              watchListeners.push($scope.$parent.$watch($attrs['expandedMode'], function (value) {
+                  self['expandedMode'] = $scope['expandedMode'] = angular.isDefined(value) ? value : $attrs['expandedMode'];
                   self.refreshView();
               }));
           }
@@ -1026,6 +1036,7 @@
         scope.light = this.light;
         scope.yearMapHeat = this.yearMapHeat;
         scope.enableWebWorkers = this.enableWebWorkers;
+        scope.expandedMode = this.expandedMode;
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
         scope.preventModeToggle = this.preventModeToggle;
@@ -1128,6 +1139,18 @@
         return i;
     }
 
+    function getNewOrder(days) {
+        var _proceed = true;
+        var i = 1;        
+        if (days.length > 0) {
+            days = days.sort(function (a, b) { return a.order - b.order });
+            return days[days.length - 1].order + 1;
+        }
+        else
+            return 1;
+        return i;
+    }
+
     function dayIsWeekFirst(_day, _weekFirsts) {
         var _found = _.find(_weekFirsts, function (d) {
             return d.date.getDate() == _day.getDate() && d.date.getMonth() == _day.getMonth() && d.date.getFullYear() == _day.getFullYear();
@@ -1220,27 +1243,37 @@
                     var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
                     if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
                         _dayEventDetails[key] = [];
-                    var _oldOrder = _eventDetail.order;
-                    if (_iter == 0) {
-                        _eventDetail.order = getOrder(_dayEventDetails[key]);
+                    var _oldOrder = _eventDetail.order;                    
+                    if (_iter == 0) {                        
+                        _eventDetail.order = getNewOrder(_dayEventDetails[key]);
                     }
                     if (dayIsWeekFirst(_day, _weekFirsts) == true) {
-                        _eventDetail.order = getOrder(_dayEventDetails[key]);
+                        _eventDetail.order = getNewOrder(_dayEventDetails[key]);
                     }
                     var _newOrder = _eventDetail.order;
-                    if (_oldOrder != _newOrder && _newOrder <= 2)
-                        _eventDetail.startPaint = _eventDetail.startPaintForMonth = true;
-                    else
-                        _eventDetail.startPaint = _eventDetail.startPaintForMonth = false;
-                    if (dayIsWeekFirst(_day, _weekFirsts) == true && _newOrder <= 2)
-                        _eventDetail.startPaint = true;
+                    if (scope.expandedMode != true) {
+                        if (_oldOrder != _newOrder && _newOrder <= 2)
+                            _eventDetail.startPaint = _eventDetail.startPaintForMonth = true;
+                        else
+                            _eventDetail.startPaint = _eventDetail.startPaintForMonth = false;
+                        if (dayIsWeekFirst(_day, _weekFirsts) == true && _newOrder <= 2)
+                            _eventDetail.startPaint = true;
+                    }
+                    else {
+                        if (_oldOrder != _newOrder)
+                            _eventDetail.startPaint = _eventDetail.startPaintForMonth = true;
+                        else
+                            _eventDetail.startPaint = _eventDetail.startPaintForMonth = false;
+                        if (dayIsWeekFirst(_day, _weekFirsts) == true)
+                            _eventDetail.startPaint = true;
+                    }
                     _eventDetail.paintBoxLength = Math.min(7 - _day.getDay(), _days.length - _iter);
                     _eventDetail.paintBoxLengthForMonth = _days.length;
                     if (_eventDetail.startPaint == true) {
                         _eventDetail.step = _step;
                         _step = _step + 1;
-                    }
-                    var _newEventDetail = _.clone(_eventDetail);
+                    }                    
+                    var _newEventDetail = _.clone(_eventDetail);                    
                     _dayEventDetails[key].push(_newEventDetail);
                 }
             });
@@ -1494,6 +1527,7 @@
         scope.light = this.light;
         scope.yearMapHeat = this.yearMapHeat;
         scope.enableWebWorkers = this.enableWebWorkers;
+        scope.expandedMode = this.expandedMode;
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
         scope.preventModeToggle = this.preventModeToggle;
@@ -2278,6 +2312,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     self.monthPopUpTmpl = 'template/richcc/richccMonthPopup.html';
     self.dayPopUpTmpl = 'template/richcc/richccDayPopup.html';
     self.enableWebWorkers = false;
+    self.expandedMode = false;
     self.webWorkerAngularPath = 'https=//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js';
 
     String.prototype.replaceAll = function (find, replaceWith) {
