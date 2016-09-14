@@ -410,13 +410,14 @@
             position: relative;
 
             table {
-                table-layout: fixed;
+                
             }
         }
     }
 
     table {
         width: 100%;
+        table-layout: fixed;
     }
 
     .richcc-daypicker {
@@ -1795,8 +1796,8 @@
                                     border-radius: 2px;
                                     position: absolute;
                                     top: 5px;
-                                    width: calc(100% - 50px);
-                                    margin-left: 18px;
+                                    width: calc(100% - 25px);
+                                    margin-left: 5px;
 
                                     .mark-stripe-color {
                                         width: 100%;
