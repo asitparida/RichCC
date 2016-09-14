@@ -34,7 +34,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
             evt.name = evt.name + i;
             delete evt.initial;
             evt.bgcolor = _.sample(['#2ecc71', '#47a1de', '#ffc310', '#e67e22', '#e74c3c']);
-            evt.highlightBorderColor = evt.bgcolor;
+            //evt.highlightBorderColor = evt.bgcolor;
             var dt = new Date(evt.startDt);
             dt.setDate(dt.getDate() + (i * 2));
             evt.startDt = (dt.getMonth() + 1) + '-' + (dt.getDate()) + '-' + dt.getFullYear();

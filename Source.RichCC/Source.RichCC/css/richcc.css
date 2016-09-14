@@ -623,25 +623,29 @@
         background: #f0f0f0; }
       .richcc-datepicker .richcc-daypicker.uib-yearpicker tbody tr td.uib-year button:focus {
         outline: 1px dotted rgba(0, 0, 0, 0.2); }
-  .richcc-datepicker .richcc-daypicker thead tr.header-dayname-row {
-    height: 10px; }
-  .richcc-datepicker .richcc-daypicker thead tr.header-action-holder {
-    height: 36px; }
-    .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions {
-      display: block;
-      margin: 0 auto;
-      height: 36px;
-      padding: 0 0 0 5px;
-      width: 300px; }
-      .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions .richcc-icon-container:not([disabled]):focus, .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions .richcc-icon-container:not(.disabled):focus {
-        outline: 1px dotted #000; }
-      .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions.calNavHidden .labelHolder {
-        width: 100%; }
-      .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions .richcc-icon {
-        top: 5px;
-        left: 7px; }
-  .richcc-datepicker .richcc-daypicker thead tr th {
-    width: 14.285%; }
+  .richcc-datepicker .richcc-daypicker thead tr {
+    /*&.collapsed-mode {
+                    th {
+                        width: 14.285%;
+                    }
+                }*/ }
+    .richcc-datepicker .richcc-daypicker thead tr.header-dayname-row {
+      height: 10px; }
+    .richcc-datepicker .richcc-daypicker thead tr.header-action-holder {
+      height: 36px; }
+      .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions {
+        display: block;
+        margin: 0 auto;
+        height: 36px;
+        padding: 0 0 0 5px;
+        width: 300px; }
+        .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions .richcc-icon-container:not([disabled]):focus, .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions .richcc-icon-container:not(.disabled):focus {
+          outline: 1px dotted #000; }
+        .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions.calNavHidden .labelHolder {
+          width: 100%; }
+        .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions .richcc-icon {
+          top: 5px;
+          left: 7px; }
     .richcc-datepicker .richcc-daypicker thead tr th .nav-left,
     .richcc-datepicker .richcc-daypicker thead tr th .nav-right {
       width: 36px;

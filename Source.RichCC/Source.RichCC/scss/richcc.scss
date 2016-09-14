@@ -910,6 +910,7 @@
                                         .markHolder {
                                             width: 100%;
                                             height: 100%;
+
                                             .mark {
                                                 background: none;
                                                 opacity: 1;
@@ -1075,8 +1076,13 @@
                     }
                 }
 
+                /*&.collapsed-mode {
+                    th {
+                        width: 14.285%;
+                    }
+                }*/
+
                 th {
-                    width: 14.285%;
 
                     .nav-left,
                     .nav-right {
@@ -1502,7 +1508,8 @@
                                         &[mtop="#{$i * $n}px"] {
                                             margin-top: #{$i * $n}px;
                                         }
-                                    }  
+                                    }
+
                                     &.notrans {
                                         animation: none;
                                         transition: none;

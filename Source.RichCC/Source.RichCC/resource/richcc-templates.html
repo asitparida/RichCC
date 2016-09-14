@@ -38,7 +38,7 @@
     <div id="richccTmplDay">
         <table class="uib-daypicker richcc-daypicker" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}">
             <thead>
-                <tr class="header-action-holder" ng-if="expandedMode != true">
+                <tr class="header-action-holder" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}">
                     <th colspan="1" ng-if="light != true"></th>
                     <th colspan="{{light == true ? 8 : 5}}">
                         <div class="header-actions" ng-class="{'calNavHidden' : hideCalNav == true}">
