@@ -94,7 +94,7 @@
                             <span ng-hide="dataLabels[dt.key]">{{defaultDataLabel}}</span>
                             <span class="customIconClass" ng-class="dt.customIconClass"></span>
                         </div>
-                        <div class="markHolder" ng-show="eventDetails[dt.key].length > 0" ng-if="expandedMode == true">
+                        <div class="markHolder pointerNone" ng-show="eventDetails[dt.key].length > 0" ng-if="expandedMode == true">
                             <div class="mark step-{{event.step}}"
                                  ng-attr-step="{{ event.step}}"
                                  ng-attr-order="{{ event.order}}"
@@ -111,7 +111,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="markHolder" style="position:relative;" ng-show="eventDetails[dt.key].length > 0" ng-if="expandedMode != true">
+                        <div class="markHolder pointerNone" style="position:relative;" ng-show="eventDetails[dt.key].length > 0" ng-if="expandedMode != true">
                             <div class="mark step-{{event.step}}"
                                  ng-class="{'top': event.order == 1, 'bottom': event.order == 2}"
                                  ng-style="{'color': event.color, 'width': light != true ?  'calc(' + 100 * event.paintBoxLength + '% - 8px)' : 'calc(' + 100 * event.paintBoxLength + '% - 20px)'}"
@@ -169,7 +169,7 @@
                                  popover-append-to-body="true"
                                  popover-placement="{{getPopUpPositionForMonthEventMap(monthIndex, weekindex)}}"
                                  popover-class="richcc-popup-container">
-                                <div class="markHolder" style="position:relative;">
+                                <div class="markHolder pointerNone" style="position:relative;">
                                     <div class="month-date" ng-show="column.monthIndex == monthIndex && parent.eventPopupSettings.showDateInYearView == true">{{column.date | date:'dd'}}</div>
                                     <div class="mark step-{{event.step}}"
                                          ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length > 0"

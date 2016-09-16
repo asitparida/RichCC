@@ -690,8 +690,9 @@
       transition: none; }
     .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder {
       position: relative;
-      height: calc(100% - 27px);
-      pointer-events: none; }
+      height: calc(100% - 27px); }
+      .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder.pointerNone {
+        pointer-events: none; }
       .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder .mark {
         position: absolute;
         height: 15px;
@@ -2234,8 +2235,9 @@
       .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td .markHolder {
         position: relative;
         width: 100%;
-        box-sizing: border-box;
-        pointer-events: none; }
+        box-sizing: border-box; }
+        .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td .markHolder.pointerNone {
+          pointer-events: none; }
         .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td .markHolder .mark {
           position: relative;
           overflow: hidden;
@@ -3934,6 +3936,8 @@
                         }*/ }
     .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder {
       height: 100%; }
+      .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder.pointerNone {
+        pointer-events: none; }
       .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder .mark {
         background: transparent; }
         .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder .mark.top {

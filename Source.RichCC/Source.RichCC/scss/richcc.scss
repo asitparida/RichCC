@@ -1156,7 +1156,10 @@
                             .markHolder {
                                 position: relative;
                                 height: calc(100% - 27px);
-                                pointer-events:none;
+
+                                &.pointerNone {
+                                    pointer-events: none;
+                                }
 
                                 .mark {
                                     position: absolute;
@@ -1493,7 +1496,10 @@
                                 position: relative;
                                 width: 100%;
                                 box-sizing: border-box;
-                                pointer-events:none;
+
+                                &.pointerNone {
+                                    pointer-events: none;
+                                }
 
                                 .mark {
                                     position: relative;
@@ -1782,6 +1788,10 @@
                         }*/
                         .markHolder {
                             height: 100%;
+
+                            &.pointerNone {
+                                pointer-events: none;
+                            }
 
                             .mark {
                                 background: transparent;
