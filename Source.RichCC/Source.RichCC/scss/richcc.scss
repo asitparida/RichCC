@@ -428,6 +428,10 @@
 
         &.uib-monthpicker {
 
+            table {
+                table-layout: auto;
+            }
+
             .richcc-year-top-head {
                 width: 100%;
             }

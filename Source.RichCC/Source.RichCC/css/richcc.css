@@ -270,6 +270,8 @@
     table-layout: fixed; }
   .richcc-datepicker .richcc-daypicker.collapsed-mode {
     height: 100%; }
+  .richcc-datepicker .richcc-daypicker.uib-monthpicker table {
+    table-layout: auto; }
   .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-year-top-head {
     width: 100%; }
   .richcc-datepicker .richcc-daypicker.uib-monthpicker thead tr.h40 {

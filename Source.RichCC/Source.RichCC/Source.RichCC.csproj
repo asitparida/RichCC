@@ -93,7 +93,6 @@
     <Content Include="dist\min\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Properties\PublishProfiles\richcc - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\richcc - Web Deploy.pubxml" />
-    <Content Include="temp.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
