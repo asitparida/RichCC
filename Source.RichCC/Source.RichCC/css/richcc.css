@@ -690,7 +690,8 @@
       transition: none; }
     .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder {
       position: relative;
-      height: calc(100% - 27px); }
+      height: calc(100% - 27px);
+      pointer-events: none; }
       .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder .mark {
         position: absolute;
         height: 15px;
@@ -2233,7 +2234,8 @@
       .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td .markHolder {
         position: relative;
         width: 100%;
-        box-sizing: border-box; }
+        box-sizing: border-box;
+        pointer-events: none; }
         .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td .markHolder .mark {
           position: relative;
           overflow: hidden;
