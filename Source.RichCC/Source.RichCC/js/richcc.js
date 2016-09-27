@@ -30,6 +30,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
     monthPopUpTmpl: 'template/richcc/richccMonthPopup.html',
     dayPopUpTmpl: 'template/richcc/richccDayPopup.html',
     enableWebWorkers: false,
+    expandedMode: false,
     webWorkerAngularPath: 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js'
 })
 
@@ -53,6 +54,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
       if ($attrs.datepickerOptions) {
           angular.forEach([
             'enableWebWorkers',
+            'expandedMode',
             'light',
             'yearMapHeat',
             'preventModeToggle',
@@ -85,6 +87,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
           ], function (key) {
               switch (key) {
                   case 'enableWebWorkers':
+                  case 'expandedMode':
                   case 'webWorkerAngularPath':
                   case 'webWorkerUnderscorePath':
                       self[key] = richCCShared[key] = $scope[key] = angular.isDefined($scope.datepickerOptions[key]) ? $scope.datepickerOptions[key] : datepickerConfig[key];
@@ -281,6 +284,13 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
           if ($attrs['enableWebWorkers']) {
               watchListeners.push($scope.$parent.$watch($attrs['enableWebWorkers'], function (value) {
                   self['enableWebWorkers'] = $scope['enableWebWorkers'] = angular.isDefined(value) ? value : $attrs['enableWebWorkers'];
+                  self.refreshView();
+              }));
+          }
+
+          if ($attrs['expandedMode']) {
+              watchListeners.push($scope.$parent.$watch($attrs['expandedMode'], function (value) {
+                  self['expandedMode'] = $scope['expandedMode'] = angular.isDefined(value) ? value : $attrs['expandedMode'];
                   self.refreshView();
               }));
           }
@@ -855,6 +865,12 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             });
     }
 
+    scope.richccDaySelectedKeyUp = function (e, dt, events) {
+        if (e.keyCode == 32 || e.keyCode == 13) {
+            scope.richccDaySelected(dt, events);
+        }
+    }
+
     scope.popUpTrigger = function (events) {
         try {
             var eventPopupSettings = scope.eventPopupSettings;
@@ -1020,6 +1036,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         scope.light = this.light;
         scope.yearMapHeat = this.yearMapHeat;
         scope.enableWebWorkers = this.enableWebWorkers;
+        scope.expandedMode = this.expandedMode;
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
         scope.preventModeToggle = this.preventModeToggle;
@@ -1122,6 +1139,18 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         return i;
     }
 
+    function getNewOrder(days) {
+        var _proceed = true;
+        var i = 1;        
+        if (days.length > 0) {
+            days = days.sort(function (a, b) { return a.order - b.order });
+            return days[days.length - 1].order + 1;
+        }
+        else
+            return 1;
+        return i;
+    }
+
     function dayIsWeekFirst(_day, _weekFirsts) {
         var _found = _.find(_weekFirsts, function (d) {
             return d.date.getDate() == _day.getDate() && d.date.getMonth() == _day.getMonth() && d.date.getFullYear() == _day.getFullYear();
@@ -1214,27 +1243,37 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                     var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
                     if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
                         _dayEventDetails[key] = [];
-                    var _oldOrder = _eventDetail.order;
-                    if (_iter == 0) {
-                        _eventDetail.order = getOrder(_dayEventDetails[key]);
+                    var _oldOrder = _eventDetail.order;                    
+                    if (_iter == 0) {                        
+                        _eventDetail.order = getNewOrder(_dayEventDetails[key]);
                     }
                     if (dayIsWeekFirst(_day, _weekFirsts) == true) {
-                        _eventDetail.order = getOrder(_dayEventDetails[key]);
+                        _eventDetail.order = getNewOrder(_dayEventDetails[key]);
                     }
                     var _newOrder = _eventDetail.order;
-                    if (_oldOrder != _newOrder && _newOrder <= 2)
-                        _eventDetail.startPaint = _eventDetail.startPaintForMonth = true;
-                    else
-                        _eventDetail.startPaint = _eventDetail.startPaintForMonth = false;
-                    if (dayIsWeekFirst(_day, _weekFirsts) == true && _newOrder <= 2)
-                        _eventDetail.startPaint = true;
+                    if (scope.expandedMode != true) {
+                        if (_oldOrder != _newOrder && _newOrder <= 2)
+                            _eventDetail.startPaint = _eventDetail.startPaintForMonth = true;
+                        else
+                            _eventDetail.startPaint = _eventDetail.startPaintForMonth = false;
+                        if (dayIsWeekFirst(_day, _weekFirsts) == true && _newOrder <= 2)
+                            _eventDetail.startPaint = true;
+                    }
+                    else {
+                        if (_oldOrder != _newOrder)
+                            _eventDetail.startPaint = _eventDetail.startPaintForMonth = true;
+                        else
+                            _eventDetail.startPaint = _eventDetail.startPaintForMonth = false;
+                        if (dayIsWeekFirst(_day, _weekFirsts) == true)
+                            _eventDetail.startPaint = true;
+                    }
                     _eventDetail.paintBoxLength = Math.min(7 - _day.getDay(), _days.length - _iter);
                     _eventDetail.paintBoxLengthForMonth = _days.length;
                     if (_eventDetail.startPaint == true) {
                         _eventDetail.step = _step;
                         _step = _step + 1;
-                    }
-                    var _newEventDetail = _.clone(_eventDetail);
+                    }                    
+                    var _newEventDetail = _.clone(_eventDetail);                    
                     _dayEventDetails[key].push(_newEventDetail);
                 }
             });
@@ -1488,6 +1527,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         scope.light = this.light;
         scope.yearMapHeat = this.yearMapHeat;
         scope.enableWebWorkers = this.enableWebWorkers;
+        scope.expandedMode = this.expandedMode;
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
         scope.preventModeToggle = this.preventModeToggle;
@@ -2272,6 +2312,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     self.monthPopUpTmpl = 'template/richcc/richccMonthPopup.html';
     self.dayPopUpTmpl = 'template/richcc/richccDayPopup.html';
     self.enableWebWorkers = false;
+    self.expandedMode = false;
     self.webWorkerAngularPath = 'https=//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js';
 
     String.prototype.replaceAll = function (find, replaceWith) {
@@ -2710,7 +2751,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             }
                                             //POPUPEVENTDETAILSTMPL
                                             var _evtTmpls = '';
-                                            eventDetails = _.sortBy(eventDetails, function (evt) { evt.isHoliday = evt.isHoliday || false; return evt.isHoliday == true  ? -1 : 1});
+                                            eventDetails = _.sortBy(eventDetails, function (evt) { evt.isHoliday = evt.isHoliday || false; return evt.isHoliday == true ? -1 : 1 });
                                             _.each(eventDetails, function (evt, iter) {
                                                 var _evTmpl = '<div class="event-detail EVENTHOLIDAYCLASS " style="background-color:EVENTDETAILBGCOLOR" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" evid="EVTPRIMARYIDDET" id="EVENTDETAILID" iter="ITERATOR"><div class="event-marker"></div><div class="event-title-holder POPUPHIGHLIGHTBORDERCLASS" style="border-left-color: POPOVERBGCOLOR"><span class="event-title">EVENTTITLE</span> EVENDETAILSOTHERSTUFF </div></div>';
                                                 _evTmpl = _evTmpl.replace('EVTPRIMARYIDDET', evt.id);
