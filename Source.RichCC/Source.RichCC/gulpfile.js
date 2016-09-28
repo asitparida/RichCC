@@ -87,4 +87,9 @@ gulp.task('default:richcc:js', function () {
     gulp.watch(['resource/richcc.js', 'resource/richcc-templates.html'], ['concat:js']);
 });
 
+//Watch CSS task
+gulp.task('default:richcc:dist-prod', function () {
+    return gulp.src(['dist/min/js/richcc.min.js', 'dist/min/css/richcc.min.css'])
+        .pipe(gulp.dest('../../dist'));
+});
 
