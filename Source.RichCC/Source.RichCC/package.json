@@ -4,15 +4,14 @@
   "description": "Rich Calendar Control",
   "main": "gulpfile.js",
    "author": {
-    "name": "asparida",
-    "email": "asparida@microsoft.com"
+    "name": "asitparida",
+    "email": "asitparida@live.in"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-debug": "^2.0.1",
     "gulp-plumber": "^1.0.1",    
     "gulp-concat": "^2.5.2",
-    "gulp-uglify": "^1.2.0",
     "gulp-sass": "^2.0.1",
     "gulp-cssmin": "^0.1.7",
     "gulp-filter": "^2.0.2",
