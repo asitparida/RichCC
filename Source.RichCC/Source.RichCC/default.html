@@ -43,6 +43,7 @@
     <button ng-click="sample.insertSampleEvent()">Insert Sample</button>
     <button ng-click="sample.showMode = !sample.showMode">Toggle Mode</button>
     <button ng-click="sample.halfsize = !sample.halfsize">Toggle Size</button>
+    <button ng-click="sample.load()">Load</button>
     <pre class="col-xs-12" style="line-height:46px;padding:0 15px;margin:0;">Current date is: <em>{{sample.dt | date:'fullDate' }}</em></pre>
     <div style="width:100%;height:calc(100vh - 96px);padding:0 30px;overflow:auto;margin:0;" class="col-xs-12">
         <div style="display:block; height:630px;width:1460px;margin:30px auto;" ng-if="sample.showMode">

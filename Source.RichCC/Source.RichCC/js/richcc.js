@@ -2641,7 +2641,9 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 var _cells = angular.element(document.getElementsByClassName('richcc-year-row'));
                 _.each(_cells, function (cell) {
                     var id = cell.getAttribute('id');
+                    //console.log(document.getElementById(id));
                     angular.element(document.getElementById(id)).empty();
+                    //console.log(document.getElementById(id));
                 });
                 self.months = [];
                 for (var id in self.popUpState) {
@@ -2663,6 +2665,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             self.processDt = function (dt) {
                 self.dt = dt;
                 self.title = dt.getFullYear();
+                self.months = [];
                 _.each(_.range(12), function (iter) {
                     dt.setMonth(iter);
                     dt.setDate(15);
@@ -2672,8 +2675,10 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     monthData.eventDetails = service.processEventsForMonthEventViewer($scope.events, monthData.rows);
                     self.months.push(monthData);
                 });
-
-                $timeout(function () {
+                if (self.paintTimeout) {
+                    $timeout.cancel(self.paintTimeout);
+                }                                    
+                self.paintTimeout = $timeout(function () {
                     _.each(self.months, function (month, mIndex) {
                         _.each(month.rows, function (week, wIndex) {
                             var _rowElm = angular.element(document.getElementById('row_' + mIndex + '_' + wIndex));
@@ -2917,6 +2922,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             }
 
             $scope.processEventsChange = function (e) {
+                console.log('processEventsChange');
                 self.reset();
                 self.processDt(self.dt);
             }
@@ -2954,7 +2960,8 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     scope.init(new Date(n));
                 }
             }, true);
-            scope.$watch('events', function (n, o) {
+            var _watcher =  scope.$watch('events', function (n, o) {
+                console.log('events call');
                 if (typeof n !== 'undefined' && n != null && n != {}) {
                     if (scope.initialized == true)
                         scope.processEventsChange(n);
@@ -2967,6 +2974,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     $(_angElm).popover('destroy');
                 });
             });
+            console.log(scope);
         }
     };
 }]);

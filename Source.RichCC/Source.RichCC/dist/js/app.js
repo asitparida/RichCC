@@ -15,6 +15,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
     _.each(_holidayEvents, function (_ev) {
         _events.push(_ev);
     });
+
     self.sampleEvents = _events;
     //self.sampleEvents = [
     //    { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-15-2016', 'endDt': '06-06-2017', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' },
@@ -25,6 +26,13 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
     //    { 'id': '6', 'initial': 'F', 'name': 'Event F', 'startDt': '06-13-2016', 'endDt': '06-17-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
     //    { 'id': '7', 'initial': 'G', 'name': 'Event G', 'startDt': '06-12-2016', 'endDt': '06-12-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' }
     //];
+
+    self.load = function () {
+        var _dt = new Date(self.dt);
+        _dt.setDate(20);
+        self.dt = _dt;
+        self.sampleEvents = sampleEvents(200);
+    }
 
     function sampleEvents(iter) {
         var _evts = [];
@@ -240,7 +248,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         self.dtLight2 = null;
     };
 
-    self.showMode = true;
+    self.showMode = false;
 
     // Disable weekend selection
     self.disabled = function (date, mode) {
