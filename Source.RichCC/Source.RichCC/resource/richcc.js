@@ -696,7 +696,13 @@
                       var _first = row[0]; _first.date = new Date(_first.date); _first._date = _first.date.setHours(0, 0, 0, 0); return _first
                   });
                   var _events = _.map(events, function (e) {
-                      e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e;
+                      e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0);
+                      e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0);
+                      if (!e.startDtFQ)
+                          e.startDtFQ = e._startDt;
+                      if (!e.endDtFQ)
+                          e.endDtFQ = e._endDt;
+                      return e;
                   });
                   var _sortedEvents = _events.sort(function (a, b) {
                       if (a._startDt == b._startDt) {
@@ -751,7 +757,13 @@
 
               function processEventsForMonthEventViewer(events, rows) {
                   var _events = _.map(events, function (e) {
-                      e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e;
+                      e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0);
+                      e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0);
+                      if (!e.startDtFQ)
+                          e.startDtFQ = e._startDt;
+                      if (!e.endDtFQ)
+                          e.endDtFQ = e._endDt;
+                      return e;
                   });
                   var _sortedEvents = _events.sort(function (a, b) {
                       if (a._startDt == b._startDt) {
@@ -1218,7 +1230,13 @@
             var _first = row[0]; _first._date = _first.date.setHours(0, 0, 0, 0); return _first
         });
         var _events = _.map(events, function (e) {
-            e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e;
+            e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0);
+            e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0);
+            if (!e.startDtFQ)
+                e.startDtFQ = e._startDt;
+            if (!e.endDtFQ)
+                e.endDtFQ = e._endDt;
+            return e;
         });
         var _sortedEvents = _events.sort(function (a, b) {
             if (a._startDt == b._startDt) {
@@ -1283,7 +1301,13 @@
 
     this.processEventsForMonthEventViewer = function (events, rows) {
         var _events = _.map(events, function (e) {
-            e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e;
+            e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0);
+            e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0);
+            if (!e.startDtFQ)
+                e.startDtFQ = e._startDt;
+            if (!e.endDtFQ)
+                e.endDtFQ = e._endDt;
+            return e;
         });
         var _sortedEvents = _events.sort(function (a, b) {
             if (a._startDt == b._startDt) {
@@ -2429,7 +2453,13 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
 
     self.processEventsForMonthEventViewer = function (events, rows) {
         var _events = _.map(events, function (e) {
-            e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0); e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0); return e;
+            e._startDt = (new Date(e.startDt)).setHours(0, 0, 0, 0);
+            e._endDt = (new Date(e.endDt)).setHours(0, 0, 0, 0);
+            if (!e.startDtFQ)
+                e.startDtFQ = e._startDt;
+            if (!e.endDtFQ)
+                e.endDtFQ = e._endDt;
+            return e;
         });
         var _sortedEvents = _events.sort(function (a, b) {
             if (a._startDt == b._startDt) {
@@ -2455,8 +2485,9 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 if (_proceedFurther == true) {
                     var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
                     if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
-                        _dayEventDetails[key] = [];
-                    var _evKey = _eventDetail.id + '_' + _day.getMonth();
+                        _dayEventDetails[key] = [];                    
+                    var _evKey = _eventDetail.id + '_' + new Date(_eventDetail._startDt).getTime() + '_' + _day.getMonth();
+                    console.log(_evKey);
                     if (_monthEventDetails[_evKey] != true) {
                         var _oldOrder = _eventDetail.order;
                         _eventDetail.order = getOrder(_dayEventDetails[key]);
@@ -2771,12 +2802,12 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                                 }
                                                 else {
                                                     _evTmpl = _evTmpl.replace('EVENTDETAILBGCOLOR', '#fff');
-                                                    var _otherStuffTmpl = ': <span class="event-subject">EVENTSUBJECT</span><div class="event-timing-holder"><span class="event-time ng-binding">EVENTSTARTIME</span><span style="padding: 0px 15px;">-</span><span class="event-time ng-binding">EVENTENDTIME</span><span class="event-time" style="text-transform:none;"> EVENTTIMEMETADATA</span></div>';
+                                                    var _otherStuffTmpl = ': <span class="event-subject">EVENTSUBJECT</span><div class="event-timing-holder"><span class="event-time ng-binding">EVENTSTARTIME</span><span style="padding: 0px 15px;">-</span><span class="event-time ng-binding">EVENTENDTIME</span><br/><p class="event-time" style="text-transform:none;"> EVENTTIMEMETADATA</p></div>';
                                                     _otherStuffTmpl = _otherStuffTmpl.replace('EVENTSUBJECT', evt.subject || '');
                                                     //EVENTSTARTIME
-                                                    _otherStuffTmpl = _otherStuffTmpl.replace('EVENTSTARTIME', $filter('date')(evt._startDt, $scope.eventPopupSettings.dateFilter) || '');
+                                                    _otherStuffTmpl = _otherStuffTmpl.replace('EVENTSTARTIME', $filter('date')(evt.startDtFQ, $scope.eventPopupSettings.dateFilter) || '');
                                                     //EVENTENDTIME
-                                                    _otherStuffTmpl = _otherStuffTmpl.replace('EVENTENDTIME', $filter('date')(evt._endDt, $scope.eventPopupSettings.dateFilter) || '');
+                                                    _otherStuffTmpl = _otherStuffTmpl.replace('EVENTENDTIME', $filter('date')(evt.endDtFQ, $scope.eventPopupSettings.dateFilter) || '');
                                                     _evTmpl = _evTmpl.replace('EVENDETAILSOTHERSTUFF', _otherStuffTmpl);
                                                 }
                                                 _evTmpl = _evTmpl.replace('POPOVERBGCOLOR', evt.bgcolor);
