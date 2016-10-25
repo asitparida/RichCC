@@ -364,9 +364,9 @@
                         <div class="event-title-holder" ng-style="{'border-left-color': event.bgcolor}" ng-class="{ 'highlightBorder': event.highlightBorder}">
                             <span class="event-title">{{event.name}}</span><span ng-if="event.isHoliday != true"> : </span><span class="event-subject" ng-if="event.isHoliday != true">{{event.subject}}</span>
                             <div class="event-timing-holder" ng-if="event.isHoliday != true">
-                                <span class="event-time">{{event._startDt | date:eventPopupSettings.dateFilter}}</span><span style="padding: 0 15px;">-</span><span class="event-time">{{event._endDt | date: eventPopupSettings.dateFilter}}</span>
+                                <span class="event-time">{{event.startDtFQ | date:eventPopupSettings.dateFilter}}</span><span style="padding: 0 15px;">-</span><span class="event-time">{{event.endDtFQ | date: eventPopupSettings.dateFilter}}</span>
                             </div>
-                            <span class="event-time" style="text-transform:none;">{{event.timeMetaData}}</span>
+                            <p class="event-time" style="text-transform:none;">{{event.timeMetaData}}</p>
                             <div class="event-timing-holder" ng-if="event.isHoliday == true">
                                 <span class="event-time holiday">{{event.holidayType}}</span>
                             </div>
@@ -393,9 +393,9 @@
                         <div class="event-marker"></div>
                         <div class="event-title-holder" ng-style="{'border-left-color': event.bgcolor}" ng-class="{ 'highlightBorder': event.highlightBorder}">
                             <span class="event-title">{{event.name}}</span> : <span class="event-subject">{{event.subject}}</span>
-                            <span class="event-time" style="text-transform:none;">{{event.timeMetaData}}</span>
+                            <p class="event-time" style="text-transform:none;">{{event.timeMetaData}}</p>
                             <div class="event-timing-holder">
-                                <span class="event-time">{{event._startDt | date: parent.eventPopupSettings.dateFilter}}</span><span style="padding: 0 15px;">-</span><span class="event-time">{{event._endDt | date: parent.eventPopupSettings.dateFilter}}</span>
+                                <span class="event-time">{{event.startDtFQ | date: parent.eventPopupSettings.dateFilter}}</span><span style="padding: 0 15px;">-</span><span class="event-time">{{event.endDtFQ | date: parent.eventPopupSettings.dateFilter}}</span>
                             </div>
                         </div>
                     </div>

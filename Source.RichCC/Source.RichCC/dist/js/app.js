@@ -47,9 +47,11 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
             var dt = new Date(evt.startDt);
             dt.setDate(dt.getDate() + (i * 2));
             evt.startDt = (dt.getMonth() + 1) + '-' + (dt.getDate()) + '-' + dt.getFullYear();
+            evt.startDtFQ = new Date("Wed Mar 25 2015 09:56:24 GMT+0100 (W. Europe Standard Time)");
             var edt = dt;
             edt.setDate(edt.getDate() + (i * 1));
             evt.endDt = (edt.getMonth() + 1) + '-' + (edt.getDate()) + '-' + edt.getFullYear();
+            evt.endDtFQ = new Date("Fri Mar 27 2015 09:56:24 GMT+0100 (W. Europe Standard Time)");
             _evts.push(evt);
         });
         console.log(_evts);
@@ -197,7 +199,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'leftLabel': ' + Add Events',
         'rightLabel': 'Edit Details',
         'showWhenEventsEmpty': true,
-        'dateFilter': 'MM/dd/yy',
+        'dateFilter': 'MMM d, y h:mm:ss a',
         'labelDateFilter': 'EEE MMM dd yyyy'
     };
 
@@ -209,7 +211,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'rightLabel': 'Edit Details',
         'showWhenEventsEmpty': true,
         'showDateInYearView': true,
-        'dateFilter': 'EEE MMM dd yyyy',
+        'dateFilter': 'MMM d, y h:mm:ss a',
         'labelDateFilter': 'MM/dd/yy'
     };
 
