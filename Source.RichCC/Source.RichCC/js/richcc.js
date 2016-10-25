@@ -2750,7 +2750,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             var _popUpContentTmpl = '<div class="richcc-day-popup" id="POPUPCONTAINERID" key="POPUPCONTAINERKEY"><div class="event-container NOACTIONS "><div class="event-container-label">POPUPDATE<span>POPUPEVENTCOUNT</span></div><div class="event-details-container">POPUPEVENTDETAILSTMPL</div></div><div class="event-action-container POPOVERSINGLEBUTTONLYCLASS "> POPUPLEFTBTNTMPL POPUPRIGHTBTNTMPL <div class="event-separator"></div></div></div>';
                                             _popUpContentTmpl = _popUpContentTmpl.replace('POPUPCONTAINERID', _popUopContainerId);
                                             _popUpContentTmpl = _popUpContentTmpl.replace('POPUPCONTAINERKEY', _key);
-                                            _popUpContentTmpl = _popUpContentTmpl.replace('POPUPDATE', $filter('date')(_column.date, $scope.eventPopupSettings.dateFilter) || '');
+                                            _popUpContentTmpl = _popUpContentTmpl.replace('POPUPDATE', $filter('date')(_column.date, $scope.eventPopupSettings.labelDateFilter) || '');
                                             if (!($scope.eventPopupSettings.showLeft || $scope.eventPopupSettings.showRight)) {
                                                 _popUpContentTmpl = _popUpContentTmpl.replace('NOACTIONS', 'noActions');
                                             }
@@ -2771,7 +2771,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                                 }
                                                 else {
                                                     _evTmpl = _evTmpl.replace('EVENTDETAILBGCOLOR', '#fff');
-                                                    var _otherStuffTmpl = ': <span class="event-subject">EVENTSUBJECT</span><div class="event-timing-holder"><span class="event-time ng-binding">EVENTSTARTIME</span><span style="padding: 0px 15px;">-</span><span class="event-time ng-binding">EVENTENDTIME</span></div>';
+                                                    var _otherStuffTmpl = ': <span class="event-subject">EVENTSUBJECT</span><div class="event-timing-holder"><span class="event-time ng-binding">EVENTSTARTIME</span><span style="padding: 0px 15px;">-</span><span class="event-time ng-binding">EVENTENDTIME</span><span class="event-time" style="text-transform:none;"> EVENTTIMEMETADATA</span></div>';
                                                     _otherStuffTmpl = _otherStuffTmpl.replace('EVENTSUBJECT', evt.subject || '');
                                                     //EVENTSTARTIME
                                                     _otherStuffTmpl = _otherStuffTmpl.replace('EVENTSTARTIME', $filter('date')(evt._startDt, $scope.eventPopupSettings.dateFilter) || '');
@@ -2781,6 +2781,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                                 }
                                                 _evTmpl = _evTmpl.replace('POPOVERBGCOLOR', evt.bgcolor);
                                                 _evTmpl = _evTmpl.replace('EVENTTITLE', evt.name || '');
+                                                _evTmpl = _evTmpl.replace('EVENTTIMEMETADATA', evt.timeMetaData || '');
                                                 var _id = column.key + '_evtdet_' + iter;
                                                 _evTmpl = _evTmpl.replace('EVENTDETAILID', _id);
                                                 _evTmpl = _evTmpl.replace('MINDEX', _mIndex);
@@ -2790,11 +2791,11 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                                 _evtTmpls = _evtTmpls + _evTmpl;
                                             });
                                             if (typeof _eventDetails !== 'undefined' && _eventDetails != null && _eventDetails.length > 0) {
-                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTCOUNT', ' (' + (_eventDetails.length || 0) + ' Events)');
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTCOUNT', ' (' + (_eventDetails.length || 0) + (_eventDetails.length == 1 ? ' Event)' : ' Events)'));
                                                 _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTDETAILSTMPL', _evtTmpls);
                                             }
                                             else {
-                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTCOUNT', ' (0 Events)');
+                                                _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTCOUNT', '');
                                                 _popUpContentTmpl = _popUpContentTmpl.replace('POPUPEVENTDETAILSTMPL', '');
                                             }
                                             //POPOVERSINGLEBUTTONLYCLASS

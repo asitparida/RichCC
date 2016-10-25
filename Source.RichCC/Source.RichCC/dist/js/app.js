@@ -41,8 +41,9 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
             evt.id = i;
             evt.name = evt.name + i;
             delete evt.initial;
+            evt.timeMetaData = _.sample(['', 'Lorem ipsum dolor sit amet. it am,et dolor.']);
             evt.bgcolor = _.sample(['#2ecc71', '#47a1de', '#ffc310', '#e67e22', '#e74c3c']);
-            //evt.highlightBorderColor = evt.bgcolor;
+            evt.highlightBorderColor = evt.bgcolor;
             var dt = new Date(evt.startDt);
             dt.setDate(dt.getDate() + (i * 2));
             evt.startDt = (dt.getMonth() + 1) + '-' + (dt.getDate()) + '-' + dt.getFullYear();
@@ -66,16 +67,17 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         //    { 'id': '4', 'initial': 'D', 'name': 'Event D', 'startDt': '01-06-2016', 'endDt': '01-09-2016', 'bgcolor': '#e74c3c', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX' },
         //    { 'id': '6', 'initial': 'F', 'name': 'Event F', 'startDt': '01-16-2016', 'endDt': '01-19-2016', 'bgcolor': '#0073c6', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX' }
         //];
-        self.sampleEvents = [
-            { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-15-2016', 'endDt': '06-06-2017', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' },
-            { 'id': '2', 'initial': 'B', 'name': 'Event B', 'startDt': '02-02-2016', 'endDt': '03-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
-            { 'id': '3', 'initial': 'E', 'name': 'Event E', 'startDt': '04-10-2016', 'endDt': '04-10-2016', 'bgcolor': '#ffc310', 'color': '#000000', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
-            { 'id': '4', 'initial': 'C', 'name': 'Event C', 'startDt': '04-17-2016', 'endDt': '04-18-2016', 'bgcolor': '#e67e22', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
-            { 'id': '5', 'initial': 'D', 'name': 'Event D', 'startDt': '05-06-2016', 'endDt': '05-09-2016', 'bgcolor': '#e74c3c', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
-            { 'id': '6', 'initial': 'F', 'name': 'Event F', 'startDt': '06-13-2016', 'endDt': '06-17-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
-            { 'id': '7', 'initial': 'G', 'name': 'Event G', 'startDt': '06-12-2016', 'endDt': '06-12-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
-            { 'id': '10', 'initial': 'J', 'name': 'Event J', 'startDt': '06-13-2016', 'endDt': '06-13-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' }
-        ];
+        //self.sampleEvents = [
+        //    { 'id': '1', 'initial': 'A', 'name': 'Event A', 'startDt': '01-01-2017', 'endDt': '01-02-2017', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' },
+        //    //{ 'id': '2', 'initial': 'B', 'name': 'Event B', 'startDt': '02-02-2016', 'endDt': '03-02-2016', 'bgcolor': '#47a1de', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        //    //{ 'id': '3', 'initial': 'E', 'name': 'Event E', 'startDt': '04-10-2016', 'endDt': '04-10-2016', 'bgcolor': '#ffc310', 'color': '#000000', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        //    //{ 'id': '4', 'initial': 'C', 'name': 'Event C', 'startDt': '04-17-2016', 'endDt': '04-18-2016', 'bgcolor': '#e67e22', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        //    //{ 'id': '5', 'initial': 'D', 'name': 'Event D', 'startDt': '05-06-2016', 'endDt': '05-09-2016', 'bgcolor': '#e74c3c', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        //    //{ 'id': '6', 'initial': 'F', 'name': 'Event F', 'startDt': '06-13-2016', 'endDt': '06-17-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        //    //{ 'id': '7', 'initial': 'G', 'name': 'Event G', 'startDt': '06-12-2016', 'endDt': '06-12-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' },
+        //    //{ 'id': '10', 'initial': 'J', 'name': 'Event J', 'startDt': '06-13-2016', 'endDt': '06-13-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' }
+        //];
+        self.sampleEvents.push({ 'id': '111', 'initial': 'A', 'name': 'Event A', 'startDt': '01-30-2017', 'endDt': '01-31-2017', 'bgcolor': '#2ecc71', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': true, 'highlightBorderColor': '#000000' });
         //console.log(self.sampleEvents);
         //self.sampleEvents.push({ 'id': '10', 'initial': 'J', 'name': 'Event J', 'startDt': '06-17-2016', 'endDt': '06-17-2016', 'bgcolor': '#000', 'color': '#ffffff', 'subject': 'Will not have have access to e-mails. You can contact me on XXX-XXX-XXXX', 'highlightBorder': false, 'highlightBorderColor': '#000000' });
     }
@@ -190,12 +192,13 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
 
     self.popupSettings = {
         'hidden': false,
-        'showLeft': false,
+        'showLeft': true,
         'showRight': false,
-        'leftLabel': 'Add Events',
+        'leftLabel': ' + Add Events',
         'rightLabel': 'Edit Details',
         'showWhenEventsEmpty': true,
-        'dateFilter': 'MM/dd/yy'
+        'dateFilter': 'MM/dd/yy',
+        'labelDateFilter': 'EEE MMM dd yyyy'
     };
 
     self.popupSettings2 = {
@@ -206,7 +209,8 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'rightLabel': 'Edit Details',
         'showWhenEventsEmpty': true,
         'showDateInYearView': true,
-        'dateFilter': 'EEE MMM dd yyyy'
+        'dateFilter': 'EEE MMM dd yyyy',
+        'labelDateFilter': 'MM/dd/yy'
     };
 
     self.popupSettingsHidden = {
@@ -248,7 +252,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         self.dtLight2 = null;
     };
 
-    self.showMode = false;
+    self.showMode = true;
 
     // Disable weekend selection
     self.disabled = function (date, mode) {

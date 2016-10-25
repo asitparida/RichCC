@@ -25,7 +25,7 @@
     <!--datepicker.html-->
     <div id="richccTmplDatepicker">
         <div class="uib-datepicker richcc-datepicker" ng-switch="datepickerMode" role="application" ng-keydown="keydown($event)" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}">
-            <div class="richcc-comp-title">Calendar</div>
+            <div class="richcc-comp-title">&nbsp;</div>
             <div class="richcc-cal-holder" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}">
                 <richcc-daypicker ng-switch-when="day" tabindex="0"></richcc-daypicker>
                 <richcc-monthpicker-heatmap ng-switch-when="month" ng-if="yearMapHeat == true" tabindex="0"></richcc-monthpicker-heatmap>
@@ -357,7 +357,7 @@
     <div id="richccTmplDayPopup">
         <div class="richcc-day-popup">
             <div class="event-container" ng-class="{'noActions': !(eventPopupSettings.showLeft || eventPopupSettings.showRight)}">
-                <div class="event-container-label">{{dt.date | date:eventPopupSettings.dateFilter}} <span ng-show="eventDetails[dt.key].length > 0 ">({{eventDetails[dt.key].length}} Events)</span></div>
+                <div class="event-container-label">{{dt.date | date:eventPopupSettings.labelDateFilter}} <span ng-show="eventDetails[dt.key].length > 0 ">({{eventDetails[dt.key].length}} <span ng-show="eventDetails[dt.key].length != 1">Events</span><span ng-show="eventDetails[dt.key].length == 1">Event</span>)</span></div>
                 <div class="event-details-container">
                     <div class="event-detail" ng-repeat="event in eventDetails[dt.key] | orderBy:'isHoliday' track by $index" ng-click="popUpEventClickHandler(dt, event)" ng-class="{'event-holiday' : event.isHoliday}" ng-style="{'background-color': (event.isHoliday ? event.bgcolor: '#fff')}">
                         <div class="event-marker"></div>
@@ -366,6 +366,7 @@
                             <div class="event-timing-holder" ng-if="event.isHoliday != true">
                                 <span class="event-time">{{event._startDt | date:eventPopupSettings.dateFilter}}</span><span style="padding: 0 15px;">-</span><span class="event-time">{{event._endDt | date: eventPopupSettings.dateFilter}}</span>
                             </div>
+                            <span class="event-time" style="text-transform:none;">{{event.timeMetaData}}</span>
                             <div class="event-timing-holder" ng-if="event.isHoliday == true">
                                 <span class="event-time holiday">{{event.holidayType}}</span>
                             </div>
@@ -386,12 +387,13 @@
     <div id="richccTmplRichccMonthPopup">
         <div class="richcc-day-popup" ng-init="">
             <div class="event-container" ng-class="{'noActions': !(parent.eventPopupSettings.showLeft || parent.eventPopupSettings.showRight)}">
-                <div class="event-container-label">{{column.date | date: parent.eventPopupSettings.dateFilter}} <span ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length > 0 ">({{parent.monthWiseEventDetails[monthIndex][column.key].length}} Events)</span></div>
+                <div class="event-container-label">{{column.date | date: parent.eventPopupSettings.labelDateFilter}} <span ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length > 0 ">({{parent.monthWiseEventDetails[monthIndex][column.key].length}} <span ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length != 1">Events</span><span ng-show="parent.monthWiseEventDetails[monthIndex][column.key].length == 1">Event</span>)</span></div>
                 <div class="event-details-container">
                     <div class="event-detail" ng-repeat="event in parent.monthWiseEventDetails[monthIndex][column.key] track by $index" ng-click="popUpEventClickHandler(column, event)">
                         <div class="event-marker"></div>
                         <div class="event-title-holder" ng-style="{'border-left-color': event.bgcolor}" ng-class="{ 'highlightBorder': event.highlightBorder}">
                             <span class="event-title">{{event.name}}</span> : <span class="event-subject">{{event.subject}}</span>
+                            <span class="event-time" style="text-transform:none;">{{event.timeMetaData}}</span>
                             <div class="event-timing-holder">
                                 <span class="event-time">{{event._startDt | date: parent.eventPopupSettings.dateFilter}}</span><span style="padding: 0 15px;">-</span><span class="event-time">{{event._endDt | date: parent.eventPopupSettings.dateFilter}}</span>
                             </div>
