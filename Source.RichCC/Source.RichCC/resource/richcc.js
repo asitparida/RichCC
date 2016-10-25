@@ -2771,7 +2771,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                                 }
                                                 else {
                                                     _evTmpl = _evTmpl.replace('EVENTDETAILBGCOLOR', '#fff');
-                                                    var _otherStuffTmpl = ': <span class="event-subject">EVENTSUBJECT</span><div class="event-timing-holder"><span class="event-time ng-binding">EVENTSTARTIME</span><span style="padding: 0px 15px;">-</span><span class="event-time ng-binding">EVENTENDTIME</span></div>';
+                                                    var _otherStuffTmpl = ': <span class="event-subject">EVENTSUBJECT</span><div class="event-timing-holder"><span class="event-time ng-binding">EVENTSTARTIME</span><span style="padding: 0px 15px;">-</span><span class="event-time ng-binding">EVENTENDTIME</span><span class="event-time" style="text-transform:none;"> EVENTTIMEMETADATA</span></div>';
                                                     _otherStuffTmpl = _otherStuffTmpl.replace('EVENTSUBJECT', evt.subject || '');
                                                     //EVENTSTARTIME
                                                     _otherStuffTmpl = _otherStuffTmpl.replace('EVENTSTARTIME', $filter('date')(evt._startDt, $scope.eventPopupSettings.dateFilter) || '');
@@ -2781,6 +2781,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                                 }
                                                 _evTmpl = _evTmpl.replace('POPOVERBGCOLOR', evt.bgcolor);
                                                 _evTmpl = _evTmpl.replace('EVENTTITLE', evt.name || '');
+                                                _evTmpl = _evTmpl.replace('EVENTTIMEMETADATA', evt.timeMetaData || '');
                                                 var _id = column.key + '_evtdet_' + iter;
                                                 _evTmpl = _evTmpl.replace('EVENTDETAILID', _id);
                                                 _evTmpl = _evTmpl.replace('MINDEX', _mIndex);
