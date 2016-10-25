@@ -2485,8 +2485,9 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 if (_proceedFurther == true) {
                     var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
                     if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
-                        _dayEventDetails[key] = [];
-                    var _evKey = _eventDetail.id + '_' + _day.getMonth();
+                        _dayEventDetails[key] = [];                    
+                    var _evKey = _eventDetail.id + '_' + new Date(_eventDetail._startDt).getTime() + '_' + _day.getMonth();
+                    console.log(_evKey);
                     if (_monthEventDetails[_evKey] != true) {
                         var _oldOrder = _eventDetail.order;
                         _eventDetail.order = getOrder(_dayEventDetails[key]);
