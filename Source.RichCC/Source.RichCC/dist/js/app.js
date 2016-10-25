@@ -197,7 +197,8 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'leftLabel': ' + Add Events',
         'rightLabel': 'Edit Details',
         'showWhenEventsEmpty': true,
-        'dateFilter': 'MM/dd/yy'
+        'dateFilter': 'MM/dd/yy',
+        'labelDateFilter': 'EEE MMM dd yyyy'
     };
 
     self.popupSettings2 = {
@@ -208,7 +209,8 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'rightLabel': 'Edit Details',
         'showWhenEventsEmpty': true,
         'showDateInYearView': true,
-        'dateFilter': 'EEE MMM dd yyyy'
+        'dateFilter': 'EEE MMM dd yyyy',
+        'labelDateFilter': 'MM/dd/yy'
     };
 
     self.popupSettingsHidden = {
@@ -250,7 +252,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         self.dtLight2 = null;
     };
 
-    self.showMode = false;
+    self.showMode = true;
 
     // Disable weekend selection
     self.disabled = function (date, mode) {
