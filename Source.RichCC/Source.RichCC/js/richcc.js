@@ -353,6 +353,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
 
       $scope.datepickerMode = $scope.datepickerMode || datepickerConfig.datepickerMode;
       $scope.uniqueId = 'datepicker-' + $scope.$id + '-' + Math.floor(Math.random() * 10000);
+      $scope.datePickerUID = 'dpt_' + Math.floor(Math.random() * 1000);
 
       $scope.disabled = angular.isDefined($attrs.disabled) || false;
       if (angular.isDefined($attrs.ngDisabled)) {
@@ -403,8 +404,18 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
               this._refreshView();
               if ($scope.activeDt) {
                   $scope.activeDateId = $scope.activeDt.uid;
+                  var sid = '#' + $scope.activeDateId + ' span.date-num';
+                  setTimeout(function () {
+                      var _node = document.querySelector(sid);
+                      if (_node) {
+                          _node.innerHTML = '<span style=\"position: absolute;clip: rect(1px, 1px, 1px, 1px);padding: 0;border: 0;height: 1px;width: 1px;overflow: hidden;\">' + $scope.activeDt.label + '</span>' + ($scope.activeDt.ariaHelpLabel ? '<span style=\"position: absolute;clip: rect(1px, 1px, 1px, 1px);padding: 0;border: 0;height: 1px;width: 1px;overflow: hidden;\">' + $scope.activeDt.ariaHelpLabel + '</span>' : '');
+                      }
+                      var _node = document.querySelector('#tb' + $scope.datePickerUID + '[aria-activedescendant]');
+                      if (_node)
+                          _node.setAttribute('aria-activedescendant', $scope.activeDateId);
+                  }, 100);
               }
-
+              console.log($scope.activeDt);
               var date = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
               date = dateParser.fromTimezone(date, ngModelOptions.timezone);
               ngModelCtrl.$setValidity('dateDisabled', !date ||
@@ -998,9 +1009,9 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         for (var i = 0; i < 42; i++) {
             days[i] = angular.extend(this.createDateObject(days[i], this.formatDay), {
                 secondary: days[i].getMonth() !== month,
-                uid: scope.uniqueId + '-' + i,
+                uid: scope.uniqueId + '-' + days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate(),
                 key: days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate()
-            });
+            });            
         }
 
         scope.labels = new Array(7);
@@ -1103,7 +1114,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         } else if (key === 'end') {
             date = getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth());
         }
-        this.activeDate.setDate(date);
+        this.activeDate.setDate(date);        
     };
 
     /* EVENTS LOGIC */

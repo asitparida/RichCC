@@ -514,6 +514,10 @@
                                     height: 18px;
                                     vertical-align: middle;
 
+                                    &.cc-focus {
+                                        outline: 1px dotted #000;
+                                    }
+
                                     &.showBg {
                                         padding: 1px;
 
@@ -1128,7 +1132,9 @@
 
         tbody {
             tr {
-
+                /*td:focus {
+                    background: #000;
+                }*/
                 &.richcc-row {
                     &:not(:last-child) {
                         border-bottom: 1px solid rgba(0,0,0,0.05);
@@ -1147,6 +1153,12 @@
                             transition: all 0.2s linear;
                             height: 16.67%;
                             text-align: left;
+
+                            &.cc-focus {
+                                outline: 1px dotted #000;
+                            }
+
+
 
                             &.notrans {
                                 animation: none;
@@ -1487,6 +1499,10 @@
                             height: 96px;
                             text-align: left;
 
+                            &.cc-focus {
+                                outline: 1px dotted #000;
+                            }
+
                             &.notrans {
                                 animation: none;
                                 transition: none;
@@ -1783,6 +1799,10 @@
             tbody {
                 .richcc-row {
                     .richcc-td {
+
+                        &.cc-focus {
+                            outline: 1px dotted #000;
+                        }
                         /*.dayHolder{
                             display:none;
                         }*/
