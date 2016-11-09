@@ -32,11 +32,12 @@
                 <richcc-monthpicker-eventmap ng-switch-when="month" ng-if="yearMapHeat == false" tabindex="0"></richcc-monthpicker-eventmap>
                 <richcc-yearpicker ng-switch-when="year" tabindex="0"></richcc-yearpicker>
             </div>
+            <span ng-attr-id="empSpan_{{datePickerUID}}"></span>
         </div>
     </div>
     <!--day.html-->
     <div id="richccTmplDay">
-        <table class="uib-daypicker richcc-daypicker" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}" id="{{datePickerUID}}">
+        <table class="uib-daypicker richcc-daypicker" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}" id="tb{{datePickerUID}}">
             <thead>
                 <tr class="header-action-holder" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}">
                     <th colspan="1" ng-if="light != true"></th>
@@ -44,12 +45,14 @@
                         <div class="header-actions" ng-class="{'calNavHidden' : hideCalNav == true}">
                             <button class="richcc-icon-container nav-left" cc-key="move(-1)" ng-disabled="preventCalNav == true" ng-hide="hideCalNav == true">
                                 <i class="richcc-icon icon-ScrollChevronLeftLegacy"></i>
+                                <span class="offscreen">Move to previous</span>
                             </button>
                             <button class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode">
                                 <span class="title">{{title}}</span>
                             </button>
                             <button class="richcc-icon-container nav-right" cc-key="move(1)" ng-disabled="preventCalNav == true" ng-hide="hideCalNav == true">
                                 <i class="richcc-icon icon-ScrollChevronRightLegacy"></i>
+                                <span class="offscreen">Move to next</span>
                             </button>
                         </div>
                     </th>
@@ -57,7 +60,10 @@
                 </tr>
                 <tr class="header-dayname-row">
                     <th ng-if="showWeeks && false" class="text-center"></th>
-                    <th colspan="1" ng-repeat="label in labels track by $index" class="text-center dayTitle"><span aria-label="{{label.full}}" ng-if="light != true">{{label.abbr | limitTo:3}}</span><span ng-if="light == true" aria-label="{{label.full}}">{{label.abbr | limitTo:2}}</span></th>
+                    <th colspan="1" ng-repeat="label in labels track by $index" class="text-center dayTitle">
+                        <span ng-if="light != true"><span class="offscreen" style="position: absolute;clip: rect(1px, 1px, 1px, 1px);padding: 0;border: 0;height: 1px;width: 1px;overflow: hidden;" aria-hidden="false">{{label.full}}</span><span aria-hidden="true">{{label.abbr | limitTo:3}}</span></span>
+                        <span ng-if="light == true"><span class="offscreen" style="position: absolute;clip: rect(1px, 1px, 1px, 1px);padding: 0;border: 0;height: 1px;width: 1px;overflow: hidden;" aria-hidden="false">{{label.full}}</span><span aria-hidden="true">{{label.abbr | limitTo:2}}</span></span>
+                    </th>
                     <th colspan="1" ng-if="light == true"></th>
                 </tr>
             </thead>
@@ -68,11 +74,11 @@
                         id="{{dt.uid}}"
                         ng-class="{'cc-focus': dt.key == activeDt.key}"
                         colspan="1"
-                        tabindex="0"
                         ng-disabled="dt.disabled"
                         ng-init="columnindex = $index"
                         ng-click="richccDaySelected(dt, eventDetails[dt.key])"
                         ng-keyup="richccDaySelectedKeyUp($event, dt, eventDetails[dt.key])"
+                        ng-keydown="richccDaySelectedKeyUp($event, dt, eventDetails[dt.key])"                        
                         uib-popover-template="dayPopUpTmpl"
                         popover-trigger="{{popUpTrigger(eventDetails[dt.key])}}"
                         popover-append-to-body="true"
@@ -83,14 +89,15 @@
                              ng-class="{'cc-current': dt.current, 'cc-muted': dt.secondary}"
                              ng-if="light != true" aria-hidden="true">
                             <div class="richcc-day">
-                                <span>{{dt.label}}</span>
+                                <span aria-hidden="true">{{dt.label}}</span>
                             </div>
                         </div>
                         <div class="richcc-time-label" ng-show="showDataLabel == true && light != true" aria-hidden="true">
-                            <span ng-show="dataLabels[dt.key]">{{dataLabels[dt.key]}}</span>
-                            <span ng-hide="dataLabels[dt.key]">{{defaultDataLabel}}</span>
+                            <span ng-show="dataLabels[dt.key]" aria-hidden="true">{{dataLabels[dt.key]}}</span>
+                            <span ng-hide="dataLabels[dt.key]" aria-hidden="true">{{defaultDataLabel}}</span>
                             <span class="customIconClass" ng-class="dt.customIconClass"></span>
                         </div>
+                        <span class="offscreen">{{eventDetails[dt.key].length}} events present</span>
                         <div class="markHolder pointerNone" ng-show="eventDetails[dt.key].length > 0" ng-if="expandedMode == true" aria-hidden="true">
                             <div class="mark step-{{event.step}}"
                                  ng-attr-step="{{ event.step}}"
@@ -352,7 +359,7 @@
     </div>
     <!--richccDayPopup.html-->
     <div id="richccTmplDayPopup">
-        <div class="richcc-day-popup">
+        <div class="richcc-day-popup" ng-init="popUpTriggered(dt.key)" ng-attr-id="popup_{{dt.key}}" tabindex="0" ng-keyup="popUpKeyUp($event, dt.key)">
             <div class="event-container" ng-class="{'noActions': !(eventPopupSettings.showLeft || eventPopupSettings.showRight)}">
                 <div class="event-container-label">{{dt.date | date:eventPopupSettings.labelDateFilter}} <span ng-show="eventDetails[dt.key].length > 0 ">({{eventDetails[dt.key].length}} <span ng-show="eventDetails[dt.key].length != 1">Events</span><span ng-show="eventDetails[dt.key].length == 1">Event</span>)</span></div>
                 <div class="event-details-container">
