@@ -41,8 +41,8 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
     return self;
 })
 
-.controller('RichccDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser', 'richCCShared',
-  function ($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser, richCCShared) {
+.controller('RichccDatepickerController', ['$scope', '$timeout', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'richccDatepickerConfig', '$datepickerSuppressError', 'uibDateParser', 'richCCShared',
+  function ($scope, $timeout, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser, richCCShared) {
       var self = this,
           ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl;
           ngModelOptions = {},
@@ -353,6 +353,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
 
       $scope.datepickerMode = $scope.datepickerMode || datepickerConfig.datepickerMode;
       $scope.uniqueId = 'datepicker-' + $scope.$id + '-' + Math.floor(Math.random() * 10000);
+      $scope.datePickerUID = 'dpt_' + Math.floor(Math.random() * 1000);
 
       $scope.disabled = angular.isDefined($attrs.disabled) || false;
       if (angular.isDefined($attrs.ngDisabled)) {
@@ -403,8 +404,17 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
               this._refreshView();
               if ($scope.activeDt) {
                   $scope.activeDateId = $scope.activeDt.uid;
+                  var sid = '#' + $scope.activeDateId + ' span.date-num';
+                  setTimeout(function () {
+                      var _node = document.querySelector(sid);
+                      if (_node) {
+                          _node.innerHTML = '<span style=\"position: absolute;clip: rect(1px, 1px, 1px, 1px);padding: 0;border: 0;height: 1px;width: 1px;overflow: hidden;\">' + $scope.activeDt.label + '</span>' + ($scope.activeDt.ariaHelpLabel ? '<span style=\"position: absolute;clip: rect(1px, 1px, 1px, 1px);padding: 0;border: 0;height: 1px;width: 1px;overflow: hidden;\">' + $scope.activeDt.ariaHelpLabel + '</span>' : '');
+                      }
+                      var _node = document.querySelector('#tb' + $scope.datePickerUID + '[aria-activedescendant]');
+                      if (_node)
+                          _node.setAttribute('aria-activedescendant', $scope.activeDateId);
+                  }, 100);
               }
-
               var date = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
               date = dateParser.fromTimezone(date, ngModelOptions.timezone);
               ngModelCtrl.$setValidity('dateDisabled', !date ||
@@ -468,6 +478,15 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
           }
           return arrays;
       };
+
+      $scope.triggerPopUpIfAvailable = function (date) {
+          var _elem = document.getElementById($scope.activeDt.uid);
+          if (_elem) {
+              $timeout(function () {
+                  $(_elem).trigger('click');
+              });
+          }
+      }
 
       $scope.select = function (date) {
           if ($scope.datepickerMode === self.minMode) {
@@ -533,7 +552,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
       // Listen for focus requests from popup directive
       $scope.$on('uib:datepicker.focus', focusElement);
 
-      $scope.keydown = function (evt) {
+      $scope.keydown = function (evt) {          
           var key = $scope.keys[evt.which];
 
           if (!key || evt.shiftKey || evt.altKey || $scope.disabled) {
@@ -549,7 +568,8 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
               if (self.isDisabled(self.activeDate)) {
                   return; // do nothing
               }
-              $scope.select(self.activeDate);
+              //$scope.select(self.activeDate);
+              $scope.triggerPopUpIfAvailable(self.activeDate);
           } else if (evt.ctrlKey && (key === 'up' || key === 'down')) {
               $scope.toggleMode(key === 'up' ? 1 : -1);
           } else {
@@ -566,7 +586,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
       });
   }])
 
-.controller('RichccDaypickerController', ['$scope', '$element', 'dateFilter', 'WorkerService', 'richCCShared', function (scope, $element, dateFilter, WorkerService, richCCShared) {
+.controller('RichccDaypickerController', ['$scope', '$timeout', '$element', 'dateFilter', 'WorkerService', 'richCCShared', function (scope, $timeout, $element, dateFilter, WorkerService, richCCShared) {
     //.controller('RichccDaypickerController', ['$scope', '$element', 'dateFilter', function (scope, $element, dateFilter) {
     var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -883,6 +903,29 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         }
     }
 
+    scope.popUpTriggered = function (key) {
+        $timeout(function () {
+            var _popUp = document.getElementById('popup_' + key);
+            if (_popUp) {
+                $(_popUp).focus();
+            }
+        }, 50);
+    }
+
+    scope.popUpKeyUp = function (e, key) {
+        if (e.keyCode == 27) {
+            $timeout(function () {
+                var _popUpCloseElem = document.getElementById('empSpan_' + scope.datePickerUID);                
+                if (_popUpCloseElem) {
+                    $(_popUpCloseElem).trigger('click');
+                    var _datePicker = document.getElementById('tb' + scope.datePickerUID);
+                    if (_datePicker)
+                        $(_datePicker).focus();
+                }
+            }, 50);
+        }        
+    }
+
     scope.popUpTrigger = function (events) {
         try {
             var eventPopupSettings = scope.eventPopupSettings;
@@ -998,7 +1041,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         for (var i = 0; i < 42; i++) {
             days[i] = angular.extend(this.createDateObject(days[i], this.formatDay), {
                 secondary: days[i].getMonth() !== month,
-                uid: scope.uniqueId + '-' + i,
+                uid: scope.uniqueId + '-' + days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate(),
                 key: days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate()
             });
         }
@@ -1104,6 +1147,10 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             date = getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth());
         }
         this.activeDate.setDate(date);
+        ////console.log(this.activeDate);
+        //var _elem = document.getElementById(scope.uniqueId + '-' + this.activeDate.getFullYear() + '_' + this.activeDate.getMonth() + '_' + this.activeDate.getDate());
+        //if (_elem)
+        //    angular.element(_elem).focus();
     };
 
     /* EVENTS LOGIC */
@@ -1153,7 +1200,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
 
     function getNewOrder(days) {
         var _proceed = true;
-        var i = 1;        
+        var i = 1;
         if (days.length > 0) {
             days = days.sort(function (a, b) { return a.order - b.order });
             return days[days.length - 1].order + 1;
@@ -1261,8 +1308,8 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                     var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
                     if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
                         _dayEventDetails[key] = [];
-                    var _oldOrder = _eventDetail.order;                    
-                    if (_iter == 0) {                        
+                    var _oldOrder = _eventDetail.order;
+                    if (_iter == 0) {
                         _eventDetail.order = getNewOrder(_dayEventDetails[key]);
                     }
                     if (dayIsWeekFirst(_day, _weekFirsts) == true) {
@@ -1290,8 +1337,8 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                     if (_eventDetail.startPaint == true) {
                         _eventDetail.step = _step;
                         _step = _step + 1;
-                    }                    
-                    var _newEventDetail = _.clone(_eventDetail);                    
+                    }
+                    var _newEventDetail = _.clone(_eventDetail);
                     _dayEventDetails[key].push(_newEventDetail);
                 }
             });
@@ -2485,7 +2532,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 if (_proceedFurther == true) {
                     var key = _day.getFullYear() + '_' + _day.getMonth() + '_' + _day.getDate();
                     if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
-                        _dayEventDetails[key] = [];                    
+                        _dayEventDetails[key] = [];
                     var _evKey = _eventDetail.id + '_' + new Date(_eventDetail._startDt).getTime() + '_' + _day.getMonth();
                     console.log(_evKey);
                     if (_monthEventDetails[_evKey] != true) {
@@ -2708,7 +2755,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 });
                 if (self.paintTimeout) {
                     $timeout.cancel(self.paintTimeout);
-                }                                    
+                }
                 self.paintTimeout = $timeout(function () {
                     _.each(self.months, function (month, mIndex) {
                         _.each(month.rows, function (week, wIndex) {
@@ -2992,7 +3039,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     scope.init(new Date(n));
                 }
             }, true);
-            var _watcher =  scope.$watch('events', function (n, o) {
+            var _watcher = scope.$watch('events', function (n, o) {
                 console.log('events call');
                 if (typeof n !== 'undefined' && n != null && n != {}) {
                     if (scope.initialized == true)
