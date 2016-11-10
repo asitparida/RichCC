@@ -541,7 +541,7 @@
                                     vertical-align: middle;
 
                                     &.cc-focus {
-                                        outline: 1px dotted #000;
+                                        outline: 2px solid #0073c6;
                                     }
 
                                     &.showBg {
@@ -1529,7 +1529,7 @@
                             text-align: left;
 
                             &.cc-focus {
-                                outline: 1px dotted #000;
+                                outline: 2px solid #0073c6;
                             }
 
                             &.notrans {
@@ -1830,7 +1830,7 @@
                     .richcc-td {
 
                         &.cc-focus {
-                            outline: 1px dotted #000;
+                            outline: 2px solid #0073c6;
                         }
                         /*.dayHolder{
                             display:none;

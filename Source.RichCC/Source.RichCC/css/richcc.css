@@ -331,7 +331,7 @@
       height: 18px;
       vertical-align: middle; }
       .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-monthviewer tbody tr.richcc-row td.richcc-td.cc-focus {
-        outline: 1px dotted #000; }
+        outline: 2px solid #0073c6; }
       .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-monthviewer tbody tr.richcc-row td.richcc-td.showBg {
         padding: 1px; }
         .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-monthviewer tbody tr.richcc-row td.richcc-td.showBg .richcc-month-eventbox {
@@ -2258,7 +2258,7 @@
         height: 96px;
         text-align: left; }
         .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td.cc-focus {
-          outline: 1px dotted #000; }
+          outline: 2px solid #0073c6; }
         .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td.notrans {
           animation: none;
           transition: none; }
@@ -3965,7 +3965,7 @@
                             display:none;
                         }*/ }
     .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td.cc-focus {
-      outline: 1px dotted #000; }
+      outline: 2px solid #0073c6; }
     .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder {
       height: 100%; }
       .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder.pointerNone {
