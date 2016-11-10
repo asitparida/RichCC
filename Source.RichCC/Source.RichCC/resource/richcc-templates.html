@@ -45,14 +45,14 @@
                         <div class="header-actions" ng-class="{'calNavHidden' : hideCalNav == true}">
                             <button class="richcc-icon-container nav-left" cc-key="move(-1)" ng-disabled="preventCalNav == true" ng-hide="hideCalNav == true">
                                 <i class="richcc-icon icon-ScrollChevronLeftLegacy"></i>
-                                <span class="offscreen">Move to previous</span>
+                                <span class="offscreen" >Move to previous <span ng-if="datepickerMode == 'day'"> month</span><span ng-if="datepickerMode == 'month'"> year</span></span>
                             </button>
                             <button class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="true" >
                                 <span class="title">{{title}}</span>
                             </button>
                             <button class="richcc-icon-container nav-right" cc-key="move(1)" ng-disabled="preventCalNav == true" ng-hide="hideCalNav == true">
                                 <i class="richcc-icon icon-ScrollChevronRightLegacy"></i>
-                                <span class="offscreen">Move to next</span>
+                                <span class="offscreen">Move to next <span ng-if="datepickerMode == 'day'"> month</span><span ng-if="datepickerMode == 'month'"> year</span></span>
                             </button>
                         </div>
                     </th>
