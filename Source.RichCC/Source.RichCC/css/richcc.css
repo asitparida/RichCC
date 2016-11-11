@@ -523,6 +523,8 @@
     .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer thead tr,
     .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer thead tr th {
       height: 0 !important; }
+    .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer tbody tr.richcc-row.noInitials td.richcc-td .richcc-month-eventbox .markHolder.cc-focus {
+      outline: 2px solid #0073c6; }
     .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer tbody tr.richcc-row.noInitials td.richcc-td .richcc-month-eventbox .markHolder .mark .mark-stripe.light {
       margin-left: 3px !important; }
     .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer tbody tr.richcc-row td.richcc-td {
@@ -563,6 +565,8 @@
           -moz-box-sizing: content-box;
           -webkit-box-sizing: content-box;
           box-sizing: content-box; }
+          .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer tbody tr.richcc-row td.richcc-td .richcc-month-eventbox .richcc-eventbox-content .markHolder.cc-focus {
+            outline: 2px solid #0073c6; }
           .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer tbody tr.richcc-row td.richcc-td .richcc-month-eventbox .richcc-eventbox-content .markHolder .mark.top {
             top: 13px; }
           .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer tbody tr.richcc-row td.richcc-td .richcc-month-eventbox .richcc-eventbox-content .markHolder .mark.bottom {
@@ -574,6 +578,8 @@
           .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer tbody tr.richcc-row td.richcc-td .richcc-month-eventbox .richcc-eventbox-content .markHolder {
             width: 100%;
             height: 100%; }
+            .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer tbody tr.richcc-row td.richcc-td .richcc-month-eventbox .richcc-eventbox-content .markHolder.cc-focus {
+              outline: 2px solid #0073c6; }
             .richcc-datepicker .richcc-daypicker.uib-monthpicker .richcc-month-event-box-holder .richcc-monthviewer tbody tr.richcc-row td.richcc-td .richcc-month-eventbox .richcc-eventbox-content .markHolder .mark {
               background: none;
               opacity: 1; }
@@ -719,6 +725,8 @@
       .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder {
         position: relative;
         height: calc(100% - 27px); }
+        .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder.cc-focus {
+          outline: 2px solid #0073c6; }
         .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder.pointerNone {
           pointer-events: none; }
         .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder .mark {
@@ -2266,6 +2274,8 @@
           position: relative;
           width: 100%;
           box-sizing: border-box; }
+          .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td .markHolder.cc-focus {
+            outline: 2px solid #0073c6; }
           .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td .markHolder.pointerNone {
             pointer-events: none; }
           .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td .markHolder .mark {
@@ -3968,6 +3978,8 @@
       outline: 2px solid #0073c6; }
     .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder {
       height: 100%; }
+      .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder.cc-focus {
+        outline: 2px solid #0073c6; }
       .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder.pointerNone {
         pointer-events: none; }
       .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder .mark {

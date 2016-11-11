@@ -552,7 +552,7 @@
       // Listen for focus requests from popup directive
       $scope.$on('uib:datepicker.focus', focusElement);
 
-      $scope.keydown = function (evt) {          
+      $scope.keydown = function (evt) {
           var key = $scope.keys[evt.which];
 
           if (!key || evt.shiftKey || evt.altKey || $scope.disabled) {
@@ -915,7 +915,7 @@
     scope.popUpKeyUp = function (e, key) {
         if (e.keyCode == 27) {
             $timeout(function () {
-                var _popUpCloseElem = document.getElementById('empSpan_' + scope.datePickerUID);                
+                var _popUpCloseElem = document.getElementById('empSpan_' + scope.datePickerUID);
                 if (_popUpCloseElem) {
                     $(_popUpCloseElem).trigger('click');
                     var _datePicker = document.getElementById('tb' + scope.datePickerUID);
@@ -923,7 +923,7 @@
                         $(_datePicker).focus();
                 }
             }, 50);
-        }        
+        }
     }
 
     scope.popUpTrigger = function (events) {
@@ -1147,10 +1147,6 @@
             date = getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth());
         }
         this.activeDate.setDate(date);
-        ////console.log(this.activeDate);
-        //var _elem = document.getElementById(scope.uniqueId + '-' + this.activeDate.getFullYear() + '_' + this.activeDate.getMonth() + '_' + this.activeDate.getDate());
-        //if (_elem)
-        //    angular.element(_elem).focus();
     };
 
     /* EVENTS LOGIC */
@@ -2534,7 +2530,6 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     if (typeof _dayEventDetails[key] === 'undefined' || _dayEventDetails[key] == null)
                         _dayEventDetails[key] = [];
                     var _evKey = _eventDetail.id + '_' + new Date(_eventDetail._startDt).getTime() + '_' + _day.getMonth();
-                    console.log(_evKey);
                     if (_monthEventDetails[_evKey] != true) {
                         var _oldOrder = _eventDetail.order;
                         _eventDetail.order = getOrder(_dayEventDetails[key]);
@@ -2719,9 +2714,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 var _cells = angular.element(document.getElementsByClassName('richcc-year-row'));
                 _.each(_cells, function (cell) {
                     var id = cell.getAttribute('id');
-                    //console.log(document.getElementById(id));
                     angular.element(document.getElementById(id)).empty();
-                    //console.log(document.getElementById(id));
                 });
                 self.months = [];
                 for (var id in self.popUpState) {
@@ -2761,7 +2754,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                         _.each(month.rows, function (week, wIndex) {
                             var _rowElm = angular.element(document.getElementById('row_' + mIndex + '_' + wIndex));
                             _.each(week, function (column, cIndex) {
-                                var _cellTmpl = '<td role="gridcell" class="uib-day text-center richcc-td" id="CELLID"></td>'
+                                var _cellTmpl = '<td role="gridcell" class="uib-day text-center richcc-td" id="CELLID"></td>';
                                 var _cid = _.uniqueId('richcc_cell_');
                                 _cellTmpl = _cellTmpl.replace('CELLID', _cid);
                                 _rowElm.append(_cellTmpl);
@@ -2836,7 +2829,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             var _evtTmpls = '';
                                             eventDetails = _.sortBy(eventDetails, function (evt) { evt.isHoliday = evt.isHoliday || false; return evt.isHoliday == true ? -1 : 1 });
                                             _.each(eventDetails, function (evt, iter) {
-                                                var _evTmpl = '<div class="event-detail EVENTHOLIDAYCLASS " style="background-color:EVENTDETAILBGCOLOR" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" evid="EVTPRIMARYIDDET" id="EVENTDETAILID" iter="ITERATOR"><div class="event-marker"></div><div class="event-title-holder POPUPHIGHLIGHTBORDERCLASS" style="border-left-color: POPOVERBGCOLOR"><span class="event-title">EVENTTITLE</span> EVENDETAILSOTHERSTUFF </div></div>';
+                                                var _evTmpl = '<div class="event-detail EVENTHOLIDAYCLASS " tabindex="0" style="background-color:EVENTDETAILBGCOLOR" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" evid="EVTPRIMARYIDDET" id="EVENTDETAILID" iter="ITERATOR"><div class="event-marker"></div><div class="event-title-holder POPUPHIGHLIGHTBORDERCLASS" style="border-left-color: POPOVERBGCOLOR"><span class="event-title">EVENTTITLE</span> EVENDETAILSOTHERSTUFF </div></div>';
                                                 _evTmpl = _evTmpl.replace('EVTPRIMARYIDDET', evt.id);
                                                 if (evt.highlightBorder)
                                                     _evTmpl = _evTmpl.replace('POPUPHIGHLIGHTBORDERCLASS', 'highlightBorder');
@@ -2995,13 +2988,36 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                             });
                         });
                     });
+                    $scope.currentYearModelDt = new Date(dt);                    
+                    self.focusCurrentCell();
                     $scope.initialized = true;
                     self.inProgress = false;
                 }, 300);
             }
 
+            self.getUID = function (dt) {
+                return dt ? dt.getFullYear() + '_' + dt.getMonth() + '_' + dt.getDate() : '';
+            }
+
+            self.focusCurrentCell = function () {
+                var _tblYearPicker = document.getElementById($scope.dtPickerYearID);
+                if (_tblYearPicker) {
+                    _tblYearPicker.setAttribute('aria-activedescendant', 'mh_' + self.activeDtID);
+                }
+                if (self.activeDtID) {
+                    var _origElem = document.getElementById('mh_' + self.activeDtID);
+                    if (_origElem) {
+                        _origElem.classList.remove('cc-focus');
+                    }
+                }
+                self.activeDtID = self.getUID($scope.currentYearModelDt);
+                var _cell = document.getElementById('mh_' + self.activeDtID);
+                if (_cell) {                    
+                    _cell.classList.add('cc-focus');
+                }
+            }
+
             $scope.processEventsChange = function (e) {
-                console.log('processEventsChange');
                 self.reset();
                 self.processDt(self.dt);
             }
@@ -3030,6 +3046,48 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 }
             }
 
+            self.keys = {
+                13: 'enter', 32: 'space', 33: 'pageup', 34: 'pagedown', 35: 'end', 36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down'
+            };
+
+            self.keydown = function (evt) {
+                var key = self.keys[evt.which];
+                if (!key || evt.shiftKey || evt.altKey || $scope.disabled) {
+                    return;
+                }
+                evt.preventDefault();
+
+                if (key === 'enter' || key === 'space') {
+                    self.triggerPopUpIfAvailable($scope.currentYearModelDt);
+                } else if (key === 'left') {
+                    var _origYear = $scope.currentYearModelDt.getFullYear();
+                    var _copy = new Date(angular.copy($scope.currentYearModelDt));                    
+                    _copy = new Date(_copy.setDate(_copy.getDate() - 1));
+                    if (_copy.getFullYear() == _origYear) {
+                        $scope.currentYearModelDt = new Date(_copy);
+                        self.focusCurrentCell();
+                    }
+                } else if (key === 'right') {
+                    var _origYear = $scope.currentYearModelDt.getFullYear();
+                    var _copy = new Date(angular.copy($scope.currentYearModelDt));
+                    _copy = new Date(_copy.setDate(_copy.getDate() + 1));
+                    if (_copy.getFullYear() == _origYear) {
+                        $scope.currentYearModelDt = new Date(_copy);
+                        self.focusCurrentCell();
+                    }
+                }
+                console.log($scope.currentYearModelDt);
+            }
+
+            self.triggerPopUpIfAvailable = function (dt) {
+                var _elem = document.getElementById('event_pop_trig_' + self.getUID(dt));
+                if (_elem) {
+                    $timeout(function () {
+                        $(_elem).trigger('click');
+                    });
+                }
+            }
+
         }],
         controllerAs: 'ricchYear',
         link: function (scope, elem, attrs) {
@@ -3040,7 +3098,6 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 }
             }, true);
             var _watcher = scope.$watch('events', function (n, o) {
-                console.log('events call');
                 if (typeof n !== 'undefined' && n != null && n != {}) {
                     if (scope.initialized == true)
                         scope.processEventsChange(n);
@@ -3053,7 +3110,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     $(_angElm).popover('destroy');
                 });
             });
-            console.log(scope);
+            scope.dtPickerYearID = _.uniqueId('dtPickerYear');
         }
     };
 }]);
