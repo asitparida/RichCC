@@ -541,7 +541,7 @@
                                     vertical-align: middle;
 
                                     &.cc-focus {
-                                        outline: 1px dotted #000;
+                                        outline: 2px solid #0073c6;
                                     }
 
                                     &.showBg {
@@ -864,6 +864,11 @@
                                     .richcc-month-eventbox {
 
                                         .markHolder {
+
+                                            &.cc-focus {
+                                                outline: 2px solid #0073c6;
+                                            }
+
                                             .mark {
                                                 .mark-stripe {
                                                     &.light {
@@ -922,6 +927,11 @@
                                         box-sizing: content-box;
 
                                         .markHolder {
+
+                                            &.cc-focus {
+                                                outline: 2px solid #0073c6;
+                                            }
+
                                             .mark {
 
                                                 &.top {
@@ -944,6 +954,10 @@
                                         .markHolder {
                                             width: 100%;
                                             height: 100%;
+
+                                            &.cc-focus {
+                                                outline: 2px solid #0073c6;
+                                            }
 
                                             .mark {
                                                 background: none;
@@ -1197,6 +1211,10 @@
                             .markHolder {
                                 position: relative;
                                 height: calc(100% - 27px);
+
+                                &.cc-focus {
+                                    outline: 2px solid #0073c6;
+                                }
 
                                 &.pointerNone {
                                     pointer-events: none;
@@ -1529,7 +1547,7 @@
                             text-align: left;
 
                             &.cc-focus {
-                                outline: 1px dotted #000;
+                                outline: 2px solid #0073c6;
                             }
 
                             &.notrans {
@@ -1541,6 +1559,10 @@
                                 position: relative;
                                 width: 100%;
                                 box-sizing: border-box;
+
+                                &.cc-focus {
+                                    outline: 2px solid #0073c6;
+                                }
 
                                 &.pointerNone {
                                     pointer-events: none;
@@ -1830,13 +1852,17 @@
                     .richcc-td {
 
                         &.cc-focus {
-                            outline: 1px dotted #000;
+                            outline: 2px solid #0073c6;
                         }
                         /*.dayHolder{
                             display:none;
                         }*/
                         .markHolder {
                             height: 100%;
+
+                            &.cc-focus {
+                                outline: 2px solid #0073c6;
+                            }
 
                             &.pointerNone {
                                 pointer-events: none;
