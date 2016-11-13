@@ -68,6 +68,7 @@
             'monthPopUpTmpl',
             'dayPopUpTmpl',
             'customClass',
+            'customAriaLabel',
             'customIconClass',
             'datepickerMode',
             'formatDay',
@@ -126,6 +127,7 @@
                       }
                       break;
                   case 'customIconClass':
+                  case 'customAriaLabel':
                   case 'customClass':
                       self[key] = $scope[key] = $scope.datepickerOptions[key] || angular.noop;
                       break;
@@ -438,6 +440,7 @@
               disabled: this.isDisabled(date),
               current: this.compare(date, new Date()) === 0,
               customClass: this.customClass(date) || null,
+              customAriaLabel: this.customAriaLabel(date) || null,
               customIconClass: this.customIconClass(date) || null
           };
 
@@ -466,6 +469,12 @@
               date: date, mode: $scope.datepickerMode
           });
       };
+
+      this.customAriaLabel = function (date) {
+          return $scope.customAriaLabel({
+              date: date, mode: $scope.datepickerMode
+          });
+      }
 
       this.customIconClass = function (date) {
           return $scope.customIconClass({
@@ -1527,6 +1536,13 @@
                 days[i].customClass = scope.datepickerOptions.customClass({ date: days[i].date, mode: 'year' }) || null;
             else if (typeof scope.$parent.datepickerOptions !== 'undefined' && typeof scope.$parent.datepickerOptions.customClass !== 'undefined' && typeof scope.$parent.datepickerOptions.customClass === 'function')
                 days[i].customClass = scope.$parent.datepickerOptions.customClass({ date: days[i].date, mode: 'year' }) || null;
+
+            if (typeof scope.customAriaLabel !== 'undefined' && typeof scope.customAriaLabel === 'function')
+                days[i].customAriaLabel = scope.customAriaLabel({ date: days[i].date, mode: 'year' }) || null;
+            else if (typeof scope.datepickerOptions !== 'undefined' && typeof scope.datepickerOptions.customAriaLabel !== 'undefined' && typeof scope.datepickerOptions.customAriaLabel === 'function')
+                days[i].customAriaLabel = scope.datepickerOptions.customAriaLabel({ date: days[i].date, mode: 'year' }) || null;
+            else if (typeof scope.$parent.datepickerOptions !== 'undefined' && typeof scope.$parent.datepickerOptions.customAriaLabel !== 'undefined' && typeof scope.$parent.datepickerOptions.customAriaLabel === 'function')
+                days[i].customAriaLabel = scope.$parent.datepickerOptions.customAriaLabel({ date: days[i].date, mode: 'year' }) || null;
         }
 
         scope.labels = new Array(7);

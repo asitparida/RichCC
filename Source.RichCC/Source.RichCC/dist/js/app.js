@@ -134,6 +134,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
 
     self.dtPickerOptions1 = {
         customClass: getDayClass,
+        customAriaLabel: getDayAriaLabel,
         customIconClass: getIconClass,
         showWeeks: false,
         datepickerMode: 'day',
@@ -331,6 +332,17 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         }
         if (data.date.getDate() == 4 && data.date.getMonth() == 0 && data.date.getFullYear() == 2016)
             result += 'hasHoliday';
+        return result;
+    };
+
+    function getDayAriaLabel(data) {
+        var result = '';
+        if (data.mode === 'day' || data.mode === 'year') {
+            if (data.date.getDay() == 0 || data.date.getDay() == 6)
+                result = ' day Disabled';
+        }
+        if (data.date.getDate() == 4 && data.date.getMonth() == 0 && data.date.getFullYear() == 2016)
+            result += ' has Holiday';
         return result;
     };
 

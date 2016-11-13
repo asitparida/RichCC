@@ -79,7 +79,7 @@
                         ng-click="richccDaySelected(dt, eventDetails[dt.key])"
                         ng-keyup="richccDaySelectedKeyUp($event, dt, eventDetails[dt.key])"
                         ng-keydown="richccDaySelectedKeyUp($event, dt, eventDetails[dt.key])"                        
-                        aria-label="{{dt.dtAriaLabel}} {{eventDetails[dt.key].length > 0 ? eventDetails[dt.key].length + ' events ' : '' }}"
+                        aria-label="{{dt.dtAriaLabel}} {{dt.current == true ? 'Current Day' : ''}} {{eventDetails[dt.key].length > 0 ? eventDetails[dt.key].length + ' events ' : '' }} {{dt.customAriaLabel}}"
                         uib-popover-template="dayPopUpTmpl"
                         popover-trigger="{{popUpTrigger(eventDetails[dt.key])}}"
                         popover-append-to-body="true"
