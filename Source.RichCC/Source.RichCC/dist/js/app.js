@@ -134,6 +134,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
 
     self.dtPickerOptions1 = {
         customClass: getDayClass,
+        customAriaLabel: getDayAriaLabel,
         customIconClass: getIconClass,
         showWeeks: false,
         datepickerMode: 'day',
@@ -170,6 +171,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'yearMapHeat': false,
         'preventModeToggle': false,
         'preventCalNav': true,
+        'stopHighlight': true,
         'showMarkerForMoreEvents': false,
         'hideCalNav': true,
         toggleModeCallBack: self.toggleModeCallBack,
@@ -184,6 +186,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'yearMapHeat': false,
         'preventModeToggle': false,
         'preventCalNav': false,
+        'stopHighlight': true,
         'showMarkerForMoreEvents': false,
         toggleModeCallBack: self.toggleModeCallBack,
         'hideCalNav': true
@@ -194,7 +197,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         showWeeks: false,
         datepickerMode: 'month',
         'yearMapHeat': false,
-        'preventModeToggle': true,
+        'preventModeToggle': true,        
         enableWebWorkers: false,
         noInitials: true,
         moveModeCallback: self.moveModeCallback
@@ -262,7 +265,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         self.dtLight2 = null;
     };
 
-    self.showMode = false;
+    self.showMode = true;
 
     // Disable weekend selection
     self.disabled = function (date, mode) {
@@ -329,6 +332,17 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         }
         if (data.date.getDate() == 4 && data.date.getMonth() == 0 && data.date.getFullYear() == 2016)
             result += 'hasHoliday';
+        return result;
+    };
+
+    function getDayAriaLabel(data) {
+        var result = '';
+        if (data.mode === 'day' || data.mode === 'year') {
+            if (data.date.getDay() == 0 || data.date.getDay() == 6)
+                result = ' day Disabled';
+        }
+        if (data.date.getDate() == 4 && data.date.getMonth() == 0 && data.date.getFullYear() == 2016)
+            result += ' has Holiday';
         return result;
     };
 

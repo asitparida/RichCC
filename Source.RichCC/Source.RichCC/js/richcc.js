@@ -23,6 +23,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
     yearMapHeat: false,
     preventModeToggle: false,
     preventCalNav: false,
+    stopHighlight: false,
     hideCalNav: false,
     showMarkerForMoreEvents: true,
     showDataLabel: false,
@@ -59,6 +60,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             'yearMapHeat',
             'preventModeToggle',
             'preventCalNav',
+            'stopHighlight',
             'hideCalNav',
             'showMarkerForMoreEvents',
             'showDataLabel',
@@ -66,6 +68,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             'monthPopUpTmpl',
             'dayPopUpTmpl',
             'customClass',
+            'customAriaLabel',
             'customIconClass',
             'datepickerMode',
             'formatDay',
@@ -88,6 +91,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
               switch (key) {
                   case 'enableWebWorkers':
                   case 'expandedMode':
+                  case 'stopHighlight':
                   case 'webWorkerAngularPath':
                   case 'webWorkerUnderscorePath':
                       self[key] = richCCShared[key] = $scope[key] = angular.isDefined($scope.datepickerOptions[key]) ? $scope.datepickerOptions[key] : datepickerConfig[key];
@@ -105,7 +109,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                       break;
                   case 'light':
                   case 'preventModeToggle':
-                  case 'preventCalNav':
+                  case 'preventCalNav':                  
                   case 'hideCalNav':
                   case 'showMarkerForMoreEvents':
                   case 'showDataLabel':
@@ -123,6 +127,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                       }
                       break;
                   case 'customIconClass':
+                  case 'customAriaLabel':
                   case 'customClass':
                       self[key] = $scope[key] = $scope.datepickerOptions[key] || angular.noop;
                       break;
@@ -435,6 +440,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
               disabled: this.isDisabled(date),
               current: this.compare(date, new Date()) === 0,
               customClass: this.customClass(date) || null,
+              customAriaLabel: this.customAriaLabel(date) || null,
               customIconClass: this.customIconClass(date) || null
           };
 
@@ -463,6 +469,12 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
               date: date, mode: $scope.datepickerMode
           });
       };
+
+      this.customAriaLabel = function (date) {
+          return $scope.customAriaLabel({
+              date: date, mode: $scope.datepickerMode
+          });
+      }
 
       this.customIconClass = function (date) {
           return $scope.customIconClass({
@@ -1009,6 +1021,11 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             });
     }
 
+    scope.popUpEventKeyUpHandler = function (dt, eventDetails, evt) {
+        if (evt.keyCode == 32 || evt.keyCode == 13)
+            scope.popUpEventClickHandler(dt, eventDetails);
+    }
+
     this.getDates = function (startDate, n) {
         var dates = new Array(n), current = new Date(startDate), i = 0, date;
         while (i < n) {
@@ -1038,10 +1055,14 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
 
         // 42 is the number of days on a six-week calendar
         var days = this.getDates(firstDate, 42);
+
+        var _monthLabels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
         for (var i = 0; i < 42; i++) {
             days[i] = angular.extend(this.createDateObject(days[i], this.formatDay), {
                 secondary: days[i].getMonth() !== month,
                 uid: scope.uniqueId + '-' + days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate(),
+                dtAriaLabel: _monthLabels[days[i].getMonth()] + ' ' + days[i].getDate() + ' ' + days[i].getFullYear(),
                 key: days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate()
             });
         }
@@ -1094,6 +1115,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         scope.expandedMode = this.expandedMode;
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
+        scope.stopHighlight = this.stopHighlight;
         scope.preventModeToggle = this.preventModeToggle;
         scope.monthPopUpTmpl = this.monthPopUpTmpl;
         scope.dayPopUpTmpl = this.dayPopUpTmpl;
@@ -1514,6 +1536,13 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                 days[i].customClass = scope.datepickerOptions.customClass({ date: days[i].date, mode: 'year' }) || null;
             else if (typeof scope.$parent.datepickerOptions !== 'undefined' && typeof scope.$parent.datepickerOptions.customClass !== 'undefined' && typeof scope.$parent.datepickerOptions.customClass === 'function')
                 days[i].customClass = scope.$parent.datepickerOptions.customClass({ date: days[i].date, mode: 'year' }) || null;
+
+            if (typeof scope.customAriaLabel !== 'undefined' && typeof scope.customAriaLabel === 'function')
+                days[i].customAriaLabel = scope.customAriaLabel({ date: days[i].date, mode: 'year' }) || null;
+            else if (typeof scope.datepickerOptions !== 'undefined' && typeof scope.datepickerOptions.customAriaLabel !== 'undefined' && typeof scope.datepickerOptions.customAriaLabel === 'function')
+                days[i].customAriaLabel = scope.datepickerOptions.customAriaLabel({ date: days[i].date, mode: 'year' }) || null;
+            else if (typeof scope.$parent.datepickerOptions !== 'undefined' && typeof scope.$parent.datepickerOptions.customAriaLabel !== 'undefined' && typeof scope.$parent.datepickerOptions.customAriaLabel === 'function')
+                days[i].customAriaLabel = scope.$parent.datepickerOptions.customAriaLabel({ date: days[i].date, mode: 'year' }) || null;
         }
 
         scope.labels = new Array(7);
@@ -2372,6 +2401,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     self.yearMapHeat = false;
     self.preventModeToggle = false;
     self.preventCalNav = false;
+    self.stopHighlight = false;
     self.hideCalNav = false;
     self.showMarkerForMoreEvents = true;
     self.showDataLabel = false;
@@ -3000,6 +3030,8 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             }
 
             self.focusCurrentCell = function () {
+                if (service.stopHighlight)
+                    return;
                 var _tblYearPicker = document.getElementById($scope.dtPickerYearID);
                 if (_tblYearPicker) {
                     _tblYearPicker.setAttribute('aria-activedescendant', 'mh_' + self.activeDtID);
@@ -3012,7 +3044,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 }
                 self.activeDtID = self.getUID($scope.currentYearModelDt);
                 var _cell = document.getElementById('mh_' + self.activeDtID);
-                if (_cell) {                    
+                if (_cell) {
                     _cell.classList.add('cc-focus');
                 }
             }
