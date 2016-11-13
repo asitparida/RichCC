@@ -109,7 +109,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                       break;
                   case 'light':
                   case 'preventModeToggle':
-                  case 'preventCalNav':                  
+                  case 'preventCalNav':
                   case 'hideCalNav':
                   case 'showMarkerForMoreEvents':
                   case 'showDataLabel':
@@ -2642,6 +2642,9 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             if (typeof options.customClass === 'function') {
                 days[i].customClass = options.customClass({ date: days[i].date, mode: 'year' }) || null;
             }
+            if (typeof options.customAriaLabel === 'function') {
+                days[i].customAriaLabel = options.customAriaLabel({ date: days[i].date, mode: 'year' }) || null;
+            }
         }
 
         var labels = new Array(7);
@@ -2790,14 +2793,21 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                 _rowElm.append(_cellTmpl);
                                 if (column.IsCurrMonth == true) {
                                     var _cellElm = angular.element(document.getElementById(_cid));
-                                    var _cellElmContent = '<div class="richcc-month-eventbox"><div class="richcc-eventbox-content CUSTOM_CLASS "><div class="markHolder" style="position:relative;" id="CELL_ELM_ID"><div class="month-date"> COLUMN_DT_INITIAL </div><div class="richcc-yearly-event-popupoverlay" id="event_pop_trig_EVENTPOPTRIGGERID" key="COLUMN_KEY" mindex="MINDEX" windex="WINDEX" ></div></div></div></div>';
+                                    var _cellElmContent = '<div class="richcc-month-eventbox"><div class="richcc-eventbox-content CUSTOM_CLASS "><div dt="COLUMN_DT_ARIA" mindex="MINDEX" windex="WINDEX" cindex="CINDEX" class="markHolder" style="position:relative;" aria-label="CELL_ARIA_LABEL" id="CELL_ELM_ID"><div class="month-date"> COLUMN_DT_INITIAL </div><div class="richcc-yearly-event-popupoverlay" id="event_pop_trig_EVENTPOPTRIGGERID" key="COLUMN_KEY" mindex="MINDEX" windex="WINDEX" ></div></div></div></div>';
                                     _cellElmContent = _cellElmContent.replaceAll('MINDEX', mIndex);
                                     _cellElmContent = _cellElmContent.replaceAll('WINDEX', wIndex);
+                                    _cellElmContent = _cellElmContent.replaceAll('CINDEX', cIndex);
                                     _cellElmContent = _cellElmContent.replaceAll('EVENTPOPTRIGGERID', column.key);
                                     _cellElmContent = _cellElmContent.replaceAll('COLUMN_KEY', column.key);
                                     _cellElmContent = _cellElmContent.replaceAll('COLUMN_DT_INITIAL', $filter('date')(column.date, 'dd') || '');
+                                    _cellElmContent = _cellElmContent.replaceAll('COLUMN_DT_ARIA', $filter('date')(column.date, 'd') || '');
                                     var _markID = 'mh_' + column.key;
                                     _cellElmContent = _cellElmContent.replaceAll('CELL_ELM_ID', _markID);
+                                    var _dtForAria = new Date(column.date);
+                                    var _ariaLabel = self.monthLabels[_dtForAria.getMonth()] + ' ' + _dtForAria.getDate() + ' ' + _dtForAria.getFullYear();
+                                    if (column.customAriaLabel)
+                                        _ariaLabel = _ariaLabel + ' ' + column.customAriaLabel;
+                                    _cellElmContent = _cellElmContent.replaceAll('CELL_ARIA_LABEL', _ariaLabel);
                                     _cellElmContent = _cellElmContent.replaceAll('CUSTOM_CLASS', column.customClass || '');
                                     _cellElm.append(_cellElmContent);
                                     var eventDetails = month.eventDetails[column.key];
@@ -3018,7 +3028,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                             });
                         });
                     });
-                    $scope.currentYearModelDt = new Date(dt);                    
+                    $scope.currentYearModelDt = new Date(dt);
                     self.focusCurrentCell();
                     $scope.initialized = true;
                     self.inProgress = false;
@@ -3093,7 +3103,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     self.triggerPopUpIfAvailable($scope.currentYearModelDt);
                 } else if (key === 'left') {
                     var _origYear = $scope.currentYearModelDt.getFullYear();
-                    var _copy = new Date(angular.copy($scope.currentYearModelDt));                    
+                    var _copy = new Date(angular.copy($scope.currentYearModelDt));
                     _copy = new Date(_copy.setDate(_copy.getDate() - 1));
                     if (_copy.getFullYear() == _origYear) {
                         $scope.currentYearModelDt = new Date(_copy);
@@ -3106,6 +3116,55 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     if (_copy.getFullYear() == _origYear) {
                         $scope.currentYearModelDt = new Date(_copy);
                         self.focusCurrentCell();
+                    }
+                }
+                else if (key === 'pageup' || key === 'pagedown') {
+                    var _origYear = $scope.currentYearModelDt.getFullYear();
+                    var _copy = new Date(angular.copy($scope.currentYearModelDt));
+                    if (key === 'pageup')
+                        _copy = new Date(_copy.setMonth(_copy.getMonth() > 0 ? _copy.getMonth() - 1 : _copy.getMonth()));
+                    else if (key === 'pagedown')
+                        _copy = new Date(_copy.setMonth(_copy.getMonth() < 11 ? _copy.getMonth() + 1 : _copy.getMonth()));
+                    if (_copy.getFullYear() == _origYear) {
+                        $scope.currentYearModelDt = new Date(_copy);
+                        self.focusCurrentCell();
+                    }
+                }
+                else if (key === 'home' || key === 'end') {
+                    var _origYear = $scope.currentYearModelDt.getFullYear();
+                    var _copy = new Date(angular.copy($scope.currentYearModelDt));
+                    _copy = new Date(_copy.setMonth(key === 'home' ? 0 : 11));
+                    _copy = new Date(_copy.setDate(key === 'home' ? 1 : 31));
+                    if (_copy.getFullYear() == _origYear) {
+                        $scope.currentYearModelDt = new Date(_copy);
+                        self.focusCurrentCell();
+                    }
+                }
+                else if (key === 'up' || key === 'down') {
+                    var _uid = 'mh_' + self.activeDtID;
+                    var _elm = document.getElementById(_uid);
+                    if (_elm) {
+                        var _mindex = _elm.getAttribute('mindex');
+                        var _cindex = _elm.getAttribute('cindex');
+                        var _windex = _elm.getAttribute('windex');
+                        var _elemSelector = "div[mindex='MINDEX'][cindex='CINDEX'][windex='WINDEX']";
+                        if (_mindex)
+                            _mindex = (key === 'up') ? parseInt(_mindex) - 1 : parseInt(_mindex) + 1;
+                        _elemSelector = _elemSelector.replace('MINDEX', _mindex);
+                        _elemSelector = _elemSelector.replace('CINDEX', _cindex);
+                        _elemSelector = _elemSelector.replace('WINDEX', _windex);
+                        var _targetElm = document.querySelector(_elemSelector);
+                        if (_targetElm) {
+                            var _dt = _targetElm.getAttribute('dt');
+                            var _origYear = $scope.currentYearModelDt.getFullYear();
+                            var _copy = new Date(angular.copy($scope.currentYearModelDt));
+                            _copy = new Date(_copy.setMonth(_mindex));
+                            _copy = new Date(_copy.setDate(_dt));
+                            if (_copy.getFullYear() == _origYear) {
+                                $scope.currentYearModelDt = new Date(_copy);
+                                self.focusCurrentCell();
+                            }
+                        }
                     }
                 }
                 console.log($scope.currentYearModelDt);
