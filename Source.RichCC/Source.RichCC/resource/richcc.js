@@ -1009,6 +1009,11 @@
             });
     }
 
+    scope.popUpEventKeyUpHandler = function (dt, eventDetails, evt) {
+        if (evt.keyCode == 32 || evt.keyCode == 13)
+            scope.popUpEventClickHandler(dt, eventDetails);
+    }
+
     this.getDates = function (startDate, n) {
         var dates = new Array(n), current = new Date(startDate), i = 0, date;
         while (i < n) {

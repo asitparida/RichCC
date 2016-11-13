@@ -5,7 +5,8 @@
     cssmin = require('gulp-cssmin'),
     del = require('del'),
     html2js = require('gulp-html-js-template'),
-    minify = require('gulp-minify');
+    minify = require('gulp-minify'),
+    header = require('gulp-header');
 
 gulp.task('styles', function () {
     gulp.src('scss/*.scss')
@@ -82,6 +83,24 @@ gulp.task('concat:js', ['clean:concat:js', 'minify:js'], function () {
     .pipe(gulp.dest('./dist/min/js'));
 });
 
+
+var banner = ['/**',
+  ' * <%= pkg.name %>',
+  ' * @version v<%= pkg.version %>',
+  ' * @license <%= pkg.license %>',
+  ' * @git <%= pkg.git %>',
+  ' */',
+  ''].join('\n');
+
+
+var pkg = {
+    name: 'RICH-CC',
+    version: '1.3.2',
+    license: 'MIT',
+    git: 'https://github.com/asitparida/RichCC'
+}
+
+
 //Watch JS task
 gulp.task('default:richcc:js', function () {
     gulp.watch(['resource/richcc.js', 'resource/richcc-templates.html'], ['concat:js']);
@@ -90,6 +109,7 @@ gulp.task('default:richcc:js', function () {
 //Watch CSS task
 gulp.task('default:richcc:dist-prod', function () {
     return gulp.src(['dist/min/js/richcc.min.js', 'dist/min/css/richcc.min.css'])
+        .pipe(header(banner, { pkg: pkg }))
         .pipe(gulp.dest('../../dist'));
 });
 
