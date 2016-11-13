@@ -68,7 +68,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="uib-weeks richcc-row" ng-repeat="row in rows track by $index" ng-init="rowindex = $index" ng-class="{'collapsed-mode': !expandedMode, 'expanded-mode': expandedMode}">
+                <tr role="row" class="uib-weeks richcc-row" ng-repeat="row in rows track by $index" ng-init="rowindex = $index" ng-class="{'collapsed-mode': !expandedMode, 'expanded-mode': expandedMode}">
                     <td ng-if="showWeeks && false" class="text-center h6"><em>{{weekNumbers[$index] }}</em></td>
                     <td ng-repeat="dt in row track by $index" class="uib-day text-center richcc-td {{dt.customClass}}" role="gridcell"
                         id="{{dt.uid}}"
@@ -503,7 +503,7 @@
                                 </table>
                             </td>
                         </tr>
-                        <tr class="uib-months h40" ng-repeat="month in ricchYear.months track by $index" ng-init="mIndex = $index;" ng-class="{'collapsed-mode': !expandedMode, 'expanded-mode': expandedMode}">
+                        <tr role="row" class="uib-months h40" ng-repeat="month in ricchYear.months track by $index" ng-init="mIndex = $index;" ng-class="{'collapsed-mode': !expandedMode, 'expanded-mode': expandedMode}">
                             <td class="w48 eventMonthMarker" colspan="1">{{::ricchYear.monthLabels[$index] | limitTo:3}}</td>
                             <td ng-repeat="week in month.rows track by $index" class="uib-month text-center richcc-month-event-box-holder" role="gridcell"
                                 id="{{week.uid}}"
