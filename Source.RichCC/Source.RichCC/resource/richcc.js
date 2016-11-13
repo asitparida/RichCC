@@ -1046,10 +1046,14 @@
 
         // 42 is the number of days on a six-week calendar
         var days = this.getDates(firstDate, 42);
+
+        var _monthLabels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
         for (var i = 0; i < 42; i++) {
             days[i] = angular.extend(this.createDateObject(days[i], this.formatDay), {
                 secondary: days[i].getMonth() !== month,
                 uid: scope.uniqueId + '-' + days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate(),
+                dtAriaLabel: _monthLabels[days[i].getMonth()] + ' ' + days[i].getDate() + ' ' + days[i].getFullYear(),
                 key: days[i].getFullYear() + '_' + days[i].getMonth() + '_' + days[i].getDate()
             });
         }
