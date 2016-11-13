@@ -262,7 +262,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         self.dtLight2 = null;
     };
 
-    self.showMode = false;
+    self.showMode = true;
 
     // Disable weekend selection
     self.disabled = function (date, mode) {
