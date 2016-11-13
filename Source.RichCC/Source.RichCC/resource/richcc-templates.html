@@ -72,7 +72,7 @@
                     <td ng-if="showWeeks && false" class="text-center h6"><em>{{weekNumbers[$index] }}</em></td>
                     <td ng-repeat="dt in row track by $index" class="uib-day text-center richcc-td {{dt.customClass}}" role="gridcell"
                         id="{{dt.uid}}"
-                        ng-class="{'cc-focus': dt.key == activeDt.key}"
+                        ng-class="{'cc-focus': stopHighlight == false && dt.key == activeDt.key}"
                         colspan="1"
                         ng-disabled="dt.disabled"
                         ng-init="columnindex = $index"

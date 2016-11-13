@@ -23,6 +23,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
     yearMapHeat: false,
     preventModeToggle: false,
     preventCalNav: false,
+    stopHighlight: false,
     hideCalNav: false,
     showMarkerForMoreEvents: true,
     showDataLabel: false,
@@ -59,6 +60,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
             'yearMapHeat',
             'preventModeToggle',
             'preventCalNav',
+            'stopHighlight',
             'hideCalNav',
             'showMarkerForMoreEvents',
             'showDataLabel',
@@ -88,6 +90,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
               switch (key) {
                   case 'enableWebWorkers':
                   case 'expandedMode':
+                  case 'stopHighlight':
                   case 'webWorkerAngularPath':
                   case 'webWorkerUnderscorePath':
                       self[key] = richCCShared[key] = $scope[key] = angular.isDefined($scope.datepickerOptions[key]) ? $scope.datepickerOptions[key] : datepickerConfig[key];
@@ -105,7 +108,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
                       break;
                   case 'light':
                   case 'preventModeToggle':
-                  case 'preventCalNav':
+                  case 'preventCalNav':                  
                   case 'hideCalNav':
                   case 'showMarkerForMoreEvents':
                   case 'showDataLabel':
@@ -1099,6 +1102,7 @@ angular.module('richcc.bootstrap.datepicker', ['ui.bootstrap', 'ui.bootstrap.dat
         scope.expandedMode = this.expandedMode;
         scope.eventPopupHide = this.eventPopupHide;
         scope.preventCalNav = this.preventCalNav;
+        scope.stopHighlight = this.stopHighlight;
         scope.preventModeToggle = this.preventModeToggle;
         scope.monthPopUpTmpl = this.monthPopUpTmpl;
         scope.dayPopUpTmpl = this.dayPopUpTmpl;
@@ -2377,6 +2381,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
     self.yearMapHeat = false;
     self.preventModeToggle = false;
     self.preventCalNav = false;
+    self.stopHighlight = false;
     self.hideCalNav = false;
     self.showMarkerForMoreEvents = true;
     self.showDataLabel = false;
@@ -3005,6 +3010,8 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
             }
 
             self.focusCurrentCell = function () {
+                if (service.stopHighlight)
+                    return;
                 var _tblYearPicker = document.getElementById($scope.dtPickerYearID);
                 if (_tblYearPicker) {
                     _tblYearPicker.setAttribute('aria-activedescendant', 'mh_' + self.activeDtID);
@@ -3017,7 +3024,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 }
                 self.activeDtID = self.getUID($scope.currentYearModelDt);
                 var _cell = document.getElementById('mh_' + self.activeDtID);
-                if (_cell) {                    
+                if (_cell) {
                     _cell.classList.add('cc-focus');
                 }
             }

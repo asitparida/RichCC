@@ -170,6 +170,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'yearMapHeat': false,
         'preventModeToggle': false,
         'preventCalNav': true,
+        'stopHighlight': true,
         'showMarkerForMoreEvents': false,
         'hideCalNav': true,
         toggleModeCallBack: self.toggleModeCallBack,
@@ -184,6 +185,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         'yearMapHeat': false,
         'preventModeToggle': false,
         'preventCalNav': false,
+        'stopHighlight': true,
         'showMarkerForMoreEvents': false,
         toggleModeCallBack: self.toggleModeCallBack,
         'hideCalNav': true
@@ -194,7 +196,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         showWeeks: false,
         datepickerMode: 'month',
         'yearMapHeat': false,
-        'preventModeToggle': true,
+        'preventModeToggle': true,        
         enableWebWorkers: false,
         noInitials: true,
         moveModeCallback: self.moveModeCallback
