@@ -49,6 +49,7 @@
                             </button>
                             <button class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="preventModeToggle == true" >
                                 <span class="title">{{title}}</span>
+                                <span class="offscreen"> use arrow keys to move </span>
                             </button>
                             <button class="richcc-icon-container nav-right" cc-key="move(1)" ng-disabled="preventCalNav == true" ng-hide="hideCalNav == true">
                                 <i class="richcc-icon icon-ScrollChevronRightLegacy"></i>
@@ -472,7 +473,8 @@
                                         <i class="richcc-icon icon-ScrollChevronLeftLegacy"></i>
                                     </div>
                                     <div class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
-                                        <label class="title">{{ricchYear.title}}</label>
+                                        <p class="title">{{ricchYear.title}}</p>
+                                        <span class="offscreen"> use arrow keys to move </span>
                                     </div>
                                     <div class="richcc-icon-container nav-right" ng-click="ricchYear.move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                                         <i class="richcc-icon icon-ScrollChevronRightLegacy"></i>
