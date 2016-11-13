@@ -2805,12 +2805,15 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                     _cellElmContent = _cellElmContent.replaceAll('CELL_ELM_ID', _markID);
                                     var _dtForAria = new Date(column.date);
                                     var _ariaLabel = self.monthLabels[_dtForAria.getMonth()] + ' ' + _dtForAria.getDate() + ' ' + _dtForAria.getFullYear();
+                                    var eventDetails = month.eventDetails[column.key];
+                                    if (eventDetails && eventDetails.length > 0) {
+                                        _ariaLabel = _ariaLabel + ' ' + eventDetails.length + ' events';
+                                    }
                                     if (column.customAriaLabel)
                                         _ariaLabel = _ariaLabel + ' ' + column.customAriaLabel;
                                     _cellElmContent = _cellElmContent.replaceAll('CELL_ARIA_LABEL', _ariaLabel);
                                     _cellElmContent = _cellElmContent.replaceAll('CUSTOM_CLASS', column.customClass || '');
-                                    _cellElm.append(_cellElmContent);
-                                    var eventDetails = month.eventDetails[column.key];
+                                    _cellElm.append(_cellElmContent);                                    
                                     if (typeof eventDetails !== 'undefined' && eventDetails.length > 0) {
                                         _.each(eventDetails, function (evt) {
                                             if (evt.startPaintForMonth == true) {
@@ -2842,7 +2845,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                         });
                                     }
                                     var _element = angular.element(document.getElementById('event_pop_trig_' + column.key));
-                                    var _popUopContainerId = column.key;
+                                    var _popUopContainerId = 'popup_' + column.key;
                                     _element.on('click', function (e) {
                                         var _column = column;
                                         var _key = $(e.currentTarget).attr('key');
@@ -2858,7 +2861,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                         if (self.popUpState[_key] != true) {
                                             var _eventDetails = self.months[_mIndex].eventDetails[_key];
                                             var _popUpTmpl = '<div class="popover richcc-popup-container yearly-only fade in "><div class="arrow"></div><div class="popover-inner"><div class="popover-content"></div></div></div>';
-                                            var _popUpContentTmpl = '<div class="richcc-day-popup" id="POPUPCONTAINERID" key="POPUPCONTAINERKEY"><div class="event-container NOACTIONS "><div class="event-container-label">POPUPDATE<span>POPUPEVENTCOUNT</span></div><div class="event-details-container">POPUPEVENTDETAILSTMPL</div></div><div class="event-action-container POPOVERSINGLEBUTTONLYCLASS "> POPUPLEFTBTNTMPL POPUPRIGHTBTNTMPL <div class="event-separator"></div></div></div>';
+                                            var _popUpContentTmpl = '<div class="richcc-day-popup" tabindex="0" id="POPUPCONTAINERID" key="POPUPCONTAINERKEY"><div class="event-container NOACTIONS "><div class="event-container-label">POPUPDATE<span>POPUPEVENTCOUNT</span></div><div class="event-details-container">POPUPEVENTDETAILSTMPL</div></div><div class="event-action-container POPOVERSINGLEBUTTONLYCLASS "> POPUPLEFTBTNTMPL POPUPRIGHTBTNTMPL <div class="event-separator"></div></div></div>';
                                             _popUpContentTmpl = _popUpContentTmpl.replace('POPUPCONTAINERID', _popUopContainerId);
                                             _popUpContentTmpl = _popUpContentTmpl.replace('POPUPCONTAINERKEY', _key);
                                             _popUpContentTmpl = _popUpContentTmpl.replace('POPUPDATE', $filter('date')(_column.date, $scope.eventPopupSettings.labelDateFilter) || '');
@@ -3015,6 +3018,22 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                                     });
                                             }
                                         });
+
+                                        var _popUpElm = document.getElementById('popup_' + column.key);
+                                        if (_popUpElm) {
+                                            var evtKeyUpId = 'keydown.' + _key;
+                                            $(_popUpElm).off(evtKeyUpId);
+                                            $(_popUpElm).on(evtKeyUpId, function (e) {
+                                                if (e.keyCode == 27) {
+                                                    self.popUpState[_key] = false;
+                                                    var _element = angular.element(document.getElementById('event_pop_trig_' + _key));
+                                                    $(_element).popover('hide');
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                }
+                                            })
+                                            $(_popUpElm).focus();
+                                        }
                                     });
 
                                     _element.on('hidden.bs.popover', function (e) {
@@ -3023,6 +3042,10 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                         var evtId = 'click.' + _key;
                                         $document.off(evtId);
                                         self.eventIds = _.reject(self.eventIds, function (eid) { return eid == evtId });
+                                        var _tbl = document.getElementById($scope.dtPickerYearID);
+                                        if (_tbl) {
+                                            $(_tbl).focus();
+                                        }
                                     });
                                 }
                             });
