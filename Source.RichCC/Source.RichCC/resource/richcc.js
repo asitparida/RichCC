@@ -2805,12 +2805,15 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                     _cellElmContent = _cellElmContent.replaceAll('CELL_ELM_ID', _markID);
                                     var _dtForAria = new Date(column.date);
                                     var _ariaLabel = self.monthLabels[_dtForAria.getMonth()] + ' ' + _dtForAria.getDate() + ' ' + _dtForAria.getFullYear();
+                                    var eventDetails = month.eventDetails[column.key];
+                                    if (eventDetails && eventDetails.length > 0) {
+                                        _ariaLabel = _ariaLabel + ' ' + eventDetails.length + ' events';
+                                    }
                                     if (column.customAriaLabel)
                                         _ariaLabel = _ariaLabel + ' ' + column.customAriaLabel;
                                     _cellElmContent = _cellElmContent.replaceAll('CELL_ARIA_LABEL', _ariaLabel);
                                     _cellElmContent = _cellElmContent.replaceAll('CUSTOM_CLASS', column.customClass || '');
-                                    _cellElm.append(_cellElmContent);
-                                    var eventDetails = month.eventDetails[column.key];
+                                    _cellElm.append(_cellElmContent);                                    
                                     if (typeof eventDetails !== 'undefined' && eventDetails.length > 0) {
                                         _.each(eventDetails, function (evt) {
                                             if (evt.startPaintForMonth == true) {
