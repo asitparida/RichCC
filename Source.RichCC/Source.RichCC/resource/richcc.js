@@ -327,6 +327,12 @@
           }
       }
 
+      $scope.datepickerOptions.getCalendarInFocus = function () {
+          var _elm = document.getElementById('tb' + $scope.datePickerUID);
+          if (_elm)
+              $(_elm).focus();
+      }
+
       //Events Variable Watch Added
       if ($attrs['events']) {
           watchListeners.push($scope.$parent.$watch($attrs['events'], function (value) {
@@ -3191,7 +3197,6 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                         }
                     }
                 }
-                console.log($scope.currentYearModelDt);
             }
 
             self.triggerPopUpIfAvailable = function (dt) {
@@ -3202,7 +3207,6 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     });
                 }
             }
-
         }],
         controllerAs: 'ricchYear',
         link: function (scope, elem, attrs) {
@@ -3224,8 +3228,13 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     var _angElm = angular.element(elem);
                     $(_angElm).popover('destroy');
                 });
-            });
+            });            
             scope.dtPickerYearID = _.uniqueId('dtPickerYear');
+            scope.datepickerOptions.getCalendarInFocus = function () {
+                var _elm = document.getElementById(scope.dtPickerYearID);
+                if (_elm)
+                    $(_elm).focus();
+            }
         }
     };
 }]);

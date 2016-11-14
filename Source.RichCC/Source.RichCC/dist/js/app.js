@@ -309,6 +309,15 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         opened: false
     };
 
+    self.focusPopUp = function () {
+        if (self.showMode == true) {
+            self.dtPickerOptions1.getCalendarInFocus();
+        }
+        else {
+            self.dtPickerOptionsMonth.getCalendarInFocus();
+        }
+    }
+
     var tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     var afterTomorrow = new Date();
