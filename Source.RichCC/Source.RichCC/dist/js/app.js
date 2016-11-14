@@ -52,6 +52,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
             edt.setDate(edt.getDate() + (i * 1));
             evt.endDt = (edt.getMonth() + 1) + '-' + (edt.getDate()) + '-' + edt.getFullYear();
             //evt.endDtFQ = new Date("Fri Mar 27 2015 09:56:24 GMT+0100 (W. Europe Standard Time)");
+            evt.ariaLabel = 'hello event ' + evt.name + ' ' + evt.id;
             _evts.push(evt);
             //dt.setDate(dt.getDate() - 2);
             //evt.startDt = (dt.getMonth() + 1) + '-' + (dt.getDate()) + '-' + dt.getFullYear();
@@ -266,7 +267,7 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
         self.dtLight2 = null;
     };
 
-    self.showMode = false;
+    self.showMode = true;
 
     // Disable weekend selection
     self.disabled = function (date, mode) {

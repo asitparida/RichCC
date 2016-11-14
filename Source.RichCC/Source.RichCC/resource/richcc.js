@@ -2878,8 +2878,10 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             var _evtTmpls = '';
                                             eventDetails = _.sortBy(eventDetails, function (evt) { evt.isHoliday = evt.isHoliday || false; return evt.isHoliday == true ? -1 : 1 });
                                             _.each(eventDetails, function (evt, iter) {
-                                                var _evTmpl = '<div class="event-detail EVENTHOLIDAYCLASS " tabindex="0" style="background-color:EVENTDETAILBGCOLOR" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" evid="EVTPRIMARYIDDET" id="EVENTDETAILID" iter="ITERATOR"><div class="event-marker"></div><div class="event-title-holder POPUPHIGHLIGHTBORDERCLASS" style="border-left-color: POPOVERBGCOLOR"><span class="event-title">EVENTTITLE</span> EVENDETAILSOTHERSTUFF </div></div>';
+                                                var _evTmpl = '<div class="event-detail EVENTHOLIDAYCLASS " tabindex="0" style="background-color:EVENTDETAILBGCOLOR" mindex="MINDEX" key="COLUMNKEY" dt="COLUMNDATE" evid="EVTPRIMARYIDDET" id="EVENTDETAILID" iter="ITERATOR" aria-label="EVENTARIALABEL"><div class="event-marker"></div><div class="event-title-holder POPUPHIGHLIGHTBORDERCLASS" style="border-left-color: POPOVERBGCOLOR"><span class="event-title">EVENTTITLE</span> EVENDETAILSOTHERSTUFF </div></div>';
                                                 _evTmpl = _evTmpl.replace('EVTPRIMARYIDDET', evt.id);
+                                                if (evt.ariaLabel)
+                                                    _evTmpl = _evTmpl.replace('EVENTARIALABEL', evt.ariaLabel)
                                                 if (evt.highlightBorder)
                                                     _evTmpl = _evTmpl.replace('POPUPHIGHLIGHTBORDERCLASS', 'highlightBorder');
                                                 if (evt.isHoliday == true) {
