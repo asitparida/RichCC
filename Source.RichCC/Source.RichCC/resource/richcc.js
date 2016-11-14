@@ -3055,6 +3055,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     self.focusCurrentCell();
                     $scope.initialized = true;
                     self.inProgress = false;
+                    self.currentYear = $scope.currentYearModelDt.getFullYear();
                 }, 300);
             }
 
