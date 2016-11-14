@@ -27,7 +27,7 @@
         <div class="uib-datepicker richcc-datepicker" ng-switch="datepickerMode" role="application" ng-keydown="keydown($event)" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}">
             <div class="richcc-comp-title">&nbsp;</div>
             <div class="richcc-cal-holder" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}">
-                <richcc-daypicker ng-switch-when="day" tabindex="{{stopHighlight == true ? -1 : 0}}"></richcc-daypicker>
+                <richcc-daypicker ng-switch-when="day"></richcc-daypicker>
                 <richcc-monthpicker-heatmap ng-switch-when="month" ng-if="yearMapHeat == true" tabindex="0"></richcc-monthpicker-heatmap>
                 <richcc-monthpicker-eventmap ng-switch-when="month" ng-if="yearMapHeat == false" tabindex="0"></richcc-monthpicker-eventmap>
                 <richcc-yearpicker ng-switch-when="year" tabindex="0"></richcc-yearpicker>
@@ -37,7 +37,7 @@
     </div>
     <!--day.html-->
     <div id="richccTmplDay">
-        <table class="uib-daypicker richcc-daypicker" role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}" id="tb{{datePickerUID}}">
+        <table class="uib-daypicker richcc-daypicker" role="grid" aria-label="Monthly calendar View" aria-activedescendant="" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}" id="tb{{datePickerUID}}" tabindex="{{stopHighlight == true ? -1 : 0}}">
             <thead>
                 <tr class="header-action-holder" ng-class="{'richcc-light': light,'collapsed-mode': !expandedMode,  'expanded-mode': expandedMode}">
                     <th colspan="1" ng-if="light != true"></th>
@@ -464,13 +464,14 @@
     <div id="richccTmplYearHybridOne">
         <div class="uib-datepicker richcc-datepicker fixedWidth" role="application" ng-keydown="ricchYear.keydown($event)" ng-attr-id="{{::ricchYear.rid}}" ng-keyup="ricchYear.keyup($event)">
             <div class="richcc-cal-holder">
-                <table class="uib-monthpicker richcc-daypicker" role="grid" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="" style="width:100%;height:100%;" tabindex="0" ng-attr-id="{{dtPickerYearID}}">
+                <table class="uib-monthpicker richcc-daypicker" role="grid" aria-label="Yearly calendar View for {{ricchYear.currentYear}}" aria-activedescendant="" style="width:100%;height:100%;" tabindex="0" ng-attr-id="{{dtPickerYearID}}">
                     <thead>
                         <tr class="header-action-holder">
                             <th colspan="43">
                                 <div class="header-actions">
                                     <div class="richcc-icon-container nav-left" ng-click="ricchYear.move(-1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                                         <i class="richcc-icon icon-ScrollChevronLeftLegacy"></i>
+                                        <span class="offscreen">Move to previous year {{ricchYear.currentYear - 1}}</span>
                                     </div>
                                     <div class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
                                         <p class="title">{{ricchYear.title}}</p>
@@ -478,6 +479,7 @@
                                     </div>
                                     <div class="richcc-icon-container nav-right" ng-click="ricchYear.move(1)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                                         <i class="richcc-icon icon-ScrollChevronRightLegacy"></i>
+                                        <span class="offscreen">Move to next year {{ricchYear.currentYear + 1}}</span>
                                     </div>
                                 </div>
                             </th>
