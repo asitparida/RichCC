@@ -665,7 +665,7 @@
         margin: 0 auto;
         height: 36px;
         padding: 0 0 0 5px;
-        width: 300px; }
+        width: 100%; }
         .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions .richcc-icon-container:not([disabled]):focus, .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions .richcc-icon-container:not(.disabled):focus {
           outline: 1px dotted #000; }
         .richcc-datepicker .richcc-daypicker thead tr.header-action-holder .header-actions.calNavHidden .labelHolder {
