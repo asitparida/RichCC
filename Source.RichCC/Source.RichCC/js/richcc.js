@@ -3085,11 +3085,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
 
             self.focusCurrentCell = function () {
                 if (service.stopHighlight)
-                    return;
-                var _tblYearPicker = document.getElementById($scope.dtPickerYearID);
-                if (_tblYearPicker) {
-                    _tblYearPicker.setAttribute('aria-activedescendant', 'mh_' + self.activeDtID);
-                }
+                    return;                
                 if (self.activeDtID) {
                     var _origElem = document.getElementById('mh_' + self.activeDtID);
                     if (_origElem) {
@@ -3097,6 +3093,10 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                     }
                 }
                 self.activeDtID = self.getUID($scope.currentYearModelDt);
+                var _tblYearPicker = document.getElementById($scope.dtPickerYearID);
+                if (_tblYearPicker) {
+                    _tblYearPicker.setAttribute('aria-activedescendant', 'mh_' + self.activeDtID);
+                }
                 var _cell = document.getElementById('mh_' + self.activeDtID);
                 if (_cell) {
                     _cell.classList.add('cc-focus');
