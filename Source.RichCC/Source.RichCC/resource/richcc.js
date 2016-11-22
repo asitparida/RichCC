@@ -531,7 +531,6 @@
           if (typeof $scope.datepickerOptions.moveModeCallback === "function") {
               $scope.datepickerOptions.moveModeCallback(_retData);
           }
-
       };
 
       $scope.toggleMode = function (direction) {
@@ -2378,9 +2377,13 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                 if (attr.ngDisabled != true)
                     $scope.$apply(attr.ccKey);
             });
-            elem.on('keyup', function (e) {
+            elem.on('keydown', function (e) {
                 if ((e.keyCode == 13 || e.keyCode == 32) && attr.ngDisabled != true)
+                {
                     $scope.$apply(attr.ccKey);
+                    e.preventDefault();
+                    e.stopPropagation();
+                }                    
             });
         }
     };
@@ -2745,9 +2748,18 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                         $scope.datepickerOptions.moveModeCallback(_retData);
                     });
                 }
-
-
             }
+
+            self.moveKeyDown = function (dir, evt) {
+                var key = self.keys[evt.which];
+                if (key === "enter" || evt.keyCode === "space")
+                {
+                    self.move(dir);
+                    evt.stopPropagation();
+                    evt.preventDefault();
+                }
+            }
+
             self.reset = function () {
                 self.inProgress = true;
                 var _cells = angular.element(document.getElementsByClassName('richcc-year-row'));

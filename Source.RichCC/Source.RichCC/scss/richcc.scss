@@ -1104,6 +1104,7 @@
                         height: 36px;
                         padding: 0 0 0 5px;
                         width: 100%;
+                        max-width:300px;
 
                         .richcc-icon-container {
                             &:not([disabled]):focus, &:not(.disabled):focus {
