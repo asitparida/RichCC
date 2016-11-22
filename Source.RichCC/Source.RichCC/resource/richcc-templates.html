@@ -47,9 +47,9 @@
                                 <i class="richcc-icon icon-ScrollChevronLeftLegacy"></i>
                                 <span class="offscreen" >Move to previous <span ng-if="datepickerMode == 'day'"> month</span><span ng-if="datepickerMode == 'month'"> year</span></span>
                             </button>
-                            <button class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="preventModeToggle == true" >
+                            <button class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" aria-live="assertive" aria-atomic="true" cc-key="toggleMode()" ng-disabled="preventModeToggle == true" >
                                 <span class="title">{{title}}</span>
-                                <span class="offscreen"> use arrow keys to move </span>
+                                <span class="offscreen" ng-if="stopHighlight != true"> use arrow keys to move </span>
                             </button>
                             <button class="richcc-icon-container nav-right" cc-key="move(1, $event)" ng-disabled="preventCalNav == true" ng-hide="hideCalNav == true">
                                 <i class="richcc-icon icon-ScrollChevronRightLegacy"></i>
@@ -482,7 +482,7 @@
                                     </div>
                                     <div class="richcc-icon-container labelHolder" id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" cc-key="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="0">
                                         <p class="title">{{ricchYear.title}}</p>
-                                        <span class="offscreen"> use arrow keys to move </span>
+                                        <span class="offscreen" ng-if="stopHighlight != true"> use arrow keys to move </span>
                                     </div>
                                     <div class="richcc-icon-container nav-right" ng-click="ricchYear.move(1, $event)" ng-keydown="ricchYear.moveKeyDown(1, $event)" role="button" tabindex="0" ng-disabled="preventCalNav == true">
                                         <i class="richcc-icon icon-ScrollChevronRightLegacy"></i>
