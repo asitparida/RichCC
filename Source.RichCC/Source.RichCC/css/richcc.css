@@ -799,16 +799,20 @@
             -o-animation-fill-mode: forwards;
             -webkit-animation-fill-mode: forwards;
             animation-fill-mode: forwards;
-            border: 2px dashed transparent;
+            border: none;
             -moz-box-sizing: content-box;
             -webkit-box-sizing: content-box;
-            box-sizing: content-box; }
+            box-sizing: content-box;
+            top: 2px; }
             .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder .mark .mark-stripe.notrans {
               animation: none;
               transition: none;
               width: 100%; }
             .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder .mark .mark-stripe.highlightBorder {
-              border-color: #909090; }
+              border-color: #909090;
+              border-style: dashed;
+              border-width: 2px;
+              top: 0px; }
               .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder .mark .mark-stripe.highlightBorder .mark-stripe-color {
                 width: calc(100% - 4px);
                 height: calc(100% - 4px);
@@ -2532,18 +2536,24 @@
               -o-animation-fill-mode: forwards;
               -webkit-animation-fill-mode: forwards;
               animation-fill-mode: forwards;
-              border: 2px dashed transparent;
+              border: none;
               -moz-box-sizing: border-box;
               -webkit-box-sizing: border-box;
-              box-sizing: border-box; }
+              box-sizing: border-box;
+              top: 2px; }
               .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td .markHolder .mark .mark-stripe.notrans {
                 animation: none;
                 transition: none;
                 width: 100%; }
               .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td .markHolder .mark .mark-stripe.highlightBorder {
-                border-color: #909090; }
+                border-color: #909090;
+                border-width: 2px;
+                border-style: dashed;
+                top: 0px; }
               .richcc-datepicker .richcc-daypicker tbody tr.expanded-mode td.richcc-td .markHolder .mark .mark-stripe .mark-stripe-color {
-                height: calc(100% - 4px); }
+                height: calc(100% - 4px);
+                box-sizing: border-box;
+                border: 1px solid transparent; }
 
 @-webkit-keyframes richcc-width-animation {
   0% {

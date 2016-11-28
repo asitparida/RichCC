@@ -95,7 +95,7 @@ var banner = ['/**',
 
 var pkg = {
     name: 'RICH-CC',
-    version: '1.3.3',
+    version: '1.3.4',
     license: 'MIT',
     git: 'https://github.com/asitparida/RichCC'
 }
