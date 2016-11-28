@@ -51,7 +51,10 @@
     width: 100%;
     height: 100%;
     border-radius: 0;
-    border-top: 3px solid #0073c6; }
+    border-top: 3px solid #0073c6;
+    border-bottom: 3px solid transparent;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent; }
   .richcc-popup-container .richcc-day-popup {
     width: 100%;
     height: 100%;
@@ -163,7 +166,8 @@
   background: #fff;
   margin: 0;
   border: none;
-  position: relative; }
+  position: relative;
+  border: 1px solid transparent; }
   .richcc-datepicker .offscreen {
     position: absolute;
     clip: rect(1px, 1px, 1px, 1px);
@@ -599,7 +603,8 @@
                   height: 4px;
                   position: absolute;
                   top: 0;
-                  left: 0; }
+                  left: 0;
+                  border: 1px solid transparent; }
   .richcc-datepicker .richcc-daypicker.uib-monthpicker .eventMonthMarker,
   .richcc-datepicker .richcc-daypicker.uib-monthpicker .eventDayMarker {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -818,13 +823,15 @@
                 height: calc(100% - 4px);
                 position: absolute;
                 top: 2px;
-                left: 2px; }
+                left: 2px;
+                border: 1px solid transparent; }
             .richcc-datepicker .richcc-daypicker tbody tr.collapsed-mode td.richcc-td .markHolder .mark .mark-stripe .mark-stripe-color {
               width: 100%;
               height: calc(100% - 4px);
               position: absolute;
               top: 2px;
-              left: 0; }
+              left: 0;
+              border: 1px solid transparent; }
 
 @-webkit-keyframes richcc-width-animation {
   0% {
@@ -4029,7 +4036,8 @@
             height: 100%;
             position: absolute;
             top: 0;
-            left: 0; }
+            left: 0;
+            border: 1px solid transparent; }
           .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td .markHolder .mark .mark-stripe .text {
             display: none; }
     .richcc-datepicker .richcc-daypicker.richcc-light tbody .richcc-row .richcc-td.richcc-light-lastdaymark {
