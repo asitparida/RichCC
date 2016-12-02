@@ -2961,7 +2961,7 @@ function (scope, element, attrs, $compile, $parse, $document, $rootScope, $posit
                                             else
                                                 _popUpContentTmpl = _popUpContentTmpl.replace('POPUPRIGHTBTNTMPL', '');
                                             var _popUpPosition = self.getPopUpPositionForMonthEventMap(_mIndex, _wIndex);
-                                            var _popUpOptions = { html: true, content: _popUpContentTmpl, show: false, container: 'body', trigger: 'click', placement: _popUpPosition, template: _popUpTmpl };
+                                            var _popUpOptions = { html: true, content: _popUpContentTmpl, show: false, container: 'body', trigger: 'manual', placement: _popUpPosition, template: _popUpTmpl };
                                             $(e.target).popover(_popUpOptions);
                                             $(e.target).popover('show');
                                             self.popUpState[_key] = true;
