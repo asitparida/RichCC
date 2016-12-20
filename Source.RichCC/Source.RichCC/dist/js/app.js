@@ -47,11 +47,11 @@ angular.module('richCCSample', ['richcc.bootstrap.datepicker'])
             var dt = new Date(evt.startDt);
             dt.setDate(dt.getDate() + (i * 2));
             evt.startDt = (dt.getMonth() + 1) + '-' + (dt.getDate()) + '-' + dt.getFullYear();
-            evt.startDtFQ = "2016-11-02T08:00:00";
+            evt.startDtFQ = "2015-01-01T08:00:00";
             var edt = dt;
             edt.setDate(edt.getDate() + (i * 1));
             evt.endDt = (edt.getMonth() + 1) + '-' + (edt.getDate()) + '-' + edt.getFullYear();
-            //evt.endDtFQ = new Date("Fri Mar 27 2015 09:56:24 GMT+0100 (W. Europe Standard Time)");
+            evt.endDtFQ = "2017-01-01T08:00:00";
             evt.ariaLabel = 'hello event ' + evt.name + ' ' + evt.id;
             _evts.push(evt);
             //dt.setDate(dt.getDate() - 2);
